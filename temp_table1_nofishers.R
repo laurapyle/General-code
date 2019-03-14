@@ -31,23 +31,23 @@ prop_row<-function(y,x,margin,single) {
   temp<-table(y,x)
   temp.prop<-round(prop.table(temp,margin)*100,0)
   
-  if (length(levels(x))>1){
-    temp.expect<-sum((suppressWarnings(chisq.test(temp))$expected<5)*1)
-  }
+  #if (length(levels(x))>1){
+  #  temp.expect<-sum((suppressWarnings(chisq.test(temp))$expected<5)*1)
+  #}
   
-  else{temp.expect=NULL}
+  #else{temp.expect=NULL}
   
   if(length(levels(x))>1){
     
-    temp.expect<-sum((suppressWarnings(chisq.test(temp))$expected<5)*1)
+  #  temp.expect<-sum((suppressWarnings(chisq.test(temp))$expected<2)*1)
     
-    if(temp.expect==0){
+   # if(temp.expect==0){
       p<-round(chisq.test(temp)$p.value,4)
-    }
+   # }
     
-    else{
-      p<-round(fisher.test(temp,hybrid = TRUE)$p.value,4)
-    }
+    #else{
+   #   p<-round(fisher.test(temp,hybrid = TRUE)$p.value,4)
+   # }
   }
   
   else{
