@@ -46,7 +46,7 @@ prop_row<-function(y,x,margin,single) {
     }
     
     else{
-      p<-round(fisher.test(temp,hybrid = TRUE)$p.value,4)
+      p<-round(fisher.test(temp,hybrid = TRUE,workspace=400000)$p.value,4)
     }
   }
   
