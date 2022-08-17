@@ -1,0 +1,58 @@
+---
+title: "Powell analysis"
+author: "Laura Pyle"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+  number_sections: yes
+theme: readable
+toc: yes
+toc_depth: 4
+toc_float: yes
+---
+  
+```{r setup, include=FALSE}
+library(readxl)
+library(car)
+library(emmeans)
+library(tableone)
+```
+
+```{r }
+dat <- readxl::read_xlsx("H:/Neonatology/Powell/Analysis discrepancy/9MonthOldSkeletalMuscleLipidsForClaire_6.1.22.xlsx",
+                         sheet=1)
+dat$mod_group <- paste(dat$Group,dat$`Treatment (PBS/ADN)`)
+dat$test <- dat$`1,2-di16:0DG`
+dat$test2 <- dat$`1,2-16:0/18:0DG`
+
+# one without a significant interaction
+mod1 <- lm(dat$`1,2-di14:0DG` ~ dat$mod_group*dat$`Sex (M/F)`)
+Anova(mod1)
+
+mod1a <- lm(dat$test ~ dat$mod_group*dat$`Sex (M/F)`)
+Anova(mod1a)
+
+mod1b <- lm(dat$test ~ dat$mod_group)
+Anova(mod1b)
+emmeans(mod1b, ~mod_group)
+
+# one with a significant interaction
+hist(dat$`1,2-14:0/16:1DG`)
+dat$`l_1,2-14:0/16:1DG` <- log(dat$`1,2-14:0/16:1DG`)
+hist(dat$`l_1,2-14:0/16:1DG`)
+
+mod2 <- lm(dat$`l_1,2-14:0/16:1DG` ~ dat$mod_group*dat$`Sex (M/F)`)
+Anova(mod2)
+
+# another without significant interaction
+mod3 <- lm(dat$test2 ~ dat$mod_group*dat$`Sex (M/F)`)
+Anova(mod3)
+
+mod3a <- lm(dat$test2 ~ dat$mod_group)
+Anova(mod3a)
+emmeans(mod3a, ~mod_group)
+
+
+```
+
+
