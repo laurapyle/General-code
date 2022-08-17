@@ -458,10 +458,11 @@ dat$X1.2.16.0.18.0DG &lt;- dat$`1,2-16:0/18:0DG`
 dat$X1.2.16.0.18.1DG &lt;- dat$`1,2-16:0/18:1DG`
 dat$X1.2.16.0.20.1DG &lt;- dat$`1,2-16:0/20:1DG`
 dat$X1.2.16.0.20.2DG &lt;- dat$`1,2-16:0/20:2DG`
-dat$X1.2.14.0.16.1DG_l &lt;- log(dat$`1,2-14:0/16:1DG`)
-dat$X1.2.16.1.18.1DG_l &lt;- log(dat$`1,2-16:1/18:1DG`)
-dat$X1.2.18.0.18.1DG_l &lt;- log(dat$`1,2-18:0/18:1DG`)
-dat$X1.2.18.0.20.4DG_l &lt;- log(dat$`1,2-18:0/20:4DG`)
+dat$X1.2.14.0.16.1DG_l &lt;- log(dat$`1,2-14:0/16:1DG`, base=2)
+dat$X1.2.16.1.18.1DG_l &lt;- log(dat$`1,2-16:1/18:1DG`, base=2)
+dat$X1.2.18.0.18.1DG_l &lt;- log(dat$`1,2-18:0/18:1DG`, base=2)
+dat$X1.2.18.0.20.4DG_l &lt;- log(dat$`1,2-18:0/20:4DG`, base=2)
+dat$X1.2.16.0.18.2DG_l &lt;- log(dat$`1,2-16:0/18:2DG`, base=2)
 dat$sex &lt;- dat$`Sex (M/F)`
 
 
@@ -665,158 +666,193 @@ mod &lt;- function(var) {
 <pre><code>## Anova Table (Type II tests)
 ## 
 ## Response: X1.2.14.0.16.1DG_l
-##                        Sum Sq Df F value Pr(&gt;F)
-## dat$mod_group          3.1171  2  1.4857 0.2464
-## dat$sex                0.1412  1  0.1346 0.7170
-## dat$mod_group:dat$sex  0.1675  2  0.0798 0.9235
-## Residuals             25.1772 24               
+##                       Sum Sq Df F value Pr(&gt;F)
+## dat$mod_group          6.488  2  1.4857 0.2464
+## dat$sex                0.294  1  0.1346 0.7170
+## dat$mod_group:dat$sex  0.349  2  0.0798 0.9235
+## Residuals             52.403 24               
 ## Anova Table (Type II tests)
 ## 
 ## Response: X1.2.14.0.16.1DG_l
-##                Sum Sq Df F value Pr(&gt;F)
-## dat$mod_group  3.1171  2  1.5988 0.2214
-## dat$sex        0.1412  1  0.1448 0.7066
-## Residuals     25.3446 26               
-##  mod_group   emmean    SE df lower.CL upper.CL
-##  Control PBS  -6.84 0.312 26    -7.48    -6.20
-##  Obese ADN    -6.47 0.312 26    -7.11    -5.83
-##  Obese PBS    -6.05 0.312 26    -6.69    -5.41
+##               Sum Sq Df F value Pr(&gt;F)
+## dat$mod_group  6.488  2  1.5988 0.2214
+## dat$sex        0.294  1  0.1448 0.7066
+## Residuals     52.752 26               
+##  mod_group   emmean   SE df lower.CL upper.CL
+##  Control PBS  -9.87 0.45 26   -10.79    -8.94
+##  Obese ADN    -9.33 0.45 26   -10.26    -8.41
+##  Obese PBS    -8.73 0.45 26    -9.66    -7.80
 ## 
 ## Results are averaged over the levels of: sex 
 ## Confidence level used: 0.95 
 ## Anova Table (Type II tests)
 ## 
 ## Response: X1.2.14.0.16.1DG_l
-##                Sum Sq Df F value Pr(&gt;F)
-## dat$mod_group  3.1171  2  1.6511 0.2106
-## Residuals     25.4858 27               
+##               Sum Sq Df F value Pr(&gt;F)
+## dat$mod_group  6.488  2  1.6511 0.2106
+## Residuals     53.045 27               
 ##  mod_group   emmean    SE df lower.CL upper.CL
-##  Control PBS  -6.84 0.307 27    -7.47    -6.21
-##  Obese ADN    -6.47 0.307 27    -7.10    -5.84
-##  Obese PBS    -6.05 0.307 27    -6.68    -5.42
+##  Control PBS  -9.87 0.443 27   -10.78    -8.96
+##  Obese ADN    -9.33 0.443 27   -10.24    -8.42
+##  Obese PBS    -8.73 0.443 27    -9.64    -7.82
 ## 
 ## Confidence level used: 0.95</code></pre>
 <pre class="r"><code>mod(&quot;X1.2.16.1.18.1DG_l&quot;)</code></pre>
 <pre><code>## Anova Table (Type II tests)
 ## 
 ## Response: X1.2.16.1.18.1DG_l
-##                       Sum Sq Df F value  Pr(&gt;F)  
-## dat$mod_group         2.1503  2  3.0963 0.06364 .
-## dat$sex               0.0000  1  0.0001 0.99318  
-## dat$mod_group:dat$sex 0.2754  2  0.3965 0.67698  
-## Residuals             8.3336 24                  
+##                        Sum Sq Df F value  Pr(&gt;F)  
+## dat$mod_group          4.4755  2  3.0963 0.06364 .
+## dat$sex                0.0001  1  0.0001 0.99318  
+## dat$mod_group:dat$sex  0.5731  2  0.3965 0.67698  
+## Residuals             17.3453 24                  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## Anova Table (Type II tests)
 ## 
 ## Response: X1.2.16.1.18.1DG_l
-##               Sum Sq Df F value  Pr(&gt;F)  
-## dat$mod_group 2.1503  2  3.2471 0.05511 .
-## dat$sex       0.0000  1  0.0001 0.99301  
-## Residuals     8.6090 26                  
+##                Sum Sq Df F value  Pr(&gt;F)  
+## dat$mod_group  4.4755  2  3.2471 0.05511 .
+## dat$sex        0.0001  1  0.0001 0.99301  
+## Residuals     17.9184 26                  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ##  mod_group   emmean    SE df lower.CL upper.CL
-##  Control PBS  -3.57 0.182 26    -3.95    -3.20
-##  Obese ADN    -3.37 0.182 26    -3.74    -3.00
-##  Obese PBS    -2.93 0.182 26    -3.30    -2.56
+##  Control PBS  -5.15 0.263 26    -5.69    -4.61
+##  Obese ADN    -4.86 0.263 26    -5.40    -4.32
+##  Obese PBS    -4.23 0.263 26    -4.77    -3.69
 ## 
 ## Results are averaged over the levels of: sex 
 ## Confidence level used: 0.95 
 ## Anova Table (Type II tests)
 ## 
 ## Response: X1.2.16.1.18.1DG_l
-##               Sum Sq Df F value  Pr(&gt;F)  
-## dat$mod_group 2.1503  2  3.3719 0.04929 *
-## Residuals     8.6090 27                  
+##                Sum Sq Df F value  Pr(&gt;F)  
+## dat$mod_group  4.4755  2  3.3719 0.04929 *
+## Residuals     17.9185 27                  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ##  mod_group   emmean    SE df lower.CL upper.CL
-##  Control PBS  -3.57 0.179 27    -3.94    -3.21
-##  Obese ADN    -3.37 0.179 27    -3.74    -3.00
-##  Obese PBS    -2.93 0.179 27    -3.30    -2.56
+##  Control PBS  -5.15 0.258 27    -5.68    -4.63
+##  Obese ADN    -4.86 0.258 27    -5.39    -4.33
+##  Obese PBS    -4.23 0.258 27    -4.76    -3.70
 ## 
 ## Confidence level used: 0.95</code></pre>
 <pre class="r"><code>mod(&quot;X1.2.18.0.18.1DG_l&quot;)</code></pre>
 <pre><code>## Anova Table (Type II tests)
 ## 
 ## Response: X1.2.18.0.18.1DG_l
-##                       Sum Sq Df F value   Pr(&gt;F)   
-## dat$mod_group         3.9004  2  7.0775 0.003836 **
-## dat$sex               1.1943  1  4.3344 0.048185 * 
-## dat$mod_group:dat$sex 0.3092  2  0.5610 0.577917   
-## Residuals             6.6131 24                    
+##                        Sum Sq Df F value   Pr(&gt;F)   
+## dat$mod_group          8.1181  2  7.0775 0.003836 **
+## dat$sex                2.4858  1  4.3344 0.048185 * 
+## dat$mod_group:dat$sex  0.6435  2  0.5610 0.577917   
+## Residuals             13.7643 24                    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## Anova Table (Type II tests)
 ## 
 ## Response: X1.2.18.0.18.1DG_l
-##               Sum Sq Df F value   Pr(&gt;F)   
-## dat$mod_group 3.9004  2  7.3248 0.002999 **
-## dat$sex       1.1943  1  4.4858 0.043896 * 
-## Residuals     6.9223 26                    
+##                Sum Sq Df F value   Pr(&gt;F)   
+## dat$mod_group  8.1181  2  7.3248 0.002999 **
+## dat$sex        2.4858  1  4.4858 0.043896 * 
+## Residuals     14.4079 26                    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ##  mod_group   emmean    SE df lower.CL upper.CL
-##  Control PBS  -4.29 0.163 26    -4.63    -3.96
-##  Obese ADN    -4.08 0.163 26    -4.41    -3.74
-##  Obese PBS    -3.44 0.163 26    -3.78    -3.11
+##  Control PBS  -6.19 0.235 26    -6.68    -5.71
+##  Obese ADN    -5.88 0.235 26    -6.36    -5.40
+##  Obese PBS    -4.97 0.235 26    -5.45    -4.48
 ## 
 ## Results are averaged over the levels of: sex 
 ## Confidence level used: 0.95 
 ## Anova Table (Type II tests)
 ## 
 ## Response: X1.2.18.0.18.1DG_l
-##               Sum Sq Df F value   Pr(&gt;F)   
-## dat$mod_group 3.9004  2  6.4873 0.005004 **
-## Residuals     8.1166 27                    
+##                Sum Sq Df F value   Pr(&gt;F)   
+## dat$mod_group  8.1181  2  6.4873 0.005004 **
+## Residuals     16.8937 27                    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-##  mod_group   emmean    SE df lower.CL upper.CL
-##  Control PBS  -4.29 0.173 27    -4.65    -3.94
-##  Obese ADN    -4.08 0.173 27    -4.43    -3.72
-##  Obese PBS    -3.44 0.173 27    -3.80    -3.09
+##  mod_group   emmean   SE df lower.CL upper.CL
+##  Control PBS  -6.19 0.25 27    -6.70    -5.68
+##  Obese ADN    -5.88 0.25 27    -6.39    -5.37
+##  Obese PBS    -4.97 0.25 27    -5.48    -4.45
 ## 
 ## Confidence level used: 0.95</code></pre>
 <pre class="r"><code>mod(&quot;X1.2.18.0.20.4DG_l&quot;)</code></pre>
 <pre><code>## Anova Table (Type II tests)
 ## 
 ## Response: X1.2.18.0.20.4DG_l
-##                       Sum Sq Df F value  Pr(&gt;F)  
-## dat$mod_group         3.9751  2  5.1008 0.01426 *
-## dat$sex               0.0166  1  0.0425 0.83843  
-## dat$mod_group:dat$sex 0.1536  2  0.1971 0.82244  
-## Residuals             9.3516 24                  
+##                        Sum Sq Df F value  Pr(&gt;F)  
+## dat$mod_group          8.2736  2  5.1008 0.01426 *
+## dat$sex                0.0345  1  0.0425 0.83843  
+## dat$mod_group:dat$sex  0.3197  2  0.1971 0.82244  
+## Residuals             19.4642 24                  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## Anova Table (Type II tests)
 ## 
 ## Response: X1.2.18.0.20.4DG_l
-##               Sum Sq Df F value  Pr(&gt;F)  
-## dat$mod_group 3.9751  2  5.4366 0.01065 *
-## dat$sex       0.0166  1  0.0453 0.83314  
-## Residuals     9.5052 26                  
+##                Sum Sq Df F value  Pr(&gt;F)  
+## dat$mod_group  8.2736  2  5.4366 0.01065 *
+## dat$sex        0.0345  1  0.0453 0.83314  
+## Residuals     19.7838 26                  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ##  mod_group   emmean    SE df lower.CL upper.CL
-##  Control PBS  -4.51 0.191 26    -4.91    -4.12
-##  Obese ADN    -4.20 0.191 26    -4.59    -3.80
-##  Obese PBS    -3.63 0.191 26    -4.03    -3.24
+##  Control PBS  -6.51 0.276 26    -7.08    -5.94
+##  Obese ADN    -6.06 0.276 26    -6.62    -5.49
+##  Obese PBS    -5.24 0.276 26    -5.81    -4.67
 ## 
 ## Results are averaged over the levels of: sex 
 ## Confidence level used: 0.95 
 ## Anova Table (Type II tests)
 ## 
 ## Response: X1.2.18.0.20.4DG_l
-##               Sum Sq Df F value   Pr(&gt;F)   
-## dat$mod_group 3.9751  2  5.6359 0.009007 **
-## Residuals     9.5218 27                    
+##                Sum Sq Df F value   Pr(&gt;F)   
+## dat$mod_group  8.2736  2  5.6359 0.009007 **
+## Residuals     19.8183 27                    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ##  mod_group   emmean    SE df lower.CL upper.CL
-##  Control PBS  -4.51 0.188 27    -4.90    -4.13
-##  Obese ADN    -4.20 0.188 27    -4.58    -3.81
-##  Obese PBS    -3.63 0.188 27    -4.02    -3.25
+##  Control PBS  -6.51 0.271 27    -7.07    -5.95
+##  Obese ADN    -6.06 0.271 27    -6.61    -5.50
+##  Obese PBS    -5.24 0.271 27    -5.80    -4.68
+## 
+## Confidence level used: 0.95</code></pre>
+<pre class="r"><code>mod(&quot;X1.2.16.0.18.2DG_l&quot;)</code></pre>
+<pre><code>## Anova Table (Type II tests)
+## 
+## Response: X1.2.16.0.18.2DG_l
+##                       Sum Sq Df F value Pr(&gt;F)
+## dat$mod_group          0.209  2  0.0658 0.9365
+## dat$sex                1.137  1  0.7175 0.4053
+## dat$mod_group:dat$sex  2.135  2  0.6738 0.5192
+## Residuals             38.027 24               
+## Anova Table (Type II tests)
+## 
+## Response: X1.2.16.0.18.2DG_l
+##               Sum Sq Df F value Pr(&gt;F)
+## dat$mod_group  0.209  2  0.0675 0.9349
+## dat$sex        1.137  1  0.7360 0.3988
+## Residuals     40.162 26               
+##  mod_group   emmean    SE df lower.CL upper.CL
+##  Control PBS  -3.78 0.393 26    -4.59    -2.97
+##  Obese ADN    -3.98 0.393 26    -4.79    -3.17
+##  Obese PBS    -3.84 0.393 26    -4.64    -3.03
+## 
+## Results are averaged over the levels of: sex 
+## Confidence level used: 0.95 
+## Anova Table (Type II tests)
+## 
+## Response: X1.2.16.0.18.2DG_l
+##               Sum Sq Df F value Pr(&gt;F)
+## dat$mod_group  0.209  2  0.0682 0.9343
+## Residuals     41.299 27               
+##  mod_group   emmean    SE df lower.CL upper.CL
+##  Control PBS  -3.78 0.391 27    -4.59    -2.98
+##  Obese ADN    -3.98 0.391 27    -4.78    -3.18
+##  Obese PBS    -3.84 0.391 27    -4.64    -3.03
 ## 
 ## Confidence level used: 0.95</code></pre>
 
