@@ -22,37 +22,49 @@ library(tableone)
 dat <- readxl::read_xlsx("H:/Neonatology/Powell/Analysis discrepancy/9MonthOldSkeletalMuscleLipidsForClaire_6.1.22.xlsx",
                          sheet=1)
 dat$mod_group <- paste(dat$Group,dat$`Treatment (PBS/ADN)`)
-dat$test <- dat$`1,2-di16:0DG`
-dat$test2 <- dat$`1,2-16:0/18:0DG`
 
-# one without a significant interaction
-mod1 <- lm(dat$`1,2-di14:0DG` ~ dat$mod_group*dat$`Sex (M/F)`)
-Anova(mod1)
-
-mod1a <- lm(dat$test ~ dat$mod_group*dat$`Sex (M/F)`)
-Anova(mod1a)
-
-mod1b <- lm(dat$test ~ dat$mod_group)
-Anova(mod1b)
-emmeans(mod1b, ~mod_group)
-
-# one with a significant interaction
-hist(dat$`1,2-14:0/16:1DG`)
-dat$`l_1,2-14:0/16:1DG` <- log(dat$`1,2-14:0/16:1DG`)
-hist(dat$`l_1,2-14:0/16:1DG`)
-
-mod2 <- lm(dat$`l_1,2-14:0/16:1DG` ~ dat$mod_group*dat$`Sex (M/F)`)
-Anova(mod2)
-
-# another without significant interaction
-mod3 <- lm(dat$test2 ~ dat$mod_group*dat$`Sex (M/F)`)
-Anova(mod3)
-
-mod3a <- lm(dat$test2 ~ dat$mod_group)
-Anova(mod3a)
-emmeans(mod3a, ~mod_group)
+# rename variables
+dat$X1.2.di16.0DG <- dat$`1,2-di16:0DG`
+dat$X1.2.16.0.18.0DG <- dat$`1,2-16:0/18:0DG`
+dat$X1.2.16.0.18.1DG <- dat$`1,2-16:0/18:1DG`
+dat$X1.2.16.0.20.1DG <- dat$`1,2-16:0/20:1DG`
+dat$X1.2.16.0.20.2DG <- dat$`1,2-16:0/20:2DG`
+dat$X1.2.14.0.16.1DG_l <- log(dat$`1,2-14:0/16:1DG`)
+dat$X1.2.16.1.18.1DG_l <- log(dat$`1,2-16:1/18:1DG`)
+dat$X1.2.18.0.18.1DG_l <- log(dat$`1,2-18:0/18:1DG`)
+dat$X1.2.18.0.20.4DG_l <- log(dat$`1,2-18:0/20:4DG`)
+dat$X1.2.16.0.18.2DG_l <- log(dat$`1,2-16:0/18:2DG`)
+dat$sex <- dat$`Sex (M/F)`
 
 
+mod <- function(var) {
+  f = as.formula(paste0(var,"~ dat$mod_group*dat$sex"))
+  mod <- lm(f, data=dat)
+  print(Anova(mod))
+  
+  f_noint_adj <- as.formula(paste0(var,"~ dat$mod_group + dat$sex"))
+  mod_noint_adj <- lm(f_noint_adj, data=dat)
+  print(Anova(mod_noint_adj))
+  print(emmeans(mod_noint_adj, ~mod_group))
+  
+  f_noadj <- as.formula(paste0(var,"~ dat$mod_group"))
+  mod_noadj <- lm(f_noadj, dat)
+  print(Anova(mod_noadj))
+  print(emmeans(mod_noadj, ~mod_group))
+}
+```
+
+```{r}
+mod("X1.2.di16.0DG")
+mod("X1.2.16.0.18.0DG")
+mod("X1.2.16.0.18.1DG")
+mod("X1.2.16.0.20.1DG")
+mod("X1.2.16.0.20.2DG")
+mod("X1.2.14.0.16.1DG_l")
+mod("X1.2.16.1.18.1DG_l")
+mod("X1.2.18.0.18.1DG_l")
+mod("X1.2.18.0.20.4DG_l")
+mod("X1.2.16.0.18.2DG_l")
 ```
 
 

@@ -7,24 +7,30 @@ output:
     number_sections: yes
     theme: readable
     toc: yes
-    toc_depth: 2
+    toc_depth: 3
     toc_float: yes
 ---
 
 ```{r setup, include=FALSE}
+library(knitr)
+
 knitr::opts_chunk$set(echo = FALSE,warning = FALSE)
 
-home_dir = ifelse(.Platform$OS.type != "unix","T:\\",
-                  "/Volumes/som/PEDS/RI Biostatistics Core/Shared/Shared Projects/Laura/BDC/Projects")
+knitr::opts_chunk$set(echo = FALSE)
+if(Sys.info()["sysname"] == "Windows"){
+  home_dir = "//data/dept/SOM/ACCORDS/PiFolders/PI_Davis/PEDSnet_Gender_Differences/DATA_Secure/B-ACCORDS_Analysts/SAS Data/PheWAS/SCA Data"
+} else if (Sys.info()["sysname"] == "Linux"){
+  home_dir = "~/UCD/PEDS/RI Biostatistics Core/Shared/Shared Projects/Laura/BDC/Projects"
+} else if (Sys.info()["sysname"] == "Darwin"){
+  home_dir = "/Volumes/som/PEDS/RI Biostatistics Core/Shared/Shared Projects/Laura/BDC/Projects"
+}
 knitr::opts_knit$set(root.dir = home_dir)
+```
+
+```{r data, include=FALSE}
 
 ```
 
-# Background
-
-# Methods
-
-# Results
 
 ```{r echo=FALSE}
 kable(t1,caption = "")
