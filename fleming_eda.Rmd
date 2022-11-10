@@ -1,0 +1,26 @@
+---
+title: "EDA"
+author: "Laura Pyle"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    number_sections: yes
+    theme: readable
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(EDA)
+library(readxl)
+
+knitr::opts_chunk$set(echo = FALSE,warning = FALSE)
+
+data <- read_xlsx("H:/Fleming dissertation/Data_raw/Thesis Aim 1&2 data - CLEAN.xlsx")
+```
+
+```{r data, include=FALSE}
+EDA(data)
+```
