@@ -1,0 +1,96 @@
+---
+title: "Hannah Fleming - elastic net"
+author: "Laura Pyle"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    number_sections: yes
+    theme: readable
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(skimr)
+library(arsenal)
+library(doParallel)
+library(naniar)
+library(ensr)
+library(tidyverse)
+library(broom)
+
+knitr::opts_chunk$set(echo = FALSE,warning = FALSE)
+
+source("/Users/laurapyle/Documents/GitHub/shared-resources/Machine Learning/Tim - ElasticNet CV/easy_elasticnet.R")
+```
+
+```{r data, include=FALSE}
+data <- read.csv("/Volumes/pylell/Fleming dissertation/Data_raw/exportaim1_2matchCATEGORIES.csv", na.strings = c(".",""," "))
+data$Maternal_Race <- as.factor(data$Maternal_Race)
+data$GT_at_discharge <- as.factor(data$GT_at_discharge)
+data$gender <- as.factor(data$gender)
+data$Mother_of_Hispanic_Origin <- as.factor(data$Mother_of_Hispanic_Origin)
+data$primary_language <- as.factor(data$primary_language)
+data$complication_of_pregnancy_IDM__D <- as.factor(data$complication_of_pregnancy_IDM__D)
+data$prenatal_drug_exposure <- as.factor(data$prenatal_drug_exposure)
+data$type_of_respiratory_support_at_d <- as.factor(data$type_of_respiratory_support_at_d)
+data$SGA_AGA_LGA <- as.factor(data$SGA_AGA_LGA)
+data$diagnosis_of_GERD_by_end_of_NICU <- as.factor(data$diagnosis_of_GERD_by_end_of_NICU)
+data$Neuro_injury_on_head_ultrasound <- as.factor(data$Neuro_injury_on_head_ultrasound)
+data$diagnosis_of_dysphagia_per_instr <- as.factor(data$diagnosis_of_dysphagia_per_instr)
+data$diagnosis_of_oral_aversion <- as.factor(data$diagnosis_of_oral_aversion)
+data$diagnosis_of_NEC_YN <- as.factor(data$diagnosis_of_NEC_YN)
+data$feeds_initiated_on_LFNC_vs_HFNC <- as.factor(data$feeds_initiated_on_LFNC_vs_HFNC)
+data$diagnosis_of_BPD <- as.factor(data$diagnosis_of_BPD)
+data$Season_of_Discharge <- as.factor(data$Season_of_Discharge)
+data$diagnosis_of_failure_to_thrive_i <- as.factor(data$diagnosis_of_failure_to_thrive_i)
+data$Rural <- as.factor(data$Rural)
+data$COVID <- as.factor(data$COVID)
+data$gestage_cat <- as.factor(data$gestage_cat)
+data$payor_cat <- as.factor(data$payor_cat)
+data$ventduration_cat <- as.factor(data$ventduration_cat)
+data$SiPAP_NIMV_cat <- as.factor(data$SiPAP_NIMV_cat)
+data$NCPAP_cat <- as.factor(data$NCPAP_cat)
+data$HFNC2L_cat <- as.factor(data$HFNC2L_cat)
+data$NC2_cat <- as.factor(data$NC2_cat)
+data$IVH_cat <- as.factor(data$IVH_cat)
+
+# make df with highest priority variables
+data_high <- data[,c("GT_at_discharge","Maternal_Race","BW","gender","Mother_of_Hispanic_Origin","primary_language","complication_of_pregnancy_IDM__D",
+                     "prenatal_drug_exposure","X_1_minute","X_5_minute","X_10_minute","type_of_respiratory_support_at_d","SGA_AGA_LGA","diagnosis_of_GERD_by_end_of_NICU",
+                     "Neuro_injury_on_head_ultrasound","diagnosis_of_dysphagia_per_instr","diagnosis_of_oral_aversion","diagnosis_of_NEC_YN","feeds_initiated_on_LFNC_vs_HFNC",
+                     "diagnosis_of_BPD","Season_of_Discharge","caloric_density_of_prescribed_fo","Caloric_density_of_Human_Milk_if","diagnosis_of_failure_to_thrive_i",
+                     "Rural","COVID","gestage_cat","payor_cat","ventduration_cat","SiPAP_NIMV_cat","NCPAP_cat","HFNC2L_cat","NC2_cat","IVH_cat")]
+data_high <- data_high[complete.cases(data_high),]
+```
+
+# Descriptive Statistics
+
+```{r include=TRUE, warning=FALSE, message=F}
+t1 <- tableby(data=data_high,  ~ GT_at_discharge + Maternal_Race + BW + gender + Mother_of_Hispanic_Origin + primary_language + complication_of_pregnancy_IDM__D + prenatal_drug_exposure + 
+                X_1_minute +  X_5_minute + X_10_minute  + type_of_respiratory_support_at_d + SGA_AGA_LGA + diagnosis_of_GERD_by_end_of_NICU + Neuro_injury_on_head_ultrasound + 
+                diagnosis_of_dysphagia_per_instr + diagnosis_of_oral_aversion + diagnosis_of_NEC_YN + feeds_initiated_on_LFNC_vs_HFNC + diagnosis_of_BPD + Season_of_Discharge + 
+                caloric_density_of_prescribed_fo + Caloric_density_of_Human_Milk_if + diagnosis_of_failure_to_thrive_i + Rural + COVID + gestage_cat + payor_cat + ventduration_cat + 
+                SiPAP_NIMV_cat + NCPAP_cat + HFNC2L_cat + NC2_cat + IVH_cat, numeric.stats=c("Nmiss2","median","q1q3"))
+kable(summary(t1))
+```
+
+# Run elastic net and refit the final model
+
+```{r include=TRUE, warning=FALSE, message=F}
+mod = easy_elasticnet(data = data_high,outcome = "GT_at_discharge",
+                           predictors = c("Maternal_Race","BW","gender","Mother_of_Hispanic_Origin","primary_language","complication_of_pregnancy_IDM__D",
+                     "prenatal_drug_exposure","X_1_minute","X_5_minute","X_10_minute","type_of_respiratory_support_at_d","SGA_AGA_LGA","diagnosis_of_GERD_by_end_of_NICU",
+                     "Neuro_injury_on_head_ultrasound","diagnosis_of_dysphagia_per_instr","diagnosis_of_oral_aversion","diagnosis_of_NEC_YN","feeds_initiated_on_LFNC_vs_HFNC",
+                     "diagnosis_of_BPD","Season_of_Discharge","caloric_density_of_prescribed_fo","Caloric_density_of_Human_Milk_if","diagnosis_of_failure_to_thrive_i",
+                     "Rural","COVID","gestage_cat","payor_cat","ventduration_cat","SiPAP_NIMV_cat","NCPAP_cat","HFNC2L_cat","NC2_cat","IVH_cat"),
+                           model_type = "binomial")
+
+# refit the model
+f_mod = as.formula(paste0("GT_at_discharge~",paste0(mod,collapse = "+")))
+refit_mod = glm(formula = f_mod,data = data_high,family = "binomial")
+kable(tidy(refit_mod),digits = 3, exponentiate=T)
+
+```
