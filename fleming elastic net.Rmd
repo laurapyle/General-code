@@ -23,11 +23,11 @@ library(broom)
 
 knitr::opts_chunk$set(echo = FALSE,warning = FALSE)
 
-source("/Users/laurapyle/Documents/GitHub/shared-resources/Machine Learning/Tim - ElasticNet CV/easy_elasticnet.R")
+source("~/Documents/Github/shared-resources/Machine Learning/Tim - ElasticNet CV/easy_elasticnet.R")
 ```
 
 ```{r data, include=FALSE}
-data <- read.csv("/Volumes/pylell/Fleming dissertation/Data_raw/exportaim1_2matchCATEGORIES.csv", na.strings = c(".",""," "))
+data <- read.csv("~/pylell/Fleming dissertation/Data_raw/exportaim1_2matchCATEGORIES.csv", na.strings = c(".",""," "))
 data$Maternal_Race <- as.factor(data$Maternal_Race)
 data$GT_at_discharge <- as.factor(data$GT_at_discharge)
 data$gender <- as.factor(data$gender)
@@ -69,7 +69,7 @@ data_high <- data_high[complete.cases(data_high),]
 # Descriptive Statistics
 
 ```{r include=TRUE, warning=FALSE, message=F}
-t1 <- tableby(data=data_high,  ~ GT_at_discharge + Maternal_Race + BW + gender + Mother_of_Hispanic_Origin + primary_language + complication_of_pregnancy_IDM__D + prenatal_drug_exposure + 
+t1 <- tableby(data=data_high, GT_at_discharge ~  Maternal_Race + BW + gender + Mother_of_Hispanic_Origin + primary_language + complication_of_pregnancy_IDM__D + prenatal_drug_exposure + 
                 X_1_minute +  X_5_minute + X_10_minute  + type_of_respiratory_support_at_d + SGA_AGA_LGA + diagnosis_of_GERD_by_end_of_NICU + Neuro_injury_on_head_ultrasound + 
                 diagnosis_of_dysphagia_per_instr + diagnosis_of_oral_aversion + diagnosis_of_NEC_YN + feeds_initiated_on_LFNC_vs_HFNC + diagnosis_of_BPD + Season_of_Discharge + 
                 caloric_density_of_prescribed_fo + Caloric_density_of_Human_Milk_if + diagnosis_of_failure_to_thrive_i + Rural + COVID + gestage_cat + payor_cat + ventduration_cat + 
@@ -77,7 +77,7 @@ t1 <- tableby(data=data_high,  ~ GT_at_discharge + Maternal_Race + BW + gender +
 kable(summary(t1))
 ```
 
-# Run elastic net and refit the final model
+# Run elastic net and refit the final model using all high priority variables  (note: estimates have been exponeniated to ORs)
 
 ```{r include=TRUE, warning=FALSE, message=F}
 mod = easy_elasticnet(data = data_high,outcome = "GT_at_discharge",
@@ -91,6 +91,22 @@ mod = easy_elasticnet(data = data_high,outcome = "GT_at_discharge",
 # refit the model
 f_mod = as.formula(paste0("GT_at_discharge~",paste0(mod,collapse = "+")))
 refit_mod = glm(formula = f_mod,data = data_high,family = "binomial")
-kable(tidy(refit_mod),digits = 3, exponentiate=T)
+kable(tidy(refit_mod, exponentiate=T),digits = 3)
+
+```
+
+# Reduced elastic net and refit the final model (note: estimates have been exponeniated to ORs)
+
+Variables entered into the elastic net include birthweight, gender, mother of Hispanic origin, Apgar scores at 1, 5, and 10 minutes.
+
+```{r include=TRUE, warning=FALSE, message=F}
+mod = easy_elasticnet(data = data_high,outcome = "GT_at_discharge",
+                           predictors = c("BW","gender","Mother_of_Hispanic_Origin","X_1_minute","X_5_minute","X_10_minute"),
+                           model_type = "binomial")
+
+# refit the model
+f_mod = as.formula(paste0("GT_at_discharge~",paste0(mod,collapse = "+")))
+refit_mod = glm(formula = f_mod,data = data_high,family = "binomial")
+kable(tidy(refit_mod, exponentiate=T),digits = 3)
 
 ```
