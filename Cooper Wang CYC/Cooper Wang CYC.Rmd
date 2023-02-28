@@ -12,11 +12,14 @@ output:
 ---
 
 ```{r setup, include=FALSE}
+library(knitr)
+
 knitr::opts_chunk$set(echo = FALSE,warning = FALSE)
 
-home_dir = ifelse(.Platform$OS.type != "unix","T:\\",
-                  "/Volumes/som/PEDS/RI Biostatistics Core/Shared/Shared Projects/Laura/BDC/Projects")
-knitr::opts_knit$set(root.dir = home_dir)
+```
+
+```{r setup, include=FALSE}
+data <- read.csv("/Volumes/Shared/Shared Projects/Claire/Active/Cooper, Jennifer (1st project)/Resubmission/longdata.csv")
 
 ```
 
