@@ -1,35 +1,307 @@
 ---
 title: "Cooper/Wang CYC study"
-author: "Laura Pyle and Kristen Miller"
+author: "Kristen Miller and Laura Pyle"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
   html_document:
     number_sections: yes
     theme: readable
     toc: yes
-    toc_depth: 2
+    toc_depth: 3
     toc_float: yes
 ---
 
 ```{r setup, include=FALSE}
 library(knitr)
+library(gee)
+library(geepack)
+library(dplyr)
 
 knitr::opts_chunk$set(echo = FALSE,warning = FALSE)
 
 ```
 
-```{r setup, include=FALSE}
+```{r, include=FALSE}
 data <- read.csv("/Volumes/Shared/Shared Projects/Claire/Active/Cooper, Jennifer (1st project)/Resubmission/longdata.csv")
+data <- data %>% arrange(record_id,time)
+data[data$time==0,]$CRR <- 0
+data[data$time==0,]$CRRPRR <- 0
 
+# make one variable out of lupus nephritis class
+data$lupus_nephritis_class <- NA
+data[data$lupus_nephritis_class___5=="Checked",]$lupus_nephritis_class <- "V"
+data[data$lupus_nephritis_class___5=="Unchecked",]$lupus_nephritis_class <- "III or IV"
+# need to check with Kristen about this variable
+# numbers don't seem to match the new tables, also there are people with class V checked and class III or IV?
+# or should these be separate variables?
+
+# set reference levels
+data$gender <- as.factor(data$gender)
+data$gender <- relevel(data$gender, ref="Male")
+data$race5 <- as.factor(data$race5)
+data$race5 <- relevel(data$race5, ref="White/Caucasian")
+data$cyclophosphamide_use_2 <- as.factor(data$cyclophosphamide_use_2)
+data$cyclophosphamide_use_2 <- relevel(data$cyclophosphamide_use_2, ref="New Onset Lupus Nephritis (no prior treatment)")
+data$diagnosis_hypertension <- as.factor(data$diagnosis_hypertension)
+data$diagnosis_hypertension <- relevel(data$diagnosis_hypertension, ref="No")
+data$lupus_nephritis_class <- as.factor(data$lupus_nephritis_class)
+data$lupus_nephritis_class <- relevel(data$lupus_nephritis_class, ref="III or IV")
+data$ACEARB <- as.factor(data$ACEARB)
+data$ACEARB <- relevel(data$ACEARB, ref="0")
+data$Ritux <- as.factor(data$Ritux)
+data$Ritux <- relevel(data$Ritux, ref="0")
 ```
-
-# Background
 
 # Methods
 
+CRR and CRR_PRR were set to "no" at time 0. Generalized estimating equations were used to test the significance of each predictor in a model also containing a regimen by time interaction.
+
+# Questions
+
+1) There is a separate variable for lupus nephritis class V vs. class III or IV. The comparison below reflects class V vs. the combination of class III and IV, but we could do a comparison of the three groups if needed.
+
 # Results
 
-```{r echo=FALSE}
-kable(t1,caption = "")
+## CRR outcome
+
+### Dose deviation
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRR ~ percent_expected_dose + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
 ```
-<br>
+
+### Age at first dose of CYC
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRR ~ age_cyc1_yrs + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Gender
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRR ~ gender + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Race/ethnicity
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRR ~ race5 + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Baseline eGFR
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRR ~ diagnosis_GFR10 + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Baseline UPC ratio
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRR ~ upc_ratio + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Relapsed/refractory LN vs. new-onset LN
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRR ~ cyclophosphamide_use_2 + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Baseline hypertension
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRR ~ diagnosis_hypertension + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Disease duration - LN to CYC
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRR ~ duration_ln_to_cyc1 + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Disease duration - SLE to CYC
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRR ~ duration_sle_to_cyc1 + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Lupus nephritis class
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRR ~ lupus_nephritis_class + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Time-varying oral prednisone dose
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRR ~ Prednisone + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Time-varying IV steroid dose
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRR ~ IVsteroids + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Time-varying ACE/ARB use
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRR ~ ACEARB + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Time-varying rituximab use
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRR ~ Ritux + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+## CRR or PRR outcome
+
+### Dose deviation
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRRPRR ~ percent_expected_dose + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Age at first dose of CYC
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRRPRR ~ age_cyc1_yrs + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Gender
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRRPRR ~ gender + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Race/ethnicity
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRRPRR ~ race5 + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Baseline eGFR
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRRPRR ~ diagnosis_GFR10 + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Baseline UPC ratio
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRRPRR ~ upc_ratio + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Relapsed/refractory LN vs. new-onset LN
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRRPRR ~ cyclophosphamide_use_2 + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Baseline hypertension
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRRPRR ~ diagnosis_hypertension + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Disease duration - LN to CYC
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRRPRR ~ duration_ln_to_cyc1 + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Disease duration - SLE to CYC
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRRPRR ~ duration_sle_to_cyc1 + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Lupus nephritis class
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRRPRR ~ lupus_nephritis_class + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Time-varying oral prednisone dose
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRRPRR ~ Prednisone + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Time-varying IV steroid dose
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRRPRR ~ IVsteroids + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Time-varying ACE/ARB use
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRRPRR ~ ACEARB + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
+
+### Time-varying rituximab use
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRRPRR ~ Ritux + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+summary(mod)
+```
