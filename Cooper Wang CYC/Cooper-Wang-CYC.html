@@ -1618,8 +1618,26 @@ class III or IV</h3>
  time                      2 Inf  13.108  &lt;.0001
  dose:time                 2 Inf   0.890  0.4106</code></pre>
 </div>
-<div id="time-varying-oral-prednisone-dose" class="section level3" number="2.1.13">
-<h3><span class="header-section-number">2.1.13</span> Time-varying oral
+<div id="baseline-oral-prednisone" class="section level3" number="2.1.13">
+<h3><span class="header-section-number">2.1.13</span> Baseline oral
+prednisone</h3>
+<pre><code> model term             df1 df2 F.ratio p.value
+ diagnosis_poprednisone   1 Inf   2.044  0.1528
+ dose                     1 Inf   2.509  0.1132
+ time                     2 Inf  12.903  &lt;.0001
+ dose:time                2 Inf   0.910  0.4023</code></pre>
+</div>
+<div id="baseline-acearb-use" class="section level3" number="2.1.14">
+<h3><span class="header-section-number">2.1.14</span> Baseline ACE/ARB
+use</h3>
+<pre><code> model term       df1 df2 F.ratio p.value
+ diagnosis_ACEARB   1 Inf   0.309  0.5786
+ dose               1 Inf   2.301  0.1293
+ time               2 Inf  13.154  &lt;.0001
+ dose:time          2 Inf   0.889  0.4109</code></pre>
+</div>
+<div id="time-varying-oral-prednisone-dose" class="section level3" number="2.1.15">
+<h3><span class="header-section-number">2.1.15</span> Time-varying oral
 prednisone dose</h3>
 <pre><code> model term df1 df2 F.ratio p.value
  Prednisone   1 Inf   8.050  0.0046
@@ -1627,17 +1645,17 @@ prednisone dose</h3>
  time         2 Inf   5.817  0.0030
  dose:time    2 Inf   0.977  0.3763</code></pre>
 </div>
-<div id="time-varying-iv-steroid-dose" class="section level3" number="2.1.14">
-<h3><span class="header-section-number">2.1.14</span> Time-varying IV
+<div id="time-varying-iv-steroid-dose" class="section level3" number="2.1.16">
+<h3><span class="header-section-number">2.1.16</span> Time-varying IV
 steroid dose</h3>
 <pre><code> model term df1 df2 F.ratio p.value
- IVsteroids   1 Inf   0.025  0.8738
- dose         1 Inf   2.292  0.1300
- time         2 Inf  11.527  &lt;.0001
- dose:time    2 Inf   0.822  0.4397</code></pre>
+ IVsteroids   1 Inf   0.030  0.8636
+ dose         1 Inf   2.274  0.1315
+ time         2 Inf   9.198  0.0001
+ dose:time    2 Inf   0.829  0.4365</code></pre>
 </div>
-<div id="time-varying-acearb-use" class="section level3" number="2.1.15">
-<h3><span class="header-section-number">2.1.15</span> Time-varying
+<div id="time-varying-acearb-use" class="section level3" number="2.1.17">
+<h3><span class="header-section-number">2.1.17</span> Time-varying
 ACE/ARB use</h3>
 <pre><code> model term df1 df2 F.ratio p.value
  ACEARB       1 Inf   0.206  0.6497
@@ -1645,8 +1663,8 @@ ACE/ARB use</h3>
  time         2 Inf  13.071  &lt;.0001
  dose:time    2 Inf   0.901  0.4060</code></pre>
 </div>
-<div id="time-varying-rituximab-use" class="section level3" number="2.1.16">
-<h3><span class="header-section-number">2.1.16</span> Time-varying
+<div id="time-varying-rituximab-use" class="section level3" number="2.1.18">
+<h3><span class="header-section-number">2.1.18</span> Time-varying
 rituximab use</h3>
 <pre><code> model term df1 df2 F.ratio p.value
  Ritux        1 Inf   3.825  0.0505
@@ -1762,8 +1780,26 @@ class III or IV</h3>
  time                      2 Inf  16.974  &lt;.0001
  dose:time                 2 Inf   1.210  0.2982</code></pre>
 </div>
-<div id="time-varying-oral-prednisone-dose-1" class="section level3" number="2.2.13">
-<h3><span class="header-section-number">2.2.13</span> Time-varying oral
+<div id="baseline-oral-prednisone-1" class="section level3" number="2.2.13">
+<h3><span class="header-section-number">2.2.13</span> Baseline oral
+prednisone</h3>
+<pre><code> model term             df1 df2 F.ratio p.value
+ diagnosis_poprednisone   1 Inf   0.002  0.9668
+ dose                     1 Inf   3.884  0.0488
+ time                     2 Inf  16.946  &lt;.0001
+ dose:time                2 Inf   1.243  0.2886</code></pre>
+</div>
+<div id="baseline-acearb-use-1" class="section level3" number="2.2.14">
+<h3><span class="header-section-number">2.2.14</span> Baseline ACE/ARB
+use</h3>
+<pre><code> model term       df1 df2 F.ratio p.value
+ diagnosis_ACEARB   1 Inf   0.680  0.4097
+ dose               1 Inf   3.978  0.0461
+ time               2 Inf  17.079  &lt;.0001
+ dose:time          2 Inf   1.248  0.2871</code></pre>
+</div>
+<div id="time-varying-oral-prednisone-dose-1" class="section level3" number="2.2.15">
+<h3><span class="header-section-number">2.2.15</span> Time-varying oral
 prednisone dose</h3>
 <pre><code> model term df1 df2 F.ratio p.value
  Prednisone   1 Inf   9.630  0.0019
@@ -1771,17 +1807,17 @@ prednisone dose</h3>
  time         2 Inf   6.985  0.0009
  dose:time    2 Inf   1.332  0.2640</code></pre>
 </div>
-<div id="time-varying-iv-steroid-dose-1" class="section level3" number="2.2.14">
-<h3><span class="header-section-number">2.2.14</span> Time-varying IV
+<div id="time-varying-iv-steroid-dose-1" class="section level3" number="2.2.16">
+<h3><span class="header-section-number">2.2.16</span> Time-varying IV
 steroid dose</h3>
 <pre><code> model term df1 df2 F.ratio p.value
- IVsteroids   1 Inf   2.894  0.0889
- dose         1 Inf   3.938  0.0472
- time         2 Inf  13.558  &lt;.0001
- dose:time    2 Inf   1.224  0.2941</code></pre>
+ IVsteroids   1 Inf   3.833  0.0503
+ dose         1 Inf   3.754  0.0527
+ time         2 Inf   8.795  0.0002
+ dose:time    2 Inf   1.160  0.3136</code></pre>
 </div>
-<div id="time-varying-acearb-use-1" class="section level3" number="2.2.15">
-<h3><span class="header-section-number">2.2.15</span> Time-varying
+<div id="time-varying-acearb-use-1" class="section level3" number="2.2.17">
+<h3><span class="header-section-number">2.2.17</span> Time-varying
 ACE/ARB use</h3>
 <pre><code> model term df1 df2 F.ratio p.value
  ACEARB       1 Inf   3.006  0.0830
@@ -1789,8 +1825,8 @@ ACE/ARB use</h3>
  time         2 Inf  16.605  &lt;.0001
  dose:time    2 Inf   1.230  0.2923</code></pre>
 </div>
-<div id="time-varying-rituximab-use-1" class="section level3" number="2.2.16">
-<h3><span class="header-section-number">2.2.16</span> Time-varying
+<div id="time-varying-rituximab-use-1" class="section level3" number="2.2.18">
+<h3><span class="header-section-number">2.2.18</span> Time-varying
 rituximab use</h3>
 <pre><code> model term df1 df2 F.ratio p.value
  Ritux        1 Inf   1.582  0.2085

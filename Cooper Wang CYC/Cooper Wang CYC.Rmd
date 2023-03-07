@@ -23,14 +23,11 @@ knitr::opts_chunk$set(echo = FALSE,warning = FALSE)
 ```
 
 ```{r, include=FALSE}
-data <- read.csv("/Volumes/Shared/Shared Projects/Claire/Active/Cooper, Jennifer (1st project)/Resubmission/longdata.csv")
+data <- read.csv("/Volumes/Shared/Shared Projects/Claire/Active/Cooper, Jennifer (1st project)/Resubmission/longdata_03072023.csv")
 data <- data %>% arrange(record_id,time)
-data[data$time==0,]$CRR <- 0
-data[data$time==0,]$CRRPRR <- 0
 
 # convert time to categorical
 data$time <- as.factor(data$time)
-data$time <- relevel(data$time, ref="0")
 
 # make one variable out of lupus nephritis class
 data$lupus_nephritis_class <- NA
@@ -168,6 +165,22 @@ mod <-  geeglm(CRR ~ lupus_nephritis_IIIvsIV + dose*time,
 joint_tests(mod)
 ```
 
+### Baseline oral prednisone
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRR ~ diagnosis_poprednisone + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+joint_tests(mod)
+```
+
+### Baseline ACE/ARB use
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRR ~ diagnosis_ACEARB + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+joint_tests(mod)
+```
+
 ### Time-varying oral prednisone dose
 
 ```{r echo=FALSE, comment=""}
@@ -294,6 +307,22 @@ joint_tests(mod)
 
 ```{r echo=FALSE, comment=""}
 mod <-  geeglm(CRRPRR ~ lupus_nephritis_IIIvsIV + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+joint_tests(mod)
+```
+
+### Baseline oral prednisone
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRRPRR ~ diagnosis_poprednisone + dose*time, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+joint_tests(mod)
+```
+
+### Baseline ACE/ARB use
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRRPRR ~ diagnosis_ACEARB + dose*time, 
                id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
 joint_tests(mod)
 ```
