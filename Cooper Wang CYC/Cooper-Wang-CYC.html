@@ -1525,523 +1525,151 @@ needed.</li>
 <h2><span class="header-section-number">3.1</span> CRR outcome</h2>
 <div id="dose-deviation" class="section level3" number="3.1.1">
 <h3><span class="header-section-number">3.1.1</span> Dose deviation</h3>
-<pre><code>Analysis of &#39;Wald statistic&#39; Table
-Model: binomial, link: logit
-Response: CRR
-Terms added sequentially (first to last)
-
-                      Df     X2 P(&gt;|Chi|)    
-percent_expected_dose  1      2   0.12516    
-dose                   1      4   0.03798 *  
-time                   3 135568   &lt; 2e-16 ***
-dose:time              3   6794   &lt; 2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre><code> model term            df1 df2  F.ratio p.value
+ percent_expected_dose   1 Inf    0.083  0.7733
+ dose                    1 Inf 7874.724  &lt;.0001
+ time                    3 Inf 1882.523  &lt;.0001
+ dose:time               3 Inf 2264.715  &lt;.0001</code></pre>
 </div>
 <div id="age-at-first-dose-of-cyc" class="section level3" number="3.1.2">
 <h3><span class="header-section-number">3.1.2</span> Age at first dose
 of CYC</h3>
-<pre><code>
-Call:
-geeglm(formula = CRR ~ age_cyc1_yrs + dose * time, family = binomial, 
-    data = data, id = record_id, corstr = &quot;ar1&quot;, scale.fix = TRUE)
-
- Coefficients:
-                              Estimate    Std.err      Wald Pr(&gt;|W|)    
-(Intercept)                  4.370e+14  6.218e+15 5.000e-03 0.943980    
-age_cyc1_yrs                -2.742e+14  7.250e+13 1.431e+01 0.000155 ***
-doseLow (euro-lupus)        -1.337e+21  4.692e+19 8.124e+02  &lt; 2e-16 ***
-time3                        2.290e+15  6.077e+15 1.420e-01 0.706342    
-time6                        2.321e+15  6.156e+15 1.420e-01 0.706184    
-time12                       3.208e+19  7.810e+15 1.687e+07  &lt; 2e-16 ***
-doseLow (euro-lupus):time3   1.337e+21  4.691e+19 8.125e+02  &lt; 2e-16 ***
-doseLow (euro-lupus):time6   1.337e+21  4.691e+19 8.125e+02  &lt; 2e-16 ***
-doseLow (euro-lupus):time12  1.999e+20  2.707e+19 5.452e+01 1.54e-13 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate   Std.err
-alpha    50483 6.146e+18
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term   df1 df2  F.ratio p.value
+ age_cyc1_yrs   1 Inf   14.309  0.0002
+ dose           1 Inf  425.968  &lt;.0001
+ time           3 Inf 5225.701  &lt;.0001
+ dose:time      3 Inf 4605.406  &lt;.0001</code></pre>
 </div>
 <div id="gender" class="section level3" number="3.1.3">
 <h3><span class="header-section-number">3.1.3</span> Gender</h3>
-<pre><code>
-Call:
-geeglm(formula = CRR ~ gender + dose * time, family = binomial, 
-    data = data, id = record_id, corstr = &quot;ar1&quot;, scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err     Wald Pr(&gt;|W|)    
-(Intercept)                  2.64e+15  6.25e+15 1.80e-01     0.67    
-genderFemale                -2.09e+14  3.90e+14 2.90e-01     0.59    
-doseLow (euro-lupus)        -1.53e+21  2.70e+19 3.22e+03   &lt;2e-16 ***
-time3                       -3.36e+15  6.20e+15 2.90e-01     0.59    
-time6                       -2.65e+15  6.24e+15 1.80e-01     0.67    
-time12                       1.98e+20  8.85e+15 4.99e+08   &lt;2e-16 ***
-doseLow (euro-lupus):time3   1.53e+21  2.70e+19 3.22e+03   &lt;2e-16 ***
-doseLow (euro-lupus):time6   1.53e+21  2.70e+19 3.23e+03   &lt;2e-16 ***
-doseLow (euro-lupus):time12  1.46e+19  1.49e+19 9.60e-01     0.33    
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   153052 1.33e+20
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term df1 df2  F.ratio p.value
+ gender       1 Inf    0.288  0.5915
+ dose         1 Inf 3626.481  &lt;.0001
+ time         3 Inf 1367.089  &lt;.0001
+ dose:time    3 Inf 1108.361  &lt;.0001</code></pre>
 </div>
 <div id="raceethnicity" class="section level3" number="3.1.4">
 <h3><span class="header-section-number">3.1.4</span> Race/ethnicity</h3>
-<pre><code>
-Call:
-geeglm(formula = CRR ~ race5 + dose * time, family = binomial, 
-    data = data, id = record_id, corstr = &quot;ar1&quot;, scale.fix = TRUE)
-
- Coefficients:
-                                                          Estimate   Std.err
-(Intercept)                                              -7.41e+15  4.21e+15
-race5Asian                                               -4.75e+14  4.22e+14
-race5Black, African-American, African, or Afro-Caribbean -4.40e+14  3.40e+14
-race5Hispanic/Latino or Spanish origin                   -4.70e+14  3.62e+14
-race5Other                                               -5.86e+14  6.06e+14
-doseLow (euro-lupus)                                     -2.82e+21  1.72e+19
-time3                                                     7.35e+15  4.17e+15
-time6                                                     5.68e+15  4.23e+15
-time12                                                    1.30e+17  7.74e+15
-doseLow (euro-lupus):time3                                2.82e+21  1.72e+19
-doseLow (euro-lupus):time6                                2.82e+21  1.72e+19
-doseLow (euro-lupus):time12                              -2.06e+21  1.18e+19
-                                                             Wald Pr(&gt;|W|)    
-(Intercept)                                                  3.09    0.079 .  
-race5Asian                                                   1.27    0.260    
-race5Black, African-American, African, or Afro-Caribbean     1.67    0.196    
-race5Hispanic/Latino or Spanish origin                       1.68    0.195    
-race5Other                                                   0.93    0.334    
-doseLow (euro-lupus)                                     26924.79   &lt;2e-16 ***
-time3                                                        3.11    0.078 .  
-time6                                                        1.80    0.179    
-time12                                                     282.52   &lt;2e-16 ***
-doseLow (euro-lupus):time3                               26935.69   &lt;2e-16 ***
-doseLow (euro-lupus):time6                               26920.95   &lt;2e-16 ***
-doseLow (euro-lupus):time12                              30734.32   &lt;2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha    81072 2.16e+17
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term df1 df2   F.ratio p.value
+ race5        4 Inf     0.680  0.6092
+ dose         1 Inf 86634.490  &lt;.0001
+ time         3 Inf 21764.170  &lt;.0001
+ dose:time    3 Inf 24554.240  &lt;.0001</code></pre>
 </div>
 <div id="baseline-egfr" class="section level3" number="3.1.5">
 <h3><span class="header-section-number">3.1.5</span> Baseline eGFR</h3>
-<pre><code>
-Call:
-geeglm(formula = CRR ~ diagnosis_GFR10 + dose * time, family = binomial, 
-    data = data, id = record_id, corstr = &quot;ar1&quot;, scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err     Wald Pr(&gt;|W|)    
-(Intercept)                  3.18e+15  6.24e+15 2.60e-01     0.61    
-diagnosis_GFR10              1.55e+12  3.37e+13 0.00e+00     0.96    
-doseLow (euro-lupus)        -1.63e+21  3.94e+19 1.72e+03   &lt;2e-16 ***
-time3                       -4.13e+15  6.23e+15 4.40e-01     0.51    
-time6                       -4.95e+15  6.28e+15 6.20e-01     0.43    
-time12                       6.49e+20  8.94e+15 5.27e+09   &lt;2e-16 ***
-doseLow (euro-lupus):time3   1.63e+21  3.94e+19 1.72e+03   &lt;2e-16 ***
-doseLow (euro-lupus):time6   1.63e+21  3.93e+19 1.73e+03   &lt;2e-16 ***
-doseLow (euro-lupus):time12 -6.65e+20  3.01e+19 4.88e+02   &lt;2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   258313 5.04e+19
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term      df1 df2  F.ratio p.value
+ diagnosis_GFR10   1 Inf    0.002  0.9632
+ dose              1 Inf 2573.986  &lt;.0001
+ time              3 Inf 1044.136  &lt;.0001
+ dose:time         3 Inf 2876.849  &lt;.0001</code></pre>
 </div>
 <div id="baseline-upc-ratio" class="section level3" number="3.1.6">
 <h3><span class="header-section-number">3.1.6</span> Baseline UPC
 ratio</h3>
-<pre><code>
-Call:
-geeglm(formula = CRR ~ upc_ratio + dose * time, family = binomial, 
-    data = data, id = record_id, corstr = &quot;ar1&quot;, scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err Wald Pr(&gt;|W|)
-(Intercept)                  1.27e+14  6.26e+15 0.00     0.98
-upc_ratio                   -3.75e+13  3.26e+13 1.32     0.25
-doseLow (euro-lupus)         3.59e+20       NaN  NaN      NaN
-time3                       -1.17e+14  6.24e+15 0.00     0.99
-time6                        9.45e+14  6.28e+15 0.02     0.88
-time12                       1.49e+19       NaN  NaN      NaN
-doseLow (euro-lupus):time3  -3.59e+20       NaN  NaN      NaN
-doseLow (euro-lupus):time6  -3.59e+20       NaN  NaN      NaN
-doseLow (euro-lupus):time12  6.56e+22       NaN  NaN      NaN
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate Std.err
-alpha  9972179     NaN
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code>Error in solve.default(zcov, z) : 
+  system is computationally singular: reciprocal condition number = 1.8542e-17
+Error in solve.default(zcov, z) : 
+  system is computationally singular: reciprocal condition number = 1.58164e-17</code></pre>
+<pre><code> model term df1 df2 F.ratio p.value
+ upc_ratio    1 Inf   1.324  0.2499
+ dose         1 Inf -63.312  1.0000
+ time         3 Inf 459.841  &lt;.0001
+ dose:time    3 Inf 596.144  &lt;.0001</code></pre>
 </div>
 <div id="relapsedrefractory-ln-vs.-new-onset-ln" class="section level3" number="3.1.7">
 <h3><span class="header-section-number">3.1.7</span> Relapsed/refractory
 LN vs. new-onset LN</h3>
-<pre><code>
-Call:
-geeglm(formula = CRR ~ cyclophosphamide_use_2 + dose * time, 
-    family = binomial, data = data, id = record_id, corstr = &quot;ar1&quot;, 
-    scale.fix = TRUE)
-
- Coefficients:
-                                                           Estimate   Std.err
-(Intercept)                                               -2.53e+14  6.28e+15
-cyclophosphamide_use_2Relapsed/Refractory Lupus Nephritis -1.18e+15  3.32e+14
-doseLow (euro-lupus)                                       3.11e+22  2.74e+19
-time3                                                      7.46e+14  6.32e+15
-time6                                                      1.32e+15  6.37e+15
-time12                                                    -1.39e+19  1.00e+16
-doseLow (euro-lupus):time3                                -3.11e+22  2.74e+19
-doseLow (euro-lupus):time6                                -3.11e+22  2.74e+19
-doseLow (euro-lupus):time12                                4.32e+22  1.27e+19
-                                                              Wald Pr(&gt;|W|)    
-(Intercept)                                               0.00e+00  0.96782    
-cyclophosphamide_use_2Relapsed/Refractory Lupus Nephritis 1.27e+01  0.00037 ***
-doseLow (euro-lupus)                                      1.29e+06  &lt; 2e-16 ***
-time3                                                     1.00e-02  0.90593    
-time6                                                     4.00e-02  0.83568    
-time12                                                    1.93e+06  &lt; 2e-16 ***
-doseLow (euro-lupus):time3                                1.29e+06  &lt; 2e-16 ***
-doseLow (euro-lupus):time6                                1.29e+06  &lt; 2e-16 ***
-doseLow (euro-lupus):time12                               1.15e+07  &lt; 2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   148800 6.68e+23
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term             df1 df2     F.ratio p.value
+ cyclophosphamide_use_2   1 Inf      13.000  0.0004
+ dose                     1 Inf 4610283.000  &lt;.0001
+ time                     3 Inf 1597275.000  &lt;.0001
+ dose:time                3 Inf 2160168.000  &lt;.0001</code></pre>
 </div>
 <div id="baseline-hypertension" class="section level3" number="3.1.8">
 <h3><span class="header-section-number">3.1.8</span> Baseline
 hypertension</h3>
-<pre><code>
-Call:
-geeglm(formula = CRR ~ diagnosis_hypertension + dose * time, 
-    family = binomial, data = data, id = record_id, corstr = &quot;ar1&quot;, 
-    scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err     Wald Pr(&gt;|W|)    
-(Intercept)                  3.03e+15  6.27e+15 2.30e-01     0.63    
-diagnosis_hypertensionYes   -3.95e+14  2.77e+14 2.03e+00     0.15    
-doseLow (euro-lupus)        -1.90e+22  2.14e+19 7.85e+05   &lt;2e-16 ***
-time3                       -3.77e+15  6.23e+15 3.70e-01     0.54    
-time6                       -4.48e+15  6.27e+15 5.10e-01     0.47    
-time12                       1.26e+17  8.89e+15 2.02e+02   &lt;2e-16 ***
-doseLow (euro-lupus):time3   1.90e+22  2.15e+19 7.83e+05   &lt;2e-16 ***
-doseLow (euro-lupus):time6   1.90e+22  2.15e+19 7.82e+05   &lt;2e-16 ***
-doseLow (euro-lupus):time12  3.37e+22  1.76e+19 3.68e+06   &lt;2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   131500 1.79e+20
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term             df1 df2     F.ratio p.value
+ diagnosis_hypertension   1 Inf       2.000  0.1541
+ dose                     1 Inf   12525.900  &lt;.0001
+ time                     3 Inf 1490759.700  &lt;.0001
+ dose:time                3 Inf 1486019.700  &lt;.0001</code></pre>
 </div>
 <div id="disease-duration---ln-to-cyc" class="section level3" number="3.1.9">
 <h3><span class="header-section-number">3.1.9</span> Disease duration -
 LN to CYC</h3>
-<pre><code>
-Call:
-geeglm(formula = CRR ~ duration_ln_to_cyc1 + dose * time, family = binomial, 
-    data = data, id = record_id, corstr = &quot;ar1&quot;, scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err     Wald Pr(&gt;|W|)    
-(Intercept)                  1.16e+15  6.27e+15 3.00e-02     0.85    
-duration_ln_to_cyc1         -1.03e+15  4.46e+13 5.39e+02   &lt;2e-16 ***
-doseLow (euro-lupus)        -2.12e+21  3.04e+19 4.89e+03   &lt;2e-16 ***
-time3                       -3.01e+15  6.24e+15 2.30e-01     0.63    
-time6                       -1.65e+15  6.28e+15 7.00e-02     0.79    
-time12                       3.27e+20  8.94e+15 1.34e+09   &lt;2e-16 ***
-doseLow (euro-lupus):time3   2.12e+21  3.04e+19 4.87e+03   &lt;2e-16 ***
-doseLow (euro-lupus):time6   2.12e+21  3.04e+19 4.88e+03   &lt;2e-16 ***
-doseLow (euro-lupus):time12 -5.05e+20  1.85e+19 7.41e+02   &lt;2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   187903 7.11e+19
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term          df1 df2  F.ratio p.value
+ duration_ln_to_cyc1   1 Inf  539.448  &lt;.0001
+ dose                  1 Inf 9761.720  &lt;.0001
+ time                  3 Inf 2835.899  &lt;.0001
+ dose:time             3 Inf 3331.941  &lt;.0001</code></pre>
 </div>
 <div id="disease-duration---sle-to-cyc" class="section level3" number="3.1.10">
 <h3><span class="header-section-number">3.1.10</span> Disease duration -
 SLE to CYC</h3>
-<pre><code>
-Call:
-geeglm(formula = CRR ~ duration_sle_to_cyc1 + dose * time, family = binomial, 
-    data = data, id = record_id, corstr = &quot;ar1&quot;, scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err     Wald Pr(&gt;|W|)    
-(Intercept)                  2.21e+15  6.27e+15 1.20e-01    0.724    
-duration_sle_to_cyc1        -1.22e+14  3.96e+13 9.52e+00    0.002 ** 
-doseLow (euro-lupus)        -1.28e+21  2.34e+19 3.02e+03   &lt;2e-16 ***
-time3                       -2.86e+15  6.25e+15 2.10e-01    0.648    
-time6                       -4.88e+15  6.29e+15 6.00e-01    0.438    
-time12                       2.82e+20  8.95e+15 9.94e+08   &lt;2e-16 ***
-doseLow (euro-lupus):time3   1.28e+21  2.34e+19 3.00e+03   &lt;2e-16 ***
-doseLow (euro-lupus):time6   1.28e+21  2.34e+19 3.00e+03   &lt;2e-16 ***
-doseLow (euro-lupus):time12 -1.04e+20  1.23e+19 7.08e+01   &lt;2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate Std.err
-alpha   145681 1.5e+20
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term           df1 df2  F.ratio p.value
+ duration_sle_to_cyc1   1 Inf    9.521  0.0020
+ dose                   1 Inf 4893.387  &lt;.0001
+ time                   3 Inf  941.194  &lt;.0001
+ dose:time              3 Inf 1320.934  &lt;.0001</code></pre>
 </div>
 <div id="lupus-nephritis-class-v" class="section level3" number="3.1.11">
 <h3><span class="header-section-number">3.1.11</span> Lupus nephritis
 class V</h3>
-<pre><code>
-Call:
-geeglm(formula = CRR ~ lupus_nephritis_class___5 + dose * time, 
-    family = binomial, data = data, id = record_id, corstr = &quot;ar1&quot;, 
-    scale.fix = TRUE)
-
- Coefficients:
-                                  Estimate   Std.err     Wald Pr(&gt;|W|)    
-(Intercept)                       8.95e+13  6.26e+15 0.00e+00    0.989    
-lupus_nephritis_class___5Checked -4.29e+14  2.51e+14 2.92e+00    0.088 .  
-doseLow (euro-lupus)              1.24e+22  2.58e+19 2.30e+05   &lt;2e-16 ***
-time3                            -3.12e+15  6.24e+15 2.50e-01    0.617    
-time6                            -1.22e+15  6.28e+15 4.00e-02    0.846    
-time12                           -5.97e+18  1.19e+16 2.54e+05   &lt;2e-16 ***
-doseLow (euro-lupus):time3       -1.24e+22  2.58e+19 2.30e+05   &lt;2e-16 ***
-doseLow (euro-lupus):time6       -1.24e+22  2.58e+19 2.30e+05   &lt;2e-16 ***
-doseLow (euro-lupus):time12       1.00e+21  1.23e+19 6.57e+03   &lt;2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   135970 7.04e+23
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term                df1 df2    F.ratio p.value
+ lupus_nephritis_class___5   1 Inf      2.900  0.0875
+ dose                        1 Inf 373445.200  &lt;.0001
+ time                        3 Inf  26872.200  &lt;.0001
+ dose:time                   3 Inf  41082.700  &lt;.0001</code></pre>
 </div>
 <div id="lupus-nephritis-class-iii-or-iv" class="section level3" number="3.1.12">
 <h3><span class="header-section-number">3.1.12</span> Lupus nephritis
 class III or IV</h3>
-<pre><code>
-Call:
-geeglm(formula = CRR ~ lupus_nephritis_IIIvsIV + dose * time, 
-    family = binomial, data = data, id = record_id, corstr = &quot;ar1&quot;, 
-    scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err    Wald Pr(&gt;|W|)    
-(Intercept)                  2.71e+15  6.27e+15    0.19     0.67    
-lupus_nephritis_IIIvsIVIV    1.42e+14  3.17e+14    0.20     0.65    
-doseLow (euro-lupus)        -1.28e+21  2.48e+19 2667.30   &lt;2e-16 ***
-time3                       -3.80e+15  6.24e+15    0.37     0.54    
-time6                       -4.04e+15  6.28e+15    0.41     0.52    
-time12                       1.20e+17  8.90e+15  180.16   &lt;2e-16 ***
-doseLow (euro-lupus):time3   1.28e+21  2.47e+19 2680.18   &lt;2e-16 ***
-doseLow (euro-lupus):time6   1.28e+21  2.47e+19 2670.99   &lt;2e-16 ***
-doseLow (euro-lupus):time12  1.81e+20  1.47e+19  151.79   &lt;2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   150751 1.38e+20
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term              df1 df2  F.ratio p.value
+ lupus_nephritis_IIIvsIV   1 Inf    0.200  0.6547
+ dose                      1 Inf 2840.959  &lt;.0001
+ time                      3 Inf 1027.463  &lt;.0001
+ dose:time                 3 Inf 1044.654  &lt;.0001</code></pre>
 </div>
 <div id="time-varying-oral-prednisone-dose" class="section level3" number="3.1.13">
 <h3><span class="header-section-number">3.1.13</span> Time-varying oral
 prednisone dose</h3>
-<pre><code>
-Call:
-geeglm(formula = CRR ~ Prednisone + dose * time, family = binomial, 
-    data = data, id = record_id, corstr = &quot;ar1&quot;, scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err     Wald Pr(&gt;|W|)    
-(Intercept)                 -3.01e+14  4.36e+15 0.00e+00     0.94    
-Prednisone                  -5.98e+12  8.81e+12 4.60e-01     0.50    
-doseLow (euro-lupus)        -1.41e+21  1.96e+19 5.15e+03   &lt;2e-16 ***
-time3                       -9.64e+14  4.32e+15 5.00e-02     0.82    
-time6                       -2.76e+15  4.38e+15 4.00e-01     0.53    
-time12                       2.17e+20  7.67e+15 8.03e+08   &lt;2e-16 ***
-doseLow (euro-lupus):time3   1.41e+21  1.96e+19 5.15e+03   &lt;2e-16 ***
-doseLow (euro-lupus):time6   1.41e+21  1.96e+19 5.15e+03   &lt;2e-16 ***
-doseLow (euro-lupus):time12 -1.32e+20  1.04e+19 1.62e+02   &lt;2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   114052 9.72e+16
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term df1 df2  F.ratio p.value
+ Prednisone   1 Inf    0.459  0.4979
+ dose         1 Inf 8482.822  &lt;.0001
+ time         3 Inf 1753.953  &lt;.0001
+ dose:time    3 Inf 2238.572  &lt;.0001</code></pre>
 </div>
 <div id="time-varying-iv-steroid-dose" class="section level3" number="3.1.14">
 <h3><span class="header-section-number">3.1.14</span> Time-varying IV
 steroid dose</h3>
-<pre><code>
-Call:
-geeglm(formula = CRR ~ IVsteroids + dose * time, family = binomial, 
-    data = data, id = record_id, corstr = &quot;ar1&quot;, scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err     Wald Pr(&gt;|W|)    
-(Intercept)                  6.19e+14  6.27e+15 1.00e-02     0.92    
-IVsteroids                  -4.64e+10  4.53e+10 1.05e+00     0.31    
-doseLow (euro-lupus)        -1.23e+21  2.13e+19 3.33e+03  &lt; 2e-16 ***
-time3                       -7.38e+14  6.23e+15 1.00e-02     0.91    
-time6                       -2.43e+15  6.28e+15 1.50e-01     0.70    
-time12                       2.44e+19  8.93e+15 7.47e+06  &lt; 2e-16 ***
-doseLow (euro-lupus):time3   1.23e+21  2.13e+19 3.35e+03  &lt; 2e-16 ***
-doseLow (euro-lupus):time6   1.23e+21  2.13e+19 3.34e+03  &lt; 2e-16 ***
-doseLow (euro-lupus):time12  9.09e+19  1.17e+19 6.04e+01  7.8e-15 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   132205 1.79e+20
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code>Error in solve.default(zcov, z) : 
+  system is computationally singular: reciprocal condition number = 1.26351e-18
+Error in solve.default(zcov, z) : 
+  system is computationally singular: reciprocal condition number = 1.10393e-18</code></pre>
+<pre><code> model term df1 df2  F.ratio p.value
+ IVsteroids   1 Inf    1.050  0.3056
+ dose         1 Inf 4304.594  &lt;.0001
+ time         3 Inf 1061.522  &lt;.0001
+ dose:time    3 Inf 1350.148  &lt;.0001</code></pre>
 </div>
 <div id="time-varying-acearb-use" class="section level3" number="3.1.15">
 <h3><span class="header-section-number">3.1.15</span> Time-varying
 ACE/ARB use</h3>
-<pre><code>
-Call:
-geeglm(formula = CRR ~ ACEARB + dose * time, family = binomial, 
-    data = data, id = record_id, corstr = &quot;ar1&quot;, scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err    Wald Pr(&gt;|W|)    
-(Intercept)                  1.96e+15  6.25e+15    0.10     0.75    
-ACEARB1                     -1.35e+15  2.87e+14   22.20  2.5e-06 ***
-doseLow (euro-lupus)        -1.24e+21  2.82e+19 1948.02  &lt; 2e-16 ***
-time3                       -3.66e+15  6.21e+15    0.35     0.56    
-time6                       -2.36e+15  6.25e+15    0.14     0.71    
-time12                       1.31e+17  8.90e+15  216.15  &lt; 2e-16 ***
-doseLow (euro-lupus):time3   1.24e+21  2.82e+19 1941.87  &lt; 2e-16 ***
-doseLow (euro-lupus):time6   1.24e+21  2.83e+19 1933.93  &lt; 2e-16 ***
-doseLow (euro-lupus):time12  7.17e+19  1.84e+19   15.25  9.4e-05 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   164415 1.15e+20
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term df1 df2  F.ratio p.value
+ ACEARB       1 Inf   22.199  &lt;.0001
+ dose         1 Inf 2921.658  &lt;.0001
+ time         3 Inf  903.946  &lt;.0001
+ dose:time    3 Inf  698.431  &lt;.0001</code></pre>
 </div>
 <div id="time-varying-rituximab-use" class="section level3" number="3.1.16">
 <h3><span class="header-section-number">3.1.16</span> Time-varying
 rituximab use</h3>
-<pre><code>
-Call:
-geeglm(formula = CRR ~ Ritux + dose * time, family = binomial, 
-    data = data, id = record_id, corstr = &quot;ar1&quot;, scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err     Wald Pr(&gt;|W|)    
-(Intercept)                 -8.80e+14  6.29e+15 2.00e-02     0.89    
-Ritux1                       1.94e+14  4.99e+14 1.50e-01     0.70    
-doseLow (euro-lupus)        -1.38e+22  1.30e+19 1.14e+06   &lt;2e-16 ***
-time3                        1.15e+15  6.34e+15 3.00e-02     0.86    
-time6                       -1.36e+15  6.28e+15 5.00e-02     0.83    
-time12                      -3.89e+20  9.94e+15 1.53e+09   &lt;2e-16 ***
-doseLow (euro-lupus):time3   1.38e+22  1.30e+19 1.14e+06   &lt;2e-16 ***
-doseLow (euro-lupus):time6   1.38e+22  1.30e+19 1.14e+06   &lt;2e-16 ***
-doseLow (euro-lupus):time12 -8.34e+21  7.98e+18 1.09e+06   &lt;2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   -76255 2.93e+17
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term df1 df2     F.ratio p.value
+ Ritux        1 Inf       0.200  0.6979
+ dose         1 Inf 2280880.600  &lt;.0001
+ time         3 Inf -747955.600  1.0000
+ dose:time    3 Inf  367098.300  &lt;.0001</code></pre>
 </div>
 </div>
 <div id="crr-or-prr-outcome" class="section level2" number="3.2">
@@ -2049,544 +1677,151 @@ Number of clusters:   145  Maximum cluster size: 4 </code></pre>
 outcome</h2>
 <div id="dose-deviation-1" class="section level3" number="3.2.1">
 <h3><span class="header-section-number">3.2.1</span> Dose deviation</h3>
-<pre><code>
-Call:
-geeglm(formula = CRRPRR ~ percent_expected_dose + dose * time, 
-    family = binomial, data = data, id = record_id, corstr = &quot;ar1&quot;, 
-    scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err     Wald Pr(&gt;|W|)    
-(Intercept)                  2.95e+16  7.65e+15 1.48e+01  0.00012 ***
-percent_expected_dose       -2.97e+11  5.69e+12 0.00e+00  0.95838    
-doseLow (euro-lupus)         2.37e+22  3.22e+19 5.45e+05  &lt; 2e-16 ***
-time3                       -3.16e+16  7.60e+15 1.73e+01  3.2e-05 ***
-time6                       -2.89e+16  7.64e+15 1.43e+01  0.00016 ***
-time12                       7.31e+16  1.00e+16 5.35e+01  2.6e-13 ***
-doseLow (euro-lupus):time3  -2.37e+22  3.21e+19 5.45e+05  &lt; 2e-16 ***
-doseLow (euro-lupus):time6  -2.37e+22  3.21e+19 5.47e+05  &lt; 2e-16 ***
-doseLow (euro-lupus):time12  4.30e+22  1.54e+19 7.83e+06  &lt; 2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate Std.err
-alpha   141947 5.5e+23
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term            df1 df2     F.ratio p.value
+ percent_expected_dose   1 Inf       0.000  0.9584
+ dose                    1 Inf 2815614.500  &lt;.0001
+ time                    3 Inf 1474182.300  &lt;.0001
+ dose:time               3 Inf 1530038.600  &lt;.0001</code></pre>
 </div>
 <div id="age-at-first-dose-of-cyc-1" class="section level3" number="3.2.2">
 <h3><span class="header-section-number">3.2.2</span> Age at first dose
 of CYC</h3>
-<pre><code>
-Call:
-geeglm(formula = CRRPRR ~ age_cyc1_yrs + dose * time, family = binomial, 
-    data = data, id = record_id, corstr = &quot;ar1&quot;, scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err    Wald Pr(&gt;|W|)    
-(Intercept)                  1.28e+15  7.70e+15    0.03     0.87    
-age_cyc1_yrs                -2.65e+13  6.25e+13    0.18     0.67    
-doseLow (euro-lupus)        -2.05e+21  3.49e+19 3440.14   &lt;2e-16 ***
-time3                       -1.29e+15  7.55e+15    0.03     0.86    
-time6                       -3.84e+14  7.59e+15    0.00     0.96    
-time12                       7.44e+15  1.00e+16    0.55     0.46    
-doseLow (euro-lupus):time3   2.05e+21  3.49e+19 3431.16   &lt;2e-16 ***
-doseLow (euro-lupus):time6   2.05e+21  3.49e+19 3442.69   &lt;2e-16 ***
-doseLow (euro-lupus):time12  1.61e+20  1.89e+19   72.67   &lt;2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   164717 9.76e+19
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term   df1 df2  F.ratio p.value
+ age_cyc1_yrs   1 Inf    0.180  0.6717
+ dose           1 Inf 4437.193  &lt;.0001
+ time           3 Inf 1323.909  &lt;.0001
+ dose:time      3 Inf 1810.149  &lt;.0001</code></pre>
 </div>
 <div id="gender-1" class="section level3" number="3.2.3">
 <h3><span class="header-section-number">3.2.3</span> Gender</h3>
-<pre><code>
-Call:
-geeglm(formula = CRRPRR ~ gender + dose * time, family = binomial, 
-    data = data, id = record_id, corstr = &quot;ar1&quot;, scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err     Wald Pr(&gt;|W|)    
-(Intercept)                  1.82e+16  7.64e+15 5.66e+00   0.0173 *  
-genderFemale                 6.34e+14  5.09e+14 1.55e+00   0.2126    
-doseLow (euro-lupus)         2.76e+23  9.63e+19 8.19e+06   &lt;2e-16 ***
-time3                       -1.97e+16  7.59e+15 6.72e+00   0.0095 ** 
-time6                       -2.01e+16  7.66e+15 6.87e+00   0.0087 ** 
-time12                       3.03e+24  9.97e+15 9.25e+16   &lt;2e-16 ***
-doseLow (euro-lupus):time3  -2.76e+23  9.60e+19 8.25e+06   &lt;2e-16 ***
-doseLow (euro-lupus):time6  -2.76e+23  9.48e+19 8.47e+06   &lt;2e-16 ***
-doseLow (euro-lupus):time12  2.89e+24  5.53e+19 2.73e+09   &lt;2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   467901 1.44e+23
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term df1 df2        F.ratio p.value
+ gender       1 Inf          2.000  0.2126
+ dose         1 Inf  493174979.000  &lt;.0001
+ time         3 Inf 5839755205.000  &lt;.0001
+ dose:time    3 Inf  547510558.000  &lt;.0001</code></pre>
 </div>
 <div id="raceethnicity-1" class="section level3" number="3.2.4">
 <h3><span class="header-section-number">3.2.4</span> Race/ethnicity</h3>
-<pre><code>
-Call:
-geeglm(formula = CRRPRR ~ race5 + dose * time, family = binomial, 
-    data = data, id = record_id, corstr = &quot;ar1&quot;, scale.fix = TRUE)
-
- Coefficients:
-                                                          Estimate   Std.err
-(Intercept)                                              -1.62e+15  6.13e+15
-race5Asian                                                1.45e+15  5.27e+14
-race5Black, African-American, African, or Afro-Caribbean  1.81e+15  4.31e+14
-race5Hispanic/Latino or Spanish origin                    1.02e+15  4.10e+14
-race5Other                                                1.56e+15  7.54e+14
-doseLow (euro-lupus)                                     -4.31e+21  2.11e+19
-time3                                                    -6.42e+14  6.03e+15
-time6                                                     1.21e+15  6.07e+15
-time12                                                    1.62e+16  8.80e+15
-doseLow (euro-lupus):time3                                4.31e+21  2.11e+19
-doseLow (euro-lupus):time6                                4.31e+21  2.11e+19
-doseLow (euro-lupus):time12                               1.39e+20  1.42e+19
-                                                             Wald Pr(&gt;|W|)    
-(Intercept)                                                  0.07   0.7909    
-race5Asian                                                   7.59   0.0059 ** 
-race5Black, African-American, African, or Afro-Caribbean    17.62  2.7e-05 ***
-race5Hispanic/Latino or Spanish origin                       6.18   0.0129 *  
-race5Other                                                   4.27   0.0389 *  
-doseLow (euro-lupus)                                     41925.65  &lt; 2e-16 ***
-time3                                                        0.01   0.9151    
-time6                                                        0.04   0.8418    
-time12                                                       3.38   0.0658 .  
-doseLow (euro-lupus):time3                               41896.90  &lt; 2e-16 ***
-doseLow (euro-lupus):time6                               41879.11  &lt; 2e-16 ***
-doseLow (euro-lupus):time12                                 95.68  &lt; 2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha    80765 1.18e+20
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term df1 df2   F.ratio p.value
+ race5        4 Inf     4.740  0.0008
+ dose         1 Inf 71387.250  &lt;.0001
+ time         3 Inf  7881.820  &lt;.0001
+ dose:time    3 Inf  8381.670  &lt;.0001</code></pre>
 </div>
 <div id="baseline-egfr-1" class="section level3" number="3.2.5">
 <h3><span class="header-section-number">3.2.5</span> Baseline eGFR</h3>
-<pre><code>
-Call:
-geeglm(formula = CRRPRR ~ diagnosis_GFR10 + dose * time, family = binomial, 
-    data = data, id = record_id, corstr = &quot;ar1&quot;, scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err     Wald Pr(&gt;|W|)    
-(Intercept)                  2.22e+16  6.46e+15 1.18e+01  0.00059 ***
-diagnosis_GFR10              9.83e+12  5.51e+13 3.00e-02  0.85830    
-doseLow (euro-lupus)         9.76e+21  1.97e+19 2.45e+05  &lt; 2e-16 ***
-time3                       -2.22e+16  6.45e+15 1.19e+01  0.00056 ***
-time6                       -2.11e+16  6.45e+15 1.07e+01  0.00106 ** 
-time12                      -2.94e+20  1.19e+16 6.14e+08  &lt; 2e-16 ***
-doseLow (euro-lupus):time3  -9.76e+21  1.97e+19 2.45e+05  &lt; 2e-16 ***
-doseLow (euro-lupus):time6  -9.76e+21  1.97e+19 2.45e+05  &lt; 2e-16 ***
-doseLow (euro-lupus):time12 -8.57e+20  1.78e+19 2.31e+03  &lt; 2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   -89694 9.01e+23
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term      df1 df2    F.ratio p.value
+ diagnosis_GFR10   1 Inf      0.030  0.8583
+ dose              1 Inf 287359.690  &lt;.0001
+ time              3 Inf  28639.430  &lt;.0001
+ dose:time         3 Inf  46257.830  &lt;.0001</code></pre>
 </div>
 <div id="baseline-upc-ratio-1" class="section level3" number="3.2.6">
 <h3><span class="header-section-number">3.2.6</span> Baseline UPC
 ratio</h3>
-<pre><code>
-Call:
-geeglm(formula = CRRPRR ~ upc_ratio + dose * time, family = binomial, 
-    data = data, id = record_id, corstr = &quot;ar1&quot;, scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err     Wald Pr(&gt;|W|)    
-(Intercept)                  9.48e+15  7.62e+15 1.55e+00    0.213    
-upc_ratio                   -7.04e+13  3.19e+13 4.87e+00    0.027 *  
-doseLow (euro-lupus)        -2.52e+22  2.79e+19 8.20e+05   &lt;2e-16 ***
-time3                       -1.11e+16  7.58e+15 2.14e+00    0.144    
-time6                       -1.08e+16  7.65e+15 2.01e+00    0.157    
-time12                       3.18e+19  9.93e+15 1.03e+07   &lt;2e-16 ***
-doseLow (euro-lupus):time3   2.52e+22  2.79e+19 8.21e+05   &lt;2e-16 ***
-doseLow (euro-lupus):time6   2.52e+22  2.79e+19 8.20e+05   &lt;2e-16 ***
-doseLow (euro-lupus):time12  1.10e+22  1.25e+19 7.70e+05   &lt;2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   117735 1.95e+20
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term df1 df2    F.ratio p.value
+ upc_ratio    1 Inf      4.900  0.0273
+ dose         1 Inf 665455.600  &lt;.0001
+ time         3 Inf 321579.500  &lt;.0001
+ dose:time    3 Inf 319825.900  &lt;.0001</code></pre>
 </div>
 <div id="relapsedrefractory-ln-vs.-new-onset-ln-1" class="section level3" number="3.2.7">
 <h3><span class="header-section-number">3.2.7</span> Relapsed/refractory
 LN vs. new-onset LN</h3>
-<pre><code>
-Call:
-geeglm(formula = CRRPRR ~ cyclophosphamide_use_2 + dose * time, 
-    family = binomial, data = data, id = record_id, corstr = &quot;ar1&quot;, 
-    scale.fix = TRUE)
-
- Coefficients:
-                                                           Estimate   Std.err
-(Intercept)                                                1.80e+15  7.64e+15
-cyclophosphamide_use_2Relapsed/Refractory Lupus Nephritis -1.43e+15  3.83e+14
-doseLow (euro-lupus)                                      -1.28e+22  1.08e+20
-time3                                                     -2.39e+15  7.61e+15
-time6                                                     -6.82e+13  7.65e+15
-time12                                                     4.89e+19  9.95e+15
-doseLow (euro-lupus):time3                                 1.28e+22  1.08e+20
-doseLow (euro-lupus):time6                                 1.28e+22  1.08e+20
-doseLow (euro-lupus):time12                                1.43e+23  6.27e+19
-                                                              Wald Pr(&gt;|W|)    
-(Intercept)                                               6.00e-02  0.81338    
-cyclophosphamide_use_2Relapsed/Refractory Lupus Nephritis 1.39e+01  0.00019 ***
-doseLow (euro-lupus)                                      1.40e+04  &lt; 2e-16 ***
-time3                                                     1.00e-01  0.75351    
-time6                                                     0.00e+00  0.99289    
-time12                                                    2.41e+07  &lt; 2e-16 ***
-doseLow (euro-lupus):time3                                1.40e+04  &lt; 2e-16 ***
-doseLow (euro-lupus):time6                                1.40e+04  &lt; 2e-16 ***
-doseLow (euro-lupus):time12                               5.23e+06  &lt; 2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   116259 1.89e+20
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term             df1 df2      F.ratio p.value
+ cyclophosphamide_use_2   1 Inf       14.000  0.0002
+ dose                     1 Inf   184211.000  &lt;.0001
+ time                     3 Inf 11828828.000  &lt;.0001
+ dose:time                3 Inf 11864443.000  &lt;.0001</code></pre>
 </div>
 <div id="baseline-hypertension-1" class="section level3" number="3.2.8">
 <h3><span class="header-section-number">3.2.8</span> Baseline
 hypertension</h3>
-<pre><code>
-Call:
-geeglm(formula = CRRPRR ~ diagnosis_hypertension + dose * time, 
-    family = binomial, data = data, id = record_id, corstr = &quot;ar1&quot;, 
-    scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err Wald Pr(&gt;|W|)  
-(Intercept)                  2.39e+16  5.62e+17 0.00    0.966  
-diagnosis_hypertensionYes   -8.32e+14  3.52e+14 5.59    0.018 *
-doseLow (euro-lupus)        -5.63e+20       NaN  NaN      NaN  
-time3                       -2.38e+16       NaN  NaN      NaN  
-time6                       -2.53e+16       NaN  NaN      NaN  
-time12                       2.87e+16       NaN  NaN      NaN  
-doseLow (euro-lupus):time3   5.63e+20  7.92e+22 0.00    0.994  
-doseLow (euro-lupus):time6   5.63e+20       NaN  NaN      NaN  
-doseLow (euro-lupus):time12  5.42e+26       NaN  NaN      NaN  
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha 42826741 1.35e+22
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code>Error in solve.default(zcov, z) : 
+  system is computationally singular: reciprocal condition number = 2.24785e-23
+Error in solve.default(zcov, z) : 
+  system is computationally singular: reciprocal condition number = 1.83998e-23</code></pre>
+<pre><code> model term             df1 df2       F.ratio p.value
+ diagnosis_hypertension   1 Inf         6.000  0.0181
+ dose                     1 Inf  86175703.000  &lt;.0001
+ time                     3 Inf  62606457.000  &lt;.0001
+ dose:time                3 Inf 686260671.000  &lt;.0001</code></pre>
 </div>
 <div id="disease-duration---ln-to-cyc-1" class="section level3" number="3.2.9">
 <h3><span class="header-section-number">3.2.9</span> Disease duration -
 LN to CYC</h3>
-<pre><code>
-Call:
-geeglm(formula = CRRPRR ~ duration_ln_to_cyc1 + dose * time, 
-    family = binomial, data = data, id = record_id, corstr = &quot;ar1&quot;, 
-    scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err     Wald Pr(&gt;|W|)    
-(Intercept)                  5.08e+15  7.65e+15 4.40e-01    0.506    
-duration_ln_to_cyc1         -9.19e+14  6.23e+13 2.18e+02  &lt; 2e-16 ***
-doseLow (euro-lupus)        -7.70e+19  3.03e+19 6.46e+00    0.011 *  
-time3                       -5.87e+15  7.61e+15 6.00e-01    0.440    
-time6                       -2.93e+15  7.65e+15 1.50e-01    0.702    
-time12                      -5.00e+18  1.27e+16 1.55e+05  &lt; 2e-16 ***
-doseLow (euro-lupus):time3   7.70e+19  3.03e+19 6.48e+00    0.011 *  
-doseLow (euro-lupus):time6   7.70e+19  3.03e+19 6.47e+00    0.011 *  
-doseLow (euro-lupus):time12  1.18e+20  1.68e+19 4.93e+01  2.2e-12 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha  -138180 2.16e+20
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term          df1 df2 F.ratio p.value
+ duration_ln_to_cyc1   1 Inf 217.545  &lt;.0001
+ dose                  1 Inf   0.540  0.4624
+ time                  3 Inf  75.596  &lt;.0001
+ dose:time             3 Inf  54.763  &lt;.0001</code></pre>
 </div>
 <div id="disease-duration---sle-to-cyc-1" class="section level3" number="3.2.10">
 <h3><span class="header-section-number">3.2.10</span> Disease duration -
 SLE to CYC</h3>
-<pre><code>
-Call:
-geeglm(formula = CRRPRR ~ duration_sle_to_cyc1 + dose * time, 
-    family = binomial, data = data, id = record_id, corstr = &quot;ar1&quot;, 
-    scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err     Wald Pr(&gt;|W|)    
-(Intercept)                  1.05e+16  6.36e+15 2.74e+00  0.09799 .  
-duration_sle_to_cyc1        -2.54e+14  6.87e+13 1.36e+01  0.00022 ***
-doseLow (euro-lupus)         2.89e+21  1.95e+19 2.19e+04  &lt; 2e-16 ***
-time3                       -9.89e+15  6.42e+15 2.38e+00  0.12302    
-time6                       -8.68e+15  6.42e+15 1.83e+00  0.17662    
-time12                      -1.90e+20  1.18e+16 2.59e+08  &lt; 2e-16 ***
-doseLow (euro-lupus):time3  -2.89e+21  1.95e+19 2.19e+04  &lt; 2e-16 ***
-doseLow (euro-lupus):time6  -2.89e+21  1.95e+19 2.19e+04  &lt; 2e-16 ***
-doseLow (euro-lupus):time12  1.67e+20  9.77e+18 2.91e+02  &lt; 2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   -89691 8.35e+23
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term           df1 df2   F.ratio p.value
+ duration_sle_to_cyc1   1 Inf    13.630  0.0002
+ dose                   1 Inf 33682.740  &lt;.0001
+ time                   3 Inf  5519.190  &lt;.0001
+ dose:time              3 Inf  6456.080  &lt;.0001</code></pre>
 </div>
 <div id="lupus-nephritis-class-v-1" class="section level3" number="3.2.11">
 <h3><span class="header-section-number">3.2.11</span> Lupus nephritis
 class V</h3>
-<pre><code>
-Call:
-geeglm(formula = CRRPRR ~ lupus_nephritis_class___5 + dose * 
-    time, family = binomial, data = data, id = record_id, corstr = &quot;ar1&quot;, 
-    scale.fix = TRUE)
-
- Coefficients:
-                                  Estimate   Std.err    Wald Pr(&gt;|W|)    
-(Intercept)                       1.93e+16  6.37e+15    9.15   0.0025 ** 
-lupus_nephritis_class___5Checked -3.60e+14  3.80e+14    0.90   0.3427    
-doseLow (euro-lupus)             -2.26e+21  2.89e+19 6101.35   &lt;2e-16 ***
-time3                            -1.84e+16  6.42e+15    8.24   0.0041 ** 
-time6                            -2.09e+16  6.35e+15   10.80   0.0010 ** 
-time12                            2.15e+16  8.98e+15    5.73   0.0167 *  
-doseLow (euro-lupus):time3        2.26e+21  2.89e+19 6097.69   &lt;2e-16 ***
-doseLow (euro-lupus):time6        2.26e+21  2.89e+19 6089.60   &lt;2e-16 ***
-doseLow (euro-lupus):time12       1.80e+20  1.40e+19  165.51   &lt;2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   117528 1.76e+20
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term                df1 df2  F.ratio p.value
+ lupus_nephritis_class___5   1 Inf    0.900  0.3427
+ dose                        1 Inf 8505.544  &lt;.0001
+ time                        3 Inf 1227.371  &lt;.0001
+ dose:time                   3 Inf 2204.405  &lt;.0001</code></pre>
 </div>
 <div id="lupus-nephritis-class-iii-or-iv-1" class="section level3" number="3.2.12">
 <h3><span class="header-section-number">3.2.12</span> Lupus nephritis
 class III or IV</h3>
-<pre><code>
-Call:
-geeglm(formula = CRRPRR ~ lupus_nephritis_IIIvsIV + dose * time, 
-    family = binomial, data = data, id = record_id, corstr = &quot;ar1&quot;, 
-    scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err     Wald Pr(&gt;|W|)    
-(Intercept)                  8.88e+15  7.64e+15 1.35e+00  0.24522    
-lupus_nephritis_IIIvsIVIV    2.73e+14  4.25e+14 4.10e-01  0.52082    
-doseLow (euro-lupus)         1.62e+22  1.17e+20 1.93e+04  &lt; 2e-16 ***
-time3                       -9.19e+15  7.60e+15 1.46e+00  0.22671    
-time6                       -9.72e+15  7.67e+15 1.61e+00  0.20492    
-time12                       3.71e+16  9.92e+15 1.40e+01  0.00018 ***
-doseLow (euro-lupus):time3  -1.62e+22  1.19e+20 1.87e+04  &lt; 2e-16 ***
-doseLow (euro-lupus):time6  -1.62e+22  1.17e+20 1.91e+04  &lt; 2e-16 ***
-doseLow (euro-lupus):time12 -3.47e+22  7.34e+19 2.23e+05  &lt; 2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   473006 6.72e+22
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term              df1 df2   F.ratio p.value
+ lupus_nephritis_IIIvsIV   1 Inf     0.410  0.5208
+ dose                      1 Inf   104.750  &lt;.0001
+ time                      3 Inf 87518.150  &lt;.0001
+ dose:time                 3 Inf 82379.380  &lt;.0001</code></pre>
 </div>
 <div id="time-varying-oral-prednisone-dose-1" class="section level3" number="3.2.13">
 <h3><span class="header-section-number">3.2.13</span> Time-varying oral
 prednisone dose</h3>
-<pre><code>
-Call:
-geeglm(formula = CRRPRR ~ Prednisone + dose * time, family = binomial, 
-    data = data, id = record_id, corstr = &quot;ar1&quot;, scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err   Wald Pr(&gt;|W|)    
-(Intercept)                  1.51e+16  7.71e+15   3.81   0.0509 .  
-Prednisone                   1.26e+13  1.46e+13   0.74   0.3884    
-doseLow (euro-lupus)        -1.98e+21  1.09e+20 328.44  &lt; 2e-16 ***
-time3                       -1.61e+16  7.63e+15   4.46   0.0348 *  
-time6                       -1.48e+16  7.69e+15   3.69   0.0546 .  
-time12                       3.07e+16  1.01e+16   9.34   0.0022 ** 
-doseLow (euro-lupus):time3   1.98e+21  1.09e+20 328.45  &lt; 2e-16 ***
-doseLow (euro-lupus):time6   1.98e+21  1.09e+20 328.45  &lt; 2e-16 ***
-doseLow (euro-lupus):time12  2.84e+20  6.50e+19  19.11  1.2e-05 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   117142 1.92e+20
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term df1 df2 F.ratio p.value
+ Prednisone   1 Inf   0.744  0.3884
+ dose         1 Inf 173.866  &lt;.0001
+ time         3 Inf 878.575  &lt;.0001
+ dose:time    3 Inf 809.076  &lt;.0001</code></pre>
 </div>
 <div id="time-varying-iv-steroid-dose-1" class="section level3" number="3.2.14">
 <h3><span class="header-section-number">3.2.14</span> Time-varying IV
 steroid dose</h3>
-<pre><code>
-Call:
-geeglm(formula = CRRPRR ~ IVsteroids + dose * time, family = binomial, 
-    data = data, id = record_id, corstr = &quot;ar1&quot;, scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err     Wald Pr(&gt;|W|)    
-(Intercept)                  2.05e+16  7.64e+15 7.17e+00   0.0074 ** 
-IVsteroids                   1.21e+11  6.48e+10 3.47e+00   0.0624 .  
-doseLow (euro-lupus)        -1.14e+22  1.10e+20 1.08e+04   &lt;2e-16 ***
-time3                       -2.30e+16  7.61e+15 9.18e+00   0.0025 ** 
-time6                       -2.22e+16  7.67e+15 8.38e+00   0.0038 ** 
-time12                       3.95e+21  9.98e+15 1.57e+11   &lt;2e-16 ***
-doseLow (euro-lupus):time3   1.14e+22  1.10e+20 1.08e+04   &lt;2e-16 ***
-doseLow (euro-lupus):time6   1.14e+22  1.10e+20 1.08e+04   &lt;2e-16 ***
-doseLow (euro-lupus):time12  1.68e+22  6.45e+19 6.77e+04   &lt;2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   117352 1.94e+20
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code>Error in solve.default(zcov, z) : 
+  system is computationally singular: reciprocal condition number = 4.47115e-20
+Error in solve.default(zcov, z) : 
+  system is computationally singular: reciprocal condition number = 3.94511e-20</code></pre>
+<pre><code> model term df1 df2    F.ratio p.value
+ IVsteroids   1 Inf      3.500  0.0624
+ dose         1 Inf    470.900  &lt;.0001
+ time         3 Inf 419349.600  &lt;.0001
+ dose:time    3 Inf 211236.600  &lt;.0001</code></pre>
 </div>
 <div id="time-varying-acearb-use-1" class="section level3" number="3.2.15">
 <h3><span class="header-section-number">3.2.15</span> Time-varying
 ACE/ARB use</h3>
-<pre><code>
-Call:
-geeglm(formula = CRRPRR ~ ACEARB + dose * time, family = binomial, 
-    data = data, id = record_id, corstr = &quot;ar1&quot;, scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err    Wald Pr(&gt;|W|)    
-(Intercept)                  3.10e+16  7.60e+15   16.69  4.4e-05 ***
-ACEARB1                      4.93e+14  3.65e+14    1.82     0.18    
-doseLow (euro-lupus)        -9.42e+20  2.66e+19 1258.35  &lt; 2e-16 ***
-time3                       -3.26e+16  7.53e+15   18.68  1.5e-05 ***
-time6                       -3.28e+16  7.59e+15   18.68  1.5e-05 ***
-time12                       5.56e+15  9.94e+15    0.31     0.58    
-doseLow (euro-lupus):time3   9.42e+20  2.65e+19 1260.84  &lt; 2e-16 ***
-doseLow (euro-lupus):time6   9.42e+20  2.66e+19 1259.42  &lt; 2e-16 ***
-doseLow (euro-lupus):time12 -6.38e+17  1.63e+19    0.00     0.97    
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   117346 1.93e+20
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term df1 df2  F.ratio p.value
+ ACEARB       1 Inf    1.821  0.1772
+ dose         1 Inf 1911.771  &lt;.0001
+ time         3 Inf  345.747  &lt;.0001
+ dose:time    3 Inf  382.479  &lt;.0001</code></pre>
 </div>
 <div id="time-varying-rituximab-use-1" class="section level3" number="3.2.16">
 <h3><span class="header-section-number">3.2.16</span> Time-varying
 rituximab use</h3>
-<pre><code>
-Call:
-geeglm(formula = CRRPRR ~ Ritux + dose * time, family = binomial, 
-    data = data, id = record_id, corstr = &quot;ar1&quot;, scale.fix = TRUE)
-
- Coefficients:
-                             Estimate   Std.err    Wald Pr(&gt;|W|)    
-(Intercept)                  1.84e+16  7.65e+15    5.78  0.01620 *  
-Ritux1                      -8.51e+14  5.06e+14    2.83  0.09238 .  
-doseLow (euro-lupus)        -1.48e+21  2.63e+19 3163.21  &lt; 2e-16 ***
-time3                       -2.00e+16  7.61e+15    6.91  0.00857 ** 
-time6                       -1.88e+16  7.68e+15    5.99  0.01439 *  
-time12                       3.61e+16  9.92e+15   13.21  0.00028 ***
-doseLow (euro-lupus):time3   1.48e+21  2.63e+19 3155.24  &lt; 2e-16 ***
-doseLow (euro-lupus):time6   1.48e+21  2.63e+19 3154.13  &lt; 2e-16 ***
-doseLow (euro-lupus):time12  3.02e+20  1.55e+19  379.21  &lt; 2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Correlation structure = ar1 
-Scale is fixed.
-
-  Link = identity 
-
-Estimated Correlation Parameters:
-      Estimate  Std.err
-alpha   117716 1.95e+20
-Number of clusters:   145  Maximum cluster size: 4 </code></pre>
+<pre><code> model term df1 df2  F.ratio p.value
+ Ritux        1 Inf    2.832  0.0924
+ dose         1 Inf 3208.089  &lt;.0001
+ time         3 Inf 1126.089  &lt;.0001
+ dose:time    3 Inf  647.586  &lt;.0001</code></pre>
 </div>
 </div>
 </div>
