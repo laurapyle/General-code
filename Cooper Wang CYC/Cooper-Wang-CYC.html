@@ -11,7 +11,7 @@
 
 <meta name="author" content="Kristen Miller and Laura Pyle" />
 
-<meta name="date" content="2023-03-06" />
+<meta name="date" content="2023-03-07" />
 
 <title>Cooper/Wang CYC study</title>
 
@@ -1499,329 +1499,304 @@ border-radius: 0px;
 
 <h1 class="title toc-ignore">Cooper/Wang CYC study</h1>
 <h4 class="author">Kristen Miller and Laura Pyle</h4>
-<h4 class="date">06 March 2023</h4>
+<h4 class="date">07 March 2023</h4>
 
 </div>
 
 
 <div id="methods" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Methods</h1>
-<p>CRR and CRR_PRR were set to “no” at time 0. Generalized estimating
-equations were used to test the significance of each predictor in a
-model also containing a regimen by time interaction.</p>
+<p>Generalized estimating equations were used to test the significance
+of each predictor in a model also containing a regimen by time
+interaction.</p>
 </div>
-<div id="questions" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Questions</h1>
-<ol style="list-style-type: decimal">
-<li>There is a separate variable for lupus nephritis class V vs. class
-III or IV. The comparison below reflects class V vs. the combination of
-class III and IV, but we could do a comparison of the three groups if
-needed.</li>
-</ol>
+<div id="results" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Results</h1>
+<div id="crr-outcome" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> CRR outcome</h2>
+<div id="dose-deviation" class="section level3" number="2.1.1">
+<h3><span class="header-section-number">2.1.1</span> Dose deviation</h3>
+<pre><code> model term            df1 df2 F.ratio p.value
+ percent_expected_dose   1 Inf   3.912  0.0479
+ dose                    1 Inf   3.310  0.0689
+ time                    2 Inf  12.980  &lt;.0001
+ dose:time               2 Inf   0.876  0.4165</code></pre>
 </div>
-<div id="results" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Results</h1>
-<div id="crr-outcome" class="section level2" number="3.1">
-<h2><span class="header-section-number">3.1</span> CRR outcome</h2>
-<div id="dose-deviation" class="section level3" number="3.1.1">
-<h3><span class="header-section-number">3.1.1</span> Dose deviation</h3>
-<pre><code> model term            df1 df2  F.ratio p.value
- percent_expected_dose   1 Inf    0.083  0.7733
- dose                    1 Inf 7874.724  &lt;.0001
- time                    3 Inf 1882.523  &lt;.0001
- dose:time               3 Inf 2264.715  &lt;.0001</code></pre>
-</div>
-<div id="age-at-first-dose-of-cyc" class="section level3" number="3.1.2">
-<h3><span class="header-section-number">3.1.2</span> Age at first dose
+<div id="age-at-first-dose-of-cyc" class="section level3" number="2.1.2">
+<h3><span class="header-section-number">2.1.2</span> Age at first dose
 of CYC</h3>
-<pre><code> model term   df1 df2  F.ratio p.value
- age_cyc1_yrs   1 Inf   14.309  0.0002
- dose           1 Inf  425.968  &lt;.0001
- time           3 Inf 5225.701  &lt;.0001
- dose:time      3 Inf 4605.406  &lt;.0001</code></pre>
+<pre><code> model term   df1 df2 F.ratio p.value
+ age_cyc1_yrs   1 Inf   7.240  0.0071
+ dose           1 Inf   0.641  0.4233
+ time           2 Inf  13.246  &lt;.0001
+ dose:time      2 Inf   0.833  0.4346</code></pre>
 </div>
-<div id="gender" class="section level3" number="3.1.3">
-<h3><span class="header-section-number">3.1.3</span> Gender</h3>
-<pre><code> model term df1 df2  F.ratio p.value
- gender       1 Inf    0.288  0.5915
- dose         1 Inf 3626.481  &lt;.0001
- time         3 Inf 1367.089  &lt;.0001
- dose:time    3 Inf 1108.361  &lt;.0001</code></pre>
-</div>
-<div id="raceethnicity" class="section level3" number="3.1.4">
-<h3><span class="header-section-number">3.1.4</span> Race/ethnicity</h3>
-<pre><code> model term df1 df2   F.ratio p.value
- race5        4 Inf     0.680  0.6092
- dose         1 Inf 86634.490  &lt;.0001
- time         3 Inf 21764.170  &lt;.0001
- dose:time    3 Inf 24554.240  &lt;.0001</code></pre>
-</div>
-<div id="baseline-egfr" class="section level3" number="3.1.5">
-<h3><span class="header-section-number">3.1.5</span> Baseline eGFR</h3>
-<pre><code> model term      df1 df2  F.ratio p.value
- diagnosis_GFR10   1 Inf    0.002  0.9632
- dose              1 Inf 2573.986  &lt;.0001
- time              3 Inf 1044.136  &lt;.0001
- dose:time         3 Inf 2876.849  &lt;.0001</code></pre>
-</div>
-<div id="baseline-upc-ratio" class="section level3" number="3.1.6">
-<h3><span class="header-section-number">3.1.6</span> Baseline UPC
-ratio</h3>
-<pre><code>Error in solve.default(zcov, z) : 
-  system is computationally singular: reciprocal condition number = 1.8542e-17
-Error in solve.default(zcov, z) : 
-  system is computationally singular: reciprocal condition number = 1.58164e-17</code></pre>
+<div id="gender" class="section level3" number="2.1.3">
+<h3><span class="header-section-number">2.1.3</span> Gender</h3>
 <pre><code> model term df1 df2 F.ratio p.value
- upc_ratio    1 Inf   1.324  0.2499
- dose         1 Inf -63.312  1.0000
- time         3 Inf 459.841  &lt;.0001
- dose:time    3 Inf 596.144  &lt;.0001</code></pre>
+ gender       1 Inf   0.111  0.7393
+ dose         1 Inf   2.393  0.1219
+ time         2 Inf  13.099  &lt;.0001
+ dose:time    2 Inf   0.909  0.4031</code></pre>
 </div>
-<div id="relapsedrefractory-ln-vs.-new-onset-ln" class="section level3" number="3.1.7">
-<h3><span class="header-section-number">3.1.7</span> Relapsed/refractory
-LN vs. new-onset LN</h3>
-<pre><code> model term             df1 df2     F.ratio p.value
- cyclophosphamide_use_2   1 Inf      13.000  0.0004
- dose                     1 Inf 4610283.000  &lt;.0001
- time                     3 Inf 1597275.000  &lt;.0001
- dose:time                3 Inf 2160168.000  &lt;.0001</code></pre>
+<div id="raceethnicity" class="section level3" number="2.1.4">
+<h3><span class="header-section-number">2.1.4</span> Race/ethnicity</h3>
+<pre><code> model term df1 df2 F.ratio p.value
+ race5        4 Inf   0.279  0.8917
+ dose         1 Inf   2.791  0.0948
+ time         2 Inf  13.226  &lt;.0001
+ dose:time    2 Inf   0.917  0.3998</code></pre>
 </div>
-<div id="baseline-hypertension" class="section level3" number="3.1.8">
-<h3><span class="header-section-number">3.1.8</span> Baseline
-hypertension</h3>
-<pre><code> model term             df1 df2     F.ratio p.value
- diagnosis_hypertension   1 Inf       2.000  0.1541
- dose                     1 Inf   12525.900  &lt;.0001
- time                     3 Inf 1490759.700  &lt;.0001
- dose:time                3 Inf 1486019.700  &lt;.0001</code></pre>
+<div id="baseline-egfr" class="section level3" number="2.1.5">
+<h3><span class="header-section-number">2.1.5</span> Baseline eGFR</h3>
+<pre><code> model term      df1 df2 F.ratio p.value
+ diagnosis_GFR10   1 Inf  16.025  0.0001
+ dose              1 Inf   1.229  0.2675
+ time              2 Inf  13.932  &lt;.0001
+ dose:time         2 Inf   0.940  0.3905</code></pre>
 </div>
-<div id="disease-duration---ln-to-cyc" class="section level3" number="3.1.9">
-<h3><span class="header-section-number">3.1.9</span> Disease duration -
-LN to CYC</h3>
-<pre><code> model term          df1 df2  F.ratio p.value
- duration_ln_to_cyc1   1 Inf  539.448  &lt;.0001
- dose                  1 Inf 9761.720  &lt;.0001
- time                  3 Inf 2835.899  &lt;.0001
- dose:time             3 Inf 3331.941  &lt;.0001</code></pre>
-</div>
-<div id="disease-duration---sle-to-cyc" class="section level3" number="3.1.10">
-<h3><span class="header-section-number">3.1.10</span> Disease duration -
-SLE to CYC</h3>
-<pre><code> model term           df1 df2  F.ratio p.value
- duration_sle_to_cyc1   1 Inf    9.521  0.0020
- dose                   1 Inf 4893.387  &lt;.0001
- time                   3 Inf  941.194  &lt;.0001
- dose:time              3 Inf 1320.934  &lt;.0001</code></pre>
-</div>
-<div id="lupus-nephritis-class-v" class="section level3" number="3.1.11">
-<h3><span class="header-section-number">3.1.11</span> Lupus nephritis
-class V</h3>
-<pre><code> model term                df1 df2    F.ratio p.value
- lupus_nephritis_class___5   1 Inf      2.900  0.0875
- dose                        1 Inf 373445.200  &lt;.0001
- time                        3 Inf  26872.200  &lt;.0001
- dose:time                   3 Inf  41082.700  &lt;.0001</code></pre>
-</div>
-<div id="lupus-nephritis-class-iii-or-iv" class="section level3" number="3.1.12">
-<h3><span class="header-section-number">3.1.12</span> Lupus nephritis
-class III or IV</h3>
-<pre><code> model term              df1 df2  F.ratio p.value
- lupus_nephritis_IIIvsIV   1 Inf    0.200  0.6547
- dose                      1 Inf 2840.959  &lt;.0001
- time                      3 Inf 1027.463  &lt;.0001
- dose:time                 3 Inf 1044.654  &lt;.0001</code></pre>
-</div>
-<div id="time-varying-oral-prednisone-dose" class="section level3" number="3.1.13">
-<h3><span class="header-section-number">3.1.13</span> Time-varying oral
-prednisone dose</h3>
-<pre><code> model term df1 df2  F.ratio p.value
- Prednisone   1 Inf    0.459  0.4979
- dose         1 Inf 8482.822  &lt;.0001
- time         3 Inf 1753.953  &lt;.0001
- dose:time    3 Inf 2238.572  &lt;.0001</code></pre>
-</div>
-<div id="time-varying-iv-steroid-dose" class="section level3" number="3.1.14">
-<h3><span class="header-section-number">3.1.14</span> Time-varying IV
-steroid dose</h3>
-<pre><code>Error in solve.default(zcov, z) : 
-  system is computationally singular: reciprocal condition number = 1.26351e-18
-Error in solve.default(zcov, z) : 
-  system is computationally singular: reciprocal condition number = 1.10393e-18</code></pre>
-<pre><code> model term df1 df2  F.ratio p.value
- IVsteroids   1 Inf    1.050  0.3056
- dose         1 Inf 4304.594  &lt;.0001
- time         3 Inf 1061.522  &lt;.0001
- dose:time    3 Inf 1350.148  &lt;.0001</code></pre>
-</div>
-<div id="time-varying-acearb-use" class="section level3" number="3.1.15">
-<h3><span class="header-section-number">3.1.15</span> Time-varying
-ACE/ARB use</h3>
-<pre><code> model term df1 df2  F.ratio p.value
- ACEARB       1 Inf   22.199  &lt;.0001
- dose         1 Inf 2921.658  &lt;.0001
- time         3 Inf  903.946  &lt;.0001
- dose:time    3 Inf  698.431  &lt;.0001</code></pre>
-</div>
-<div id="time-varying-rituximab-use" class="section level3" number="3.1.16">
-<h3><span class="header-section-number">3.1.16</span> Time-varying
-rituximab use</h3>
-<pre><code> model term df1 df2     F.ratio p.value
- Ritux        1 Inf       0.200  0.6979
- dose         1 Inf 2280880.600  &lt;.0001
- time         3 Inf -747955.600  1.0000
- dose:time    3 Inf  367098.300  &lt;.0001</code></pre>
-</div>
-</div>
-<div id="crr-or-prr-outcome" class="section level2" number="3.2">
-<h2><span class="header-section-number">3.2</span> CRR or PRR
-outcome</h2>
-<div id="dose-deviation-1" class="section level3" number="3.2.1">
-<h3><span class="header-section-number">3.2.1</span> Dose deviation</h3>
-<pre><code> model term            df1 df2     F.ratio p.value
- percent_expected_dose   1 Inf       0.000  0.9584
- dose                    1 Inf 2815614.500  &lt;.0001
- time                    3 Inf 1474182.300  &lt;.0001
- dose:time               3 Inf 1530038.600  &lt;.0001</code></pre>
-</div>
-<div id="age-at-first-dose-of-cyc-1" class="section level3" number="3.2.2">
-<h3><span class="header-section-number">3.2.2</span> Age at first dose
-of CYC</h3>
-<pre><code> model term   df1 df2  F.ratio p.value
- age_cyc1_yrs   1 Inf    0.180  0.6717
- dose           1 Inf 4437.193  &lt;.0001
- time           3 Inf 1323.909  &lt;.0001
- dose:time      3 Inf 1810.149  &lt;.0001</code></pre>
-</div>
-<div id="gender-1" class="section level3" number="3.2.3">
-<h3><span class="header-section-number">3.2.3</span> Gender</h3>
-<pre><code> model term df1 df2        F.ratio p.value
- gender       1 Inf          2.000  0.2126
- dose         1 Inf  493174979.000  &lt;.0001
- time         3 Inf 5839755205.000  &lt;.0001
- dose:time    3 Inf  547510558.000  &lt;.0001</code></pre>
-</div>
-<div id="raceethnicity-1" class="section level3" number="3.2.4">
-<h3><span class="header-section-number">3.2.4</span> Race/ethnicity</h3>
-<pre><code> model term df1 df2   F.ratio p.value
- race5        4 Inf     4.740  0.0008
- dose         1 Inf 71387.250  &lt;.0001
- time         3 Inf  7881.820  &lt;.0001
- dose:time    3 Inf  8381.670  &lt;.0001</code></pre>
-</div>
-<div id="baseline-egfr-1" class="section level3" number="3.2.5">
-<h3><span class="header-section-number">3.2.5</span> Baseline eGFR</h3>
-<pre><code> model term      df1 df2    F.ratio p.value
- diagnosis_GFR10   1 Inf      0.030  0.8583
- dose              1 Inf 287359.690  &lt;.0001
- time              3 Inf  28639.430  &lt;.0001
- dose:time         3 Inf  46257.830  &lt;.0001</code></pre>
-</div>
-<div id="baseline-upc-ratio-1" class="section level3" number="3.2.6">
-<h3><span class="header-section-number">3.2.6</span> Baseline UPC
+<div id="baseline-upc-ratio" class="section level3" number="2.1.6">
+<h3><span class="header-section-number">2.1.6</span> Baseline UPC
 ratio</h3>
-<pre><code> model term df1 df2    F.ratio p.value
- upc_ratio    1 Inf      4.900  0.0273
- dose         1 Inf 665455.600  &lt;.0001
- time         3 Inf 321579.500  &lt;.0001
- dose:time    3 Inf 319825.900  &lt;.0001</code></pre>
+<pre><code> model term df1 df2 F.ratio p.value
+ upc_ratio    1 Inf   1.071  0.3006
+ dose         1 Inf   2.222  0.1360
+ time         2 Inf  13.296  &lt;.0001
+ dose:time    2 Inf   0.933  0.3935</code></pre>
 </div>
-<div id="relapsedrefractory-ln-vs.-new-onset-ln-1" class="section level3" number="3.2.7">
-<h3><span class="header-section-number">3.2.7</span> Relapsed/refractory
+<div id="relapsedrefractory-ln-vs.-new-onset-ln" class="section level3" number="2.1.7">
+<h3><span class="header-section-number">2.1.7</span> Relapsed/refractory
 LN vs. new-onset LN</h3>
-<pre><code> model term             df1 df2      F.ratio p.value
- cyclophosphamide_use_2   1 Inf       14.000  0.0002
- dose                     1 Inf   184211.000  &lt;.0001
- time                     3 Inf 11828828.000  &lt;.0001
- dose:time                3 Inf 11864443.000  &lt;.0001</code></pre>
+<pre><code> model term             df1 df2 F.ratio p.value
+ cyclophosphamide_use_2   1 Inf   3.010  0.0828
+ dose                     1 Inf   1.092  0.2959
+ time                     2 Inf  12.987  &lt;.0001
+ dose:time                2 Inf   0.915  0.4004</code></pre>
 </div>
-<div id="baseline-hypertension-1" class="section level3" number="3.2.8">
-<h3><span class="header-section-number">3.2.8</span> Baseline
+<div id="baseline-hypertension" class="section level3" number="2.1.8">
+<h3><span class="header-section-number">2.1.8</span> Baseline
 hypertension</h3>
-<pre><code>Error in solve.default(zcov, z) : 
-  system is computationally singular: reciprocal condition number = 2.24785e-23
-Error in solve.default(zcov, z) : 
-  system is computationally singular: reciprocal condition number = 1.83998e-23</code></pre>
-<pre><code> model term             df1 df2       F.ratio p.value
- diagnosis_hypertension   1 Inf         6.000  0.0181
- dose                     1 Inf  86175703.000  &lt;.0001
- time                     3 Inf  62606457.000  &lt;.0001
- dose:time                3 Inf 686260671.000  &lt;.0001</code></pre>
+<pre><code> model term             df1 df2 F.ratio p.value
+ diagnosis_hypertension   1 Inf   0.771  0.3800
+ dose                     1 Inf   1.871  0.1714
+ time                     2 Inf  12.985  &lt;.0001
+ dose:time                2 Inf   0.885  0.4128</code></pre>
 </div>
-<div id="disease-duration---ln-to-cyc-1" class="section level3" number="3.2.9">
-<h3><span class="header-section-number">3.2.9</span> Disease duration -
+<div id="disease-duration---ln-to-cyc" class="section level3" number="2.1.9">
+<h3><span class="header-section-number">2.1.9</span> Disease duration -
 LN to CYC</h3>
 <pre><code> model term          df1 df2 F.ratio p.value
- duration_ln_to_cyc1   1 Inf 217.545  &lt;.0001
- dose                  1 Inf   0.540  0.4624
- time                  3 Inf  75.596  &lt;.0001
- dose:time             3 Inf  54.763  &lt;.0001</code></pre>
+ duration_ln_to_cyc1   1 Inf   2.867  0.0904
+ dose                  1 Inf   1.214  0.2706
+ time                  2 Inf  13.168  &lt;.0001
+ dose:time             2 Inf   0.912  0.4016</code></pre>
 </div>
-<div id="disease-duration---sle-to-cyc-1" class="section level3" number="3.2.10">
-<h3><span class="header-section-number">3.2.10</span> Disease duration -
+<div id="disease-duration---sle-to-cyc" class="section level3" number="2.1.10">
+<h3><span class="header-section-number">2.1.10</span> Disease duration -
 SLE to CYC</h3>
-<pre><code> model term           df1 df2   F.ratio p.value
- duration_sle_to_cyc1   1 Inf    13.630  0.0002
- dose                   1 Inf 33682.740  &lt;.0001
- time                   3 Inf  5519.190  &lt;.0001
- dose:time              3 Inf  6456.080  &lt;.0001</code></pre>
+<pre><code> model term           df1 df2 F.ratio p.value
+ duration_sle_to_cyc1   1 Inf   3.637  0.0565
+ dose                   1 Inf   1.363  0.2431
+ time                   2 Inf  13.215  &lt;.0001
+ dose:time              2 Inf   0.907  0.4038</code></pre>
 </div>
-<div id="lupus-nephritis-class-v-1" class="section level3" number="3.2.11">
-<h3><span class="header-section-number">3.2.11</span> Lupus nephritis
+<div id="lupus-nephritis-class-v" class="section level3" number="2.1.11">
+<h3><span class="header-section-number">2.1.11</span> Lupus nephritis
 class V</h3>
-<pre><code> model term                df1 df2  F.ratio p.value
- lupus_nephritis_class___5   1 Inf    0.900  0.3427
- dose                        1 Inf 8505.544  &lt;.0001
- time                        3 Inf 1227.371  &lt;.0001
- dose:time                   3 Inf 2204.405  &lt;.0001</code></pre>
+<pre><code> model term                df1 df2 F.ratio p.value
+ lupus_nephritis_class___5   1 Inf   2.328  0.1270
+ dose                        1 Inf   2.083  0.1489
+ time                        2 Inf  13.300  &lt;.0001
+ dose:time                   2 Inf   0.945  0.3887</code></pre>
 </div>
-<div id="lupus-nephritis-class-iii-or-iv-1" class="section level3" number="3.2.12">
-<h3><span class="header-section-number">3.2.12</span> Lupus nephritis
+<div id="lupus-nephritis-class-iii-or-iv" class="section level3" number="2.1.12">
+<h3><span class="header-section-number">2.1.12</span> Lupus nephritis
 class III or IV</h3>
-<pre><code> model term              df1 df2   F.ratio p.value
- lupus_nephritis_IIIvsIV   1 Inf     0.410  0.5208
- dose                      1 Inf   104.750  &lt;.0001
- time                      3 Inf 87518.150  &lt;.0001
- dose:time                 3 Inf 82379.380  &lt;.0001</code></pre>
+<pre><code> model term              df1 df2 F.ratio p.value
+ lupus_nephritis_IIIvsIV   1 Inf   0.551  0.4578
+ dose                      1 Inf   2.132  0.1442
+ time                      2 Inf  13.108  &lt;.0001
+ dose:time                 2 Inf   0.890  0.4106</code></pre>
 </div>
-<div id="time-varying-oral-prednisone-dose-1" class="section level3" number="3.2.13">
-<h3><span class="header-section-number">3.2.13</span> Time-varying oral
+<div id="time-varying-oral-prednisone-dose" class="section level3" number="2.1.13">
+<h3><span class="header-section-number">2.1.13</span> Time-varying oral
 prednisone dose</h3>
 <pre><code> model term df1 df2 F.ratio p.value
- Prednisone   1 Inf   0.744  0.3884
- dose         1 Inf 173.866  &lt;.0001
- time         3 Inf 878.575  &lt;.0001
- dose:time    3 Inf 809.076  &lt;.0001</code></pre>
+ Prednisone   1 Inf   8.050  0.0046
+ dose         1 Inf   2.333  0.1267
+ time         2 Inf   5.817  0.0030
+ dose:time    2 Inf   0.977  0.3763</code></pre>
 </div>
-<div id="time-varying-iv-steroid-dose-1" class="section level3" number="3.2.14">
-<h3><span class="header-section-number">3.2.14</span> Time-varying IV
+<div id="time-varying-iv-steroid-dose" class="section level3" number="2.1.14">
+<h3><span class="header-section-number">2.1.14</span> Time-varying IV
 steroid dose</h3>
-<pre><code>Error in solve.default(zcov, z) : 
-  system is computationally singular: reciprocal condition number = 4.47115e-20
-Error in solve.default(zcov, z) : 
-  system is computationally singular: reciprocal condition number = 3.94511e-20</code></pre>
-<pre><code> model term df1 df2    F.ratio p.value
- IVsteroids   1 Inf      3.500  0.0624
- dose         1 Inf    470.900  &lt;.0001
- time         3 Inf 419349.600  &lt;.0001
- dose:time    3 Inf 211236.600  &lt;.0001</code></pre>
+<pre><code> model term df1 df2 F.ratio p.value
+ IVsteroids   1 Inf   0.025  0.8738
+ dose         1 Inf   2.292  0.1300
+ time         2 Inf  11.527  &lt;.0001
+ dose:time    2 Inf   0.822  0.4397</code></pre>
 </div>
-<div id="time-varying-acearb-use-1" class="section level3" number="3.2.15">
-<h3><span class="header-section-number">3.2.15</span> Time-varying
+<div id="time-varying-acearb-use" class="section level3" number="2.1.15">
+<h3><span class="header-section-number">2.1.15</span> Time-varying
 ACE/ARB use</h3>
-<pre><code> model term df1 df2  F.ratio p.value
- ACEARB       1 Inf    1.821  0.1772
- dose         1 Inf 1911.771  &lt;.0001
- time         3 Inf  345.747  &lt;.0001
- dose:time    3 Inf  382.479  &lt;.0001</code></pre>
+<pre><code> model term df1 df2 F.ratio p.value
+ ACEARB       1 Inf   0.206  0.6497
+ dose         1 Inf   2.276  0.1314
+ time         2 Inf  13.071  &lt;.0001
+ dose:time    2 Inf   0.901  0.4060</code></pre>
 </div>
-<div id="time-varying-rituximab-use-1" class="section level3" number="3.2.16">
-<h3><span class="header-section-number">3.2.16</span> Time-varying
+<div id="time-varying-rituximab-use" class="section level3" number="2.1.16">
+<h3><span class="header-section-number">2.1.16</span> Time-varying
 rituximab use</h3>
-<pre><code> model term df1 df2  F.ratio p.value
- Ritux        1 Inf    2.832  0.0924
- dose         1 Inf 3208.089  &lt;.0001
- time         3 Inf 1126.089  &lt;.0001
- dose:time    3 Inf  647.586  &lt;.0001</code></pre>
+<pre><code> model term df1 df2 F.ratio p.value
+ Ritux        1 Inf   3.825  0.0505
+ dose         1 Inf   2.283  0.1308
+ time         2 Inf  14.287  &lt;.0001
+ dose:time    2 Inf   1.003  0.3669</code></pre>
+</div>
+</div>
+<div id="crr-or-prr-outcome" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> CRR or PRR
+outcome</h2>
+<div id="dose-deviation-1" class="section level3" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Dose deviation</h3>
+<pre><code> model term            df1 df2 F.ratio p.value
+ percent_expected_dose   1 Inf   6.003  0.0143
+ dose                    1 Inf   5.430  0.0198
+ time                    2 Inf  16.725  &lt;.0001
+ dose:time               2 Inf   1.237  0.2904</code></pre>
+</div>
+<div id="age-at-first-dose-of-cyc-1" class="section level3" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Age at first dose
+of CYC</h3>
+<pre><code> model term   df1 df2 F.ratio p.value
+ age_cyc1_yrs   1 Inf  16.293  0.0001
+ dose           1 Inf   0.799  0.3714
+ time           2 Inf  16.872  &lt;.0001
+ dose:time      2 Inf   1.315  0.2685</code></pre>
+</div>
+<div id="gender-1" class="section level3" number="2.2.3">
+<h3><span class="header-section-number">2.2.3</span> Gender</h3>
+<pre><code> model term df1 df2 F.ratio p.value
+ gender       1 Inf   0.005  0.9437
+ dose         1 Inf   3.984  0.0459
+ time         2 Inf  17.003  &lt;.0001
+ dose:time    2 Inf   1.241  0.2891</code></pre>
+</div>
+<div id="raceethnicity-1" class="section level3" number="2.2.4">
+<h3><span class="header-section-number">2.2.4</span> Race/ethnicity</h3>
+<pre><code> model term df1 df2 F.ratio p.value
+ race5        4 Inf   1.106  0.3518
+ dose         1 Inf   5.254  0.0219
+ time         2 Inf  17.164  &lt;.0001
+ dose:time    2 Inf   1.192  0.3037</code></pre>
+</div>
+<div id="baseline-egfr-1" class="section level3" number="2.2.5">
+<h3><span class="header-section-number">2.2.5</span> Baseline eGFR</h3>
+<pre><code> model term      df1 df2 F.ratio p.value
+ diagnosis_GFR10   1 Inf   0.298  0.5853
+ dose              1 Inf   3.443  0.0635
+ time              2 Inf  17.150  &lt;.0001
+ dose:time         2 Inf   1.238  0.2898</code></pre>
+</div>
+<div id="baseline-upc-ratio-1" class="section level3" number="2.2.6">
+<h3><span class="header-section-number">2.2.6</span> Baseline UPC
+ratio</h3>
+<pre><code> model term df1 df2 F.ratio p.value
+ upc_ratio    1 Inf   0.007  0.9352
+ dose         1 Inf   3.950  0.0469
+ time         2 Inf  17.047  &lt;.0001
+ dose:time    2 Inf   1.239  0.2897</code></pre>
+</div>
+<div id="relapsedrefractory-ln-vs.-new-onset-ln-1" class="section level3" number="2.2.7">
+<h3><span class="header-section-number">2.2.7</span> Relapsed/refractory
+LN vs. new-onset LN</h3>
+<pre><code> model term             df1 df2 F.ratio p.value
+ cyclophosphamide_use_2   1 Inf  12.389  0.0004
+ dose                     1 Inf   1.161  0.2813
+ time                     2 Inf  16.228  &lt;.0001
+ dose:time                2 Inf   1.226  0.2934</code></pre>
+</div>
+<div id="baseline-hypertension-1" class="section level3" number="2.2.8">
+<h3><span class="header-section-number">2.2.8</span> Baseline
+hypertension</h3>
+<pre><code> model term             df1 df2 F.ratio p.value
+ diagnosis_hypertension   1 Inf   0.092  0.7615
+ dose                     1 Inf   3.708  0.0542
+ time                     2 Inf  16.942  &lt;.0001
+ dose:time                2 Inf   1.244  0.2881</code></pre>
+</div>
+<div id="disease-duration---ln-to-cyc-1" class="section level3" number="2.2.9">
+<h3><span class="header-section-number">2.2.9</span> Disease duration -
+LN to CYC</h3>
+<pre><code> model term          df1 df2 F.ratio p.value
+ duration_ln_to_cyc1   1 Inf   4.976  0.0257
+ dose                  1 Inf   2.051  0.1521
+ time                  2 Inf  16.844  &lt;.0001
+ dose:time             2 Inf   1.253  0.2857</code></pre>
+</div>
+<div id="disease-duration---sle-to-cyc-1" class="section level3" number="2.2.10">
+<h3><span class="header-section-number">2.2.10</span> Disease duration -
+SLE to CYC</h3>
+<pre><code> model term           df1 df2 F.ratio p.value
+ duration_sle_to_cyc1   1 Inf   6.886  0.0087
+ dose                   1 Inf   1.940  0.1636
+ time                   2 Inf  16.873  &lt;.0001
+ dose:time              2 Inf   1.210  0.2982</code></pre>
+</div>
+<div id="lupus-nephritis-class-v-1" class="section level3" number="2.2.11">
+<h3><span class="header-section-number">2.2.11</span> Lupus nephritis
+class V</h3>
+<pre><code> model term                df1 df2 F.ratio p.value
+ lupus_nephritis_class___5   1 Inf   1.401  0.2366
+ dose                        1 Inf   3.659  0.0558
+ time                        2 Inf  17.101  &lt;.0001
+ dose:time                   2 Inf   1.166  0.3117</code></pre>
+</div>
+<div id="lupus-nephritis-class-iii-or-iv-1" class="section level3" number="2.2.12">
+<h3><span class="header-section-number">2.2.12</span> Lupus nephritis
+class III or IV</h3>
+<pre><code> model term              df1 df2 F.ratio p.value
+ lupus_nephritis_IIIvsIV   1 Inf   0.336  0.5622
+ dose                      1 Inf   4.033  0.0446
+ time                      2 Inf  16.974  &lt;.0001
+ dose:time                 2 Inf   1.210  0.2982</code></pre>
+</div>
+<div id="time-varying-oral-prednisone-dose-1" class="section level3" number="2.2.13">
+<h3><span class="header-section-number">2.2.13</span> Time-varying oral
+prednisone dose</h3>
+<pre><code> model term df1 df2 F.ratio p.value
+ Prednisone   1 Inf   9.630  0.0019
+ dose         1 Inf   4.358  0.0368
+ time         2 Inf   6.985  0.0009
+ dose:time    2 Inf   1.332  0.2640</code></pre>
+</div>
+<div id="time-varying-iv-steroid-dose-1" class="section level3" number="2.2.14">
+<h3><span class="header-section-number">2.2.14</span> Time-varying IV
+steroid dose</h3>
+<pre><code> model term df1 df2 F.ratio p.value
+ IVsteroids   1 Inf   2.894  0.0889
+ dose         1 Inf   3.938  0.0472
+ time         2 Inf  13.558  &lt;.0001
+ dose:time    2 Inf   1.224  0.2941</code></pre>
+</div>
+<div id="time-varying-acearb-use-1" class="section level3" number="2.2.15">
+<h3><span class="header-section-number">2.2.15</span> Time-varying
+ACE/ARB use</h3>
+<pre><code> model term df1 df2 F.ratio p.value
+ ACEARB       1 Inf   3.006  0.0830
+ dose         1 Inf   4.022  0.0449
+ time         2 Inf  16.605  &lt;.0001
+ dose:time    2 Inf   1.230  0.2923</code></pre>
+</div>
+<div id="time-varying-rituximab-use-1" class="section level3" number="2.2.16">
+<h3><span class="header-section-number">2.2.16</span> Time-varying
+rituximab use</h3>
+<pre><code> model term df1 df2 F.ratio p.value
+ Ritux        1 Inf   1.582  0.2085
+ dose         1 Inf   4.087  0.0432
+ time         2 Inf  17.738  &lt;.0001
+ dose:time    2 Inf   1.167  0.3113</code></pre>
 </div>
 </div>
 </div>

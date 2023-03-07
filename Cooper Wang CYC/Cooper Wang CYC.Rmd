@@ -59,15 +59,14 @@ data$lupus_nephritis_class___5 <- as.factor(data$lupus_nephritis_class___5)
 data$lupus_nephritis_class___5 <- relevel(data$lupus_nephritis_class___5, ref="Unchecked")
 data$lupus_nephritis_IIIvsIV <- as.factor(data$lupus_nephritis_IIIvsIV)
 data$lupus_nephritis_IIIvsIV <- relevel(data$lupus_nephritis_IIIvsIV, ref="III")
+
+data <- data %>% filter(!time==0)
+data$time <- droplevels(data$time)
 ```
 
 # Methods
 
-CRR and CRR_PRR were set to "no" at time 0. Generalized estimating equations were used to test the significance of each predictor in a model also containing a regimen by time interaction.
-
-# Questions
-
-1) There is a separate variable for lupus nephritis class V vs. class III or IV. The comparison below reflects class V vs. the combination of class III and IV, but we could do a comparison of the three groups if needed.
+Generalized estimating equations were used to test the significance of each predictor in a model also containing a regimen by time interaction.
 
 # Results
 
