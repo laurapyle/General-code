@@ -63,7 +63,9 @@ data$time <- droplevels(data$time)
 
 # Methods
 
-Generalized estimating equations were used to test the significance of each predictor in a model also containing a regimen by time interaction.
+Generalized estimating equations were used to test the significance of each predictor in a model also containing a regimen by time interaction. Convergence was poor for models including the baseline time point, so it was excluded. 
+
+To interpret the significance of each covariate, look at the p-value in the second row in the ANOVA table which is labeled with the name of the covariate.
 
 # Results
 
