@@ -360,3 +360,26 @@ mod <-  geeglm(CRRPRR ~ Ritux + dose*time,
                id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
 joint_tests(mod)
 ```
+
+## Multivariate model for CRR
+
+NOTE: need to clean up univariate results to present OR 
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRR ~ dose*time + percent_expected_dose + age_cyc1_yrs + diagnosis_GFR10 + upc_ratio + 
+                 cyclophosphamide_use_2 + duration_sle_to_cyc1 + gender + race5 + 
+                 Prednisone + IVsteroids + ACEARB + Ritux, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+exp(coef(mod))
+joint_tests(mod,rg.limit = 62000)
+```
+
+## Multivariate model for CRR_PRR
+
+```{r echo=FALSE, comment=""}
+mod <-  geeglm(CRRPRR ~ dose*time + percent_expected_dose + age_cyc1_yrs + diagnosis_GFR10 + upc_ratio + 
+                 cyclophosphamide_use_2 + duration_sle_to_cyc1 + gender + race5 + 
+                 Prednisone + IVsteroids + ACEARB + Ritux, 
+               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+exp(coef(mod))
+```
