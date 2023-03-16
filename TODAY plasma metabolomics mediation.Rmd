@@ -45,11 +45,11 @@ load("./Clinical data/comorb.Rdata")
 # load baseline risk factors
 load("./Clinical data/TODAY/baserisk.Rdata")
 
-# read in year 10 eGFR
+# read in eGFR
 ADDCBL_TODAY2 <- read.csv("./Clinical data/TODAY2/ADDCBL.csv")
 gfr <- ADDCBL_TODAY2 %>% select(releaseid,mvisit,eGFR_FAS)
 gfr <- gfr %>% filter(!is.na(eGFR_FAS))
-yr2gfr <- gfr %>% filter(mvisit=="M24")
+gfr <- gfr %>% filter(mvisit=="M12")
 
 # take only the baseline samples
 plasma$Date.Drawn <- as.Date(plasma$Date.Drawn,format = "%m/%d/%Y")
@@ -63,7 +63,7 @@ base <- merge(base, comorb, by="releaseid",all.x=T, all.y=F)
 base <- merge(base, baserisk, by="releaseid",all.x=T, all.y=F)
 
 # merge in eGFR
-data <- merge(base,yr2gfr,by="releaseid",all.x=T,all.y=F)
+data <- merge(base,gfr,by="releaseid",all.x=T,all.y=F)
 
 # for mediation analyses, need baseline A1c, baseline metabolomics, year 2 eGFR
 # not perfect that A1c is at the same time as metabolomics, but we can argue it is a 3-mo cumulative measure
@@ -100,12 +100,12 @@ for_mediation <- for_mediation %>% dplyr::select(-one_of(colnames(miss)))
 seq <- is_seq(names(for_mediation))
 
 # fit regmed for grid of lambda penalties
-lambda.grid <- seq(from = 0.4, to = 0.01, by = -0.05)
+lambda.grid <- seq(from = 1, to = 0.01, by = -0.01)
 x1 <- for_mediation$si_1_ins0
 y1 <- for_mediation$eGFR_FAS
 med <- for_mediation[seq]
 fit.grid <- regmed.grid(x=x1, mediator=for_mediation[,seq], y=y1,
-                        lambda.grid, frac.lasso = 0.8)
+                        lambda.grid, frac.lasso = 0.5)
 print(fit.grid)
 plot.regmed.grid(fit.grid)
 
@@ -120,6 +120,91 @@ plot.regmed.edges(edges.any)
 
 dat <- regmed.lavaan.dat(x=x1, mediator=for_mediation[seq], y=y1)
 mod.best <- regmed.lavaan.model(edges.med, fit.best)
+mod.any <- regmed.lavaan.model(edges.any, fit.best)
+
+fit.lav.med <- lavaan:::sem(model = mod.best, data = dat)
+summary.lavaan(fit.lav.med)
+
+fit.lav.any <- lavaan:::sem(model = mod.any, data = dat)
+summary.lavaan(fit.lav.any)
+
+```
+
+```{r}
+# trying simulated dataset
+data(medsim)
+
+dat.filter <- regmed.prefilter(x[, 1], med, y[, 1], k = 10)
+colnames(dat.filter$mediator)
+
+lambda.grid <- seq(from = 0.4, to = 0.01, by = -0.05)
+
+x1 <- dat.filter$x
+y1 <- dat.filter$y
+med <- dat.filter$mediator
+
+fit.grid <- regmed.grid(x1, med, y1, lambda.grid, frac.lasso = 0.8)
+
+print(fit.grid)
+
+plot.regmed.grid(fit.grid)
+
+fit.best <- regmed.grid.bestfit(fit.grid)
+summary(fit.best)
+
+edges.med <- regmed.edges(fit.best, type = "mediators")
+plot.regmed.edges(edges.med)
+
+edges.any <- regmed.edges(fit.best, type = "any")
+plot.regmed.edges(edges.any)
+
+dat <- regmed.lavaan.dat(x1, med, y1)
+
+mod.best <- regmed.lavaan.model(edges.med, fit.best)
+
+mod.any <- regmed.lavaan.model(edges.any, fit.best)
+
+fit.lav.med <- lavaan:::sem(model = mod.best, data = dat)
+summary.lavaan(fit.lav.med)
+
+fit.lav.any <- lavaan:::sem(model = mod.any, data = dat)
+summary.lavaan(fit.lav.any)
+
+```
+
+```{r}
+# trying exactly the same code but with TODAY data
+# need to update with data and var names
+data(medsim)
+
+dat.filter <- regmed.prefilter(x[, 1], med, y[, 1], k = 10)
+colnames(dat.filter$mediator)
+
+lambda.grid <- seq(from = 0.4, to = 0.01, by = -0.05)
+
+x1 <- dat.filter$x
+y1 <- dat.filter$y
+med <- dat.filter$mediator
+
+fit.grid <- regmed.grid(x1, med, y1, lambda.grid, frac.lasso = 0.8)
+
+print(fit.grid)
+
+plot.regmed.grid(fit.grid)
+
+fit.best <- regmed.grid.bestfit(fit.grid)
+summary(fit.best)
+
+edges.med <- regmed.edges(fit.best, type = "mediators")
+plot.regmed.edges(edges.med)
+
+edges.any <- regmed.edges(fit.best, type = "any")
+plot.regmed.edges(edges.any)
+
+dat <- regmed.lavaan.dat(x1, med, y1)
+
+mod.best <- regmed.lavaan.model(edges.med, fit.best)
+
 mod.any <- regmed.lavaan.model(edges.any, fit.best)
 
 fit.lav.med <- lavaan:::sem(model = mod.best, data = dat)
