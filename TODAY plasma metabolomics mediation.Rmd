@@ -1,0 +1,98 @@
+---
+title: "TODAY plasma metabolomics baseline analyses - adjusted linear models"
+author: "Laura Pyle"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    number_sections: yes
+    theme: readable
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+library(limma)
+library(dplyr)
+library(caret)
+library(purrr)
+library(multtest)
+library(openxlsx)
+library(tableone)
+library(EnhancedVolcano)
+library(knitr)
+library(regmed)
+
+knitr::opts_chunk$set(echo = FALSE,warning = FALSE)
+
+knitr::opts_chunk$set(echo = FALSE)
+if(Sys.info()["sysname"] == "Windows"){
+  home_dir = "E:/Petter Bjornstad/TODAY subaward"
+} else if (Sys.info()["sysname"] == "Linux"){
+  home_dir = "~/UCD/PEDS/RI Biostatistics Core/Shared/Shared Projects/Laura/Peds Endo/Petter Bjornstad/TODAY subaward/"
+} else if (Sys.info()["sysname"] == "Darwin"){
+  home_dir = "/Volumes/som/PEDS/RI Biostatistics Core/Shared/Shared Projects/Laura/Peds Endo/Petter Bjornstad/TODAY subaward/"
+}
+knitr::opts_knit$set(root.dir = home_dir)
+```
+
+```{r, include=FALSE}
+load("./Metabolomic data/plasma.Rdata")
+
+# load comorbidity data
+load("./Clinical data/comorb.Rdata")
+
+# load baseline risk factors
+load("./Clinical data/TODAY/baserisk.Rdata")
+
+# read in year 10 eGFR
+ADDCBL_TODAY2 <- read.csv("./Clinical data/TODAY2/ADDCBL.csv")
+gfr <- ADDCBL_TODAY2 %>% select(releaseid,mvisit,eGFR_FAS)
+gfr <- gfr %>% filter(!is.na(eGFR_FAS))
+yr2gfr <- gfr %>% filter(mvisit=="M24")
+
+# take only the baseline samples
+plasma$Date.Drawn <- as.Date(plasma$Date.Drawn,format = "%m/%d/%Y")
+base <- plasma %>% arrange(releaseid,Date.Drawn) %>% group_by(releaseid) %>% filter(row_number()==1)
+base <- base %>% arrange(Date.Drawn)
+
+# merge in complication data
+base <- merge(base, comorb, by="releaseid",all.x=T, all.y=F)
+
+# merge in baseline risk factors
+base <- merge(base, baserisk, by="releaseid",all.x=T, all.y=F)
+
+# merge in eGFR
+data <- merge(base,yr2gfr,by="releaseid",all.x=T,all.y=F)
+
+# for mediation analyses, need baseline A1c, baseline metabolomics, year 2 eGFR
+# not perfect that A1c is at the same time as metabolomics, but we can argue it is a 3-mo cumulative measure
+
+# only keep observations with nonmissing values of covariates
+#data <- data %>% filter(!is.na(HbA1c) & !is.na(eGFR_FAS))
+
+# identify columns corresponding to proteins
+#is_seq <- function(.x) grepl("^seq\\.[0-9]{4}", .x) # regex for analytes
+is_seq <- function(.x) grepl("uM", .x)
+seq <- is_seq(names(data))
+
+# convert to numeric
+data[,seq] <- apply(data[,seq],2,as.numeric)
+
+# center and scale X, M, Y
+for_mediation <- cbind(data[,seq], data$HbA1c, data$eGFR_FAS)
+for_mediation <-  as.data.frame(apply(for_mediation,2,scale))
+```
+
+```{r}
+
+
+```
+
+# Results
+
+## Descriptive statistics
+
+```{r echo=FALSE, include=TRUE}
+kable(t1)
+```
