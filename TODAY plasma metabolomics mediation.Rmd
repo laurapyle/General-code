@@ -81,15 +81,15 @@ data[,seq] <- apply(data[,seq],2,as.numeric)
 
 # center and scale X, M, Y
 # actually I think the prefilter function does this step
-for_mediation <- cbind(data[,seq], data$si_1_ins0, data$eGFR_FAS)
-colnames(for_mediation) <- c(colnames(for_mediation[1:58]),"si_1_ins0","eGFR_FAS")
+for_mediation <- cbind(data[,seq], data$bmi, data$eGFR_FAS)
+colnames(for_mediation) <- c(colnames(for_mediation[1:58]),"bmi","eGFR_FAS")
 seq <- is_seq(names(for_mediation))
 #for_mediation <-  as.data.frame(apply(for_mediation,2,scale))
 
 ```
 
 ```{r}
-dat.filter <- regmed.prefilter(x=for_mediation$si_1_ins0, mediator=for_mediation[,seq], y=for_mediation$eGFR_FAS)
+dat.filter <- regmed.prefilter(x=for_mediation$bmi, mediator=for_mediation[,seq], y=for_mediation$eGFR_FAS)
 colnames(dat.filter$mediator)
 # no filtering done so need to center and scale manually
 for_mediation <-  as.data.frame(apply(for_mediation,2,scale))
@@ -101,7 +101,7 @@ seq <- is_seq(names(for_mediation))
 
 # fit regmed for grid of lambda penalties
 lambda.grid <- seq(from = 1, to = 0.01, by = -0.01)
-x1 <- for_mediation$si_1_ins0
+x1 <- for_mediation$bmi
 y1 <- for_mediation$eGFR_FAS
 med <- for_mediation[seq]
 fit.grid <- regmed.grid(x=x1, mediator=for_mediation[,seq], y=y1,
@@ -172,53 +172,4 @@ summary.lavaan(fit.lav.any)
 
 ```
 
-```{r}
-# trying exactly the same code but with TODAY data
-# need to update with data and var names
-data(medsim)
 
-dat.filter <- regmed.prefilter(x[, 1], med, y[, 1], k = 10)
-colnames(dat.filter$mediator)
-
-lambda.grid <- seq(from = 0.4, to = 0.01, by = -0.05)
-
-x1 <- dat.filter$x
-y1 <- dat.filter$y
-med <- dat.filter$mediator
-
-fit.grid <- regmed.grid(x1, med, y1, lambda.grid, frac.lasso = 0.8)
-
-print(fit.grid)
-
-plot.regmed.grid(fit.grid)
-
-fit.best <- regmed.grid.bestfit(fit.grid)
-summary(fit.best)
-
-edges.med <- regmed.edges(fit.best, type = "mediators")
-plot.regmed.edges(edges.med)
-
-edges.any <- regmed.edges(fit.best, type = "any")
-plot.regmed.edges(edges.any)
-
-dat <- regmed.lavaan.dat(x1, med, y1)
-
-mod.best <- regmed.lavaan.model(edges.med, fit.best)
-
-mod.any <- regmed.lavaan.model(edges.any, fit.best)
-
-fit.lav.med <- lavaan:::sem(model = mod.best, data = dat)
-summary.lavaan(fit.lav.med)
-
-fit.lav.any <- lavaan:::sem(model = mod.any, data = dat)
-summary.lavaan(fit.lav.any)
-
-```
-
-# Results
-
-## Descriptive statistics
-
-```{r echo=FALSE, include=TRUE}
-kable(t1)
-```
