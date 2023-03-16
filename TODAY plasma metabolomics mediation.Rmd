@@ -80,12 +80,53 @@ seq <- is_seq(names(data))
 data[,seq] <- apply(data[,seq],2,as.numeric)
 
 # center and scale X, M, Y
-for_mediation <- cbind(data[,seq], data$HbA1c, data$eGFR_FAS)
-for_mediation <-  as.data.frame(apply(for_mediation,2,scale))
+# actually I think the prefilter function does this step
+for_mediation <- cbind(data[,seq], data$si_1_ins0, data$eGFR_FAS)
+colnames(for_mediation) <- c(colnames(for_mediation[1:58]),"si_1_ins0","eGFR_FAS")
+seq <- is_seq(names(for_mediation))
+#for_mediation <-  as.data.frame(apply(for_mediation,2,scale))
+
 ```
 
 ```{r}
+dat.filter <- regmed.prefilter(x=for_mediation$si_1_ins0, mediator=for_mediation[,seq], y=for_mediation$eGFR_FAS)
+colnames(dat.filter$mediator)
+# no filtering done so need to center and scale manually
+for_mediation <-  as.data.frame(apply(for_mediation,2,scale))
 
+# remove variables with more than 80% missing
+miss <- for_mediation[,seq] %>% dplyr::select(where(~mean(is.na(.)) > 0.8))
+for_mediation <- for_mediation %>% dplyr::select(-one_of(colnames(miss)))
+seq <- is_seq(names(for_mediation))
+
+# fit regmed for grid of lambda penalties
+lambda.grid <- seq(from = 0.4, to = 0.01, by = -0.05)
+x1 <- for_mediation$si_1_ins0
+y1 <- for_mediation$eGFR_FAS
+med <- for_mediation[seq]
+fit.grid <- regmed.grid(x=x1, mediator=for_mediation[,seq], y=y1,
+                        lambda.grid, frac.lasso = 0.8)
+print(fit.grid)
+plot.regmed.grid(fit.grid)
+
+fit.best <- regmed.grid.bestfit(fit.grid)
+summary(fit.best)
+
+edges.med <- regmed.edges(fit.best, type = "mediators")
+plot.regmed.edges(edges.med)
+
+edges.any <- regmed.edges(fit.best, type = "any")
+plot.regmed.edges(edges.any)
+
+dat <- regmed.lavaan.dat(x=x1, mediator=for_mediation[seq], y=y1)
+mod.best <- regmed.lavaan.model(edges.med, fit.best)
+mod.any <- regmed.lavaan.model(edges.any, fit.best)
+
+fit.lav.med <- lavaan:::sem(model = mod.best, data = dat)
+summary.lavaan(fit.lav.med)
+
+fit.lav.any <- lavaan:::sem(model = mod.any, data = dat)
+summary.lavaan(fit.lav.any)
 
 ```
 
