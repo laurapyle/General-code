@@ -446,7 +446,7 @@ mod <-  geeglm(CRR ~ dose*time + percent_expected_dose + age_cyc1_yrs + diagnosi
                id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
 anova(mod)
 t <- mod %>% tbl_regression(family="binomial", exponentiate = TRUE) %>% add_global_p() 
-gtsummary::modify_table_body(t, dplyr::select, -p.value)
+#gtsummary::modify_table_body(t, dplyr::select, -p.value)
 test.emm <- emmeans(mod, ~ dose*time)
 pairs(test.emm, adjust="none")
 ```
@@ -460,7 +460,7 @@ mod <-  geeglm(CRRPRR ~ dose*time + percent_expected_dose + age_cyc1_yrs + diagn
                id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
 anova(mod)
 t <- mod %>% tbl_regression(family="binomial", exponentiate = TRUE) %>% add_global_p() 
-gtsummary::modify_table_body(t, dplyr::select, -p.value)
+#gtsummary::modify_table_body(t, dplyr::select, -p.value)
 test.emm <- emmeans(mod, ~ dose*time)
 pairs(test.emm, adjust="none")
 ```
