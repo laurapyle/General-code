@@ -437,7 +437,7 @@ t <- mod %>% tbl_regression(family="binomial", exponentiate = TRUE) %>% add_glob
 gtsummary::modify_table_body(t, dplyr::select, -p.value)
 ```
 
-### Multivariable model for CRR
+## Multivariable model for CRR
 
 ```{r echo=FALSE, comment="", message=FALSE}
 mod <-  geeglm(CRR ~ dose*time + percent_expected_dose + age_cyc1_yrs + diagnosis_GFR10 + upc_ratio + 
@@ -451,7 +451,7 @@ test.emm <- emmeans(mod, ~ dose*time)
 pairs(test.emm, adjust="none")
 ```
 
-### Multivariable model for CRR_PRR
+## Multivariable model for CRR_PRR
 
 ```{r echo=FALSE, comment="", message=FALSE}
 mod <-  geeglm(CRRPRR ~ dose*time + percent_expected_dose + age_cyc1_yrs + diagnosis_GFR10 + upc_ratio + 
