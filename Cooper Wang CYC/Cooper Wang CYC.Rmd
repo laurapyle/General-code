@@ -1,6 +1,6 @@
 ---
 title: "Cooper/Wang CYC study"
-author: "Kristen Miller and Laura Pyle"
+author: "Wenru Zhou, Kristen Miller and Laura Pyle"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
   html_document:
@@ -65,11 +65,13 @@ data$time <- droplevels(data$time)
 
 # Methods
 
-Univariate modeling: Generalized estimating equations were used to test the significance of each predictor in a model also containing a regimen by time interaction. Convergence was poor for models including the baseline time point, so it was excluded. To interpret the significance of each covariate, look at the p-value in the second row in the ANOVA table which is labeled with the name of the covariate.
+Univariable modeling: Generalized estimating equations were used to test the significance of each predictor in a model also containing a regimen by time interaction. Convergence was poor for models including the baseline time point, so it was excluded. To interpret the significance of each covariate, look at the p-value in the second row in the ANOVA table which is labeled with the name of the covariate.
+
+Multivariable modeling: Using the results of the univariable models and clinical judgement, variables were selected for inclusion in multivariable models. The ANOVA table provides the overall test of significance for each variable in the model. The contrast table provides the specific comparison of the NIH and Euro-lupus groups at 12 months (see row labeled "High (NIH) time12 - (Low (euro-lupus) time12)").
 
 # Results
 
-## Univariate modeling
+## Univariable modeling
 
 ### CRR outcome
 
@@ -435,27 +437,28 @@ t <- mod %>% tbl_regression(family="binomial", exponentiate = TRUE) %>% add_glob
 gtsummary::modify_table_body(t, dplyr::select, -p.value)
 ```
 
-### Multivariate model for CRR
+### Multivariable model for CRR
 
 ```{r echo=FALSE, comment="", message=FALSE}
 mod <-  geeglm(CRR ~ dose*time + percent_expected_dose + age_cyc1_yrs + diagnosis_GFR10 + upc_ratio + 
                  cyclophosphamide_use_2 + duration_sle_to_cyc1 + gender + race5 + 
                  Prednisone + IVsteroids + ACEARB + Ritux, 
                id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
-#joint_tests(mod,rg.limit = 62000)
+anova(mod)
 t <- mod %>% tbl_regression(family="binomial", exponentiate = TRUE) %>% add_global_p() 
 gtsummary::modify_table_body(t, dplyr::select, -p.value)
 test.emm <- emmeans(mod, ~ dose*time)
 pairs(test.emm, adjust="none")
 ```
 
-### Multivariate model for CRR_PRR
+### Multivariable model for CRR_PRR
 
 ```{r echo=FALSE, comment="", message=FALSE}
 mod <-  geeglm(CRRPRR ~ dose*time + percent_expected_dose + age_cyc1_yrs + diagnosis_GFR10 + upc_ratio + 
                  cyclophosphamide_use_2 + duration_sle_to_cyc1 + gender + race5 + 
                  Prednisone + IVsteroids + ACEARB + Ritux, 
                id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+anova(mod)
 t <- mod %>% tbl_regression(family="binomial", exponentiate = TRUE) %>% add_global_p() 
 gtsummary::modify_table_body(t, dplyr::select, -p.value)
 test.emm <- emmeans(mod, ~ dose*time)
