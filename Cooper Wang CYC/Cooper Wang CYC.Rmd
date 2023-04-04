@@ -61,6 +61,10 @@ data$dose <- as.factor(data$dose)
 
 # standardize IV steroid dose
 data$IVsteroids_per_SD <- data$IVsteroids/3014.263
+data$IVsteroids_div_1000 <- data$IVsteroids/1000
+
+# scale percent expected dose
+data$percent_expected_dose_div_10 <- data$percent_expected_dose/10
 
 data <- data %>% filter(!time==0)
 data$time <- droplevels(data$time)
@@ -78,10 +82,10 @@ Multivariable modeling: Using the results of the univariable models and clinical
 
 ### CRR outcome
 
-#### Dose deviation
+#### Dose deviation (percent expected dose scaled by dividing by 10)
 
 ```{r echo=FALSE, comment="", message=FALSE}
-mod <-  geeglm(CRR ~ percent_expected_dose + dose*time, 
+mod <-  geeglm(CRR ~ percent_expected_dose_div_10 + dose*time, 
                id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
 joint_tests(mod)
 t <- mod %>% tbl_regression(family="binomial", exponentiate = TRUE) %>% add_global_p() 
@@ -228,10 +232,10 @@ t <- mod %>% tbl_regression(family="binomial", exponentiate = TRUE) %>% add_glob
 gtsummary::modify_table_body(t, dplyr::select, -p.value)
 ```
 
-#### Time-varying IV steroid dose
+#### Time-varying IV steroid dose (variable scaled by dividing by 1000)
 
 ```{r echo=FALSE, comment="", message=FALSE}
-mod <-  geeglm(CRR ~ IVsteroids + dose*time, 
+mod <-  geeglm(CRR ~ IVsteroids_div_1000 + dose*time, 
                id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
 joint_tests(mod)
 t <- mod %>% tbl_regression(family="binomial", exponentiate = TRUE) %>% add_global_p() 
@@ -260,10 +264,10 @@ gtsummary::modify_table_body(t, dplyr::select, -p.value)
 
 ### CRR or PRR outcome
 
-#### Dose deviation
+#### Dose deviation (percent expected dose scaled by dividing by 10)
 
 ```{r echo=FALSE, comment="", message=FALSE}
-mod <-  geeglm(CRRPRR ~ percent_expected_dose + dose*time, 
+mod <-  geeglm(CRRPRR ~ percent_expected_dose_div_10 + dose*time, 
                id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
 joint_tests(mod)
 t <- mod %>% tbl_regression(family="binomial", exponentiate = TRUE) %>% add_global_p() 
@@ -410,10 +414,10 @@ t <- mod %>% tbl_regression(family="binomial", exponentiate = TRUE) %>% add_glob
 gtsummary::modify_table_body(t, dplyr::select, -p.value)
 ```
 
-#### Time-varying IV steroid dose
+#### Time-varying IV steroid dose (variable scaled by dividing by 1000)
 
 ```{r echo=FALSE, comment="", message=FALSE}
-mod <-  geeglm(CRRPRR ~ IVsteroids + dose*time, 
+mod <-  geeglm(CRRPRR ~ IVsteroids_div_1000 + dose*time, 
                id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
 joint_tests(mod)
 t <- mod %>% tbl_regression(family="binomial", exponentiate = TRUE) %>% add_global_p() 
@@ -443,16 +447,22 @@ gtsummary::modify_table_body(t, dplyr::select, -p.value)
 ## Multivariable model for CRR
 
 ```{r echo=FALSE, comment="", message=FALSE}
-mod <-  geeglm(CRR ~ dose*time + percent_expected_dose + age_cyc1_yrs + diagnosis_GFR10 + upc_ratio + 
+mod <-  geeglm(CRR ~ dose*time + percent_expected_dose_div_10 + age_cyc1_yrs + diagnosis_GFR10 + upc_ratio + 
                  cyclophosphamide_use_2 + duration_sle_to_cyc1 + gender + race5 + 
-                 Prednisone + IVsteroids_per_SD + ACEARB + Ritux, 
-               id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
+                 Prednisone + IVsteroids_div_1000 + ACEARB + Ritux, 
+               id=record_id, data=data, family="binomial", scale.fix=TRUE, corstr="ar1")
 #anova(mod)
 t <- mod %>% tbl_regression(family="binomial", exponentiate = TRUE) %>% add_global_p() 
 gtsummary::modify_table_body(t, dplyr::select, -p.value)
-test.emm <- emmeans(mod, ~ dose*time)
+test.emm <- emmeans(mod, ~ dose*time, type="response")
 p <- as.data.frame(pairs(test.emm, adjust="none"))
-p <- p[p$contrast=="High (NIH) time12 - (Low (euro-lupus) time12)",]
+p <- p[p$contrast=="High (NIH) time12 / (Low (euro-lupus) time12)",]
+p$df <- NULL
+p$z.ratio <- NULL
+p
+
+p <- as.data.frame(confint(pairs(test.emm), type = "response", adjust="none"))
+p <- p[p$contrast=="High (NIH) time12 / (Low (euro-lupus) time12)",]
 p$df <- NULL
 p$z.ratio <- NULL
 p
@@ -461,16 +471,22 @@ p
 ## Multivariable model for CRR_PRR
 
 ```{r echo=FALSE, comment="", message=FALSE}
-mod <-  geeglm(CRRPRR ~ dose*time + percent_expected_dose + age_cyc1_yrs + diagnosis_GFR10 + upc_ratio + 
+mod <-  geeglm(CRRPRR ~ dose*time + percent_expected_dose_div_10 + age_cyc1_yrs + diagnosis_GFR10 + upc_ratio + 
                  cyclophosphamide_use_2 + duration_sle_to_cyc1 + gender + race5 + 
-                 Prednisone + IVsteroids_per_SD + ACEARB + Ritux, 
+                 Prednisone + IVsteroids_div_1000 + ACEARB + Ritux, 
                id=record_id, data=data, family=binomial, scale.fix=TRUE, corstr="ar1")
 #anova(mod)
 t <- mod %>% tbl_regression(family="binomial", exponentiate = TRUE) %>% add_global_p() 
 gtsummary::modify_table_body(t, dplyr::select, -p.value)
-test.emm <- emmeans(mod, ~ dose*time)
+test.emm <- emmeans(mod, ~ dose*time, type="response")
 p <- as.data.frame(pairs(test.emm, adjust="none"))
-p <- p[p$contrast=="High (NIH) time12 - (Low (euro-lupus) time12)",]
+p <- p[p$contrast=="High (NIH) time12 / (Low (euro-lupus) time12)",]
+p$df <- NULL
+p$z.ratio <- NULL
+p
+
+p <- as.data.frame(confint(pairs(test.emm), type = "response", adjust="none"))
+p <- p[p$contrast=="High (NIH) time12 / (Low (euro-lupus) time12)",]
 p$df <- NULL
 p$z.ratio <- NULL
 p
