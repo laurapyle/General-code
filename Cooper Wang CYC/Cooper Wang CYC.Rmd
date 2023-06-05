@@ -58,6 +58,8 @@ data$lupus_nephritis_class___5 <- relevel(data$lupus_nephritis_class___5, ref="U
 data$lupus_nephritis_IIIvsIV <- as.factor(data$lupus_nephritis_IIIvsIV)
 data$lupus_nephritis_IIIvsIV <- relevel(data$lupus_nephritis_IIIvsIV, ref="III")
 data$dose <- as.factor(data$dose)
+data$dose <- relevel(data$dose, ref="High (NIH)")
+data$dose <- as.factor(data$dose)
 data$number_doses_cat <- as.factor(data$number_doses_cat)
 data$number_doses_cat <- relevel(data$number_doses_cat, ref="5-7 doses")
 
@@ -519,14 +521,14 @@ mod <-  geeglm(CRR ~ dose*time + age_cyc1_yrs + diagnosis_GFR10 + upc_ratio +
 t <- mod %>% tbl_regression(family="binomial", exponentiate = TRUE) %>% add_global_p() 
 gtsummary::modify_table_body(t, dplyr::select, -p.value)
 test.emm <- emmeans(mod, ~ dose*time, type="response")
-p <- as.data.frame(pairs(test.emm, adjust="none"))
-p <- p[p$contrast=="High (NIH) time12 / (Low (euro-lupus) time12)",]
+p <- as.data.frame(pairs(test.emm, adjust="none", reverse = TRUE))
+p <- p[p$contrast=="(Low (euro-lupus) time12) / High (NIH) time12",]
 p$df <- NULL
 p$z.ratio <- NULL
 p
 
-p <- as.data.frame(confint(pairs(test.emm), type = "response", adjust="none"))
-p <- p[p$contrast=="High (NIH) time12 / (Low (euro-lupus) time12)",]
+p <- as.data.frame(confint(pairs(test.emm, type = "response", adjust="none", reverse = TRUE)))
+p <- p[p$contrast=="(Low (euro-lupus) time12) / High (NIH) time12",]
 p$df <- NULL
 p$z.ratio <- NULL
 p
@@ -543,15 +545,16 @@ mod <-  geeglm(CRRPRR ~ dose*time + age_cyc1_yrs + diagnosis_GFR10 + upc_ratio +
 t <- mod %>% tbl_regression(family="binomial", exponentiate = TRUE) %>% add_global_p() 
 gtsummary::modify_table_body(t, dplyr::select, -p.value)
 test.emm <- emmeans(mod, ~ dose*time, type="response")
-p <- as.data.frame(pairs(test.emm, adjust="none"))
-p <- p[p$contrast=="High (NIH) time12 / (Low (euro-lupus) time12)",]
+p <- as.data.frame(pairs(test.emm, adjust="none", reverse = TRUE))
+p <- p[p$contrast=="(Low (euro-lupus) time12) / High (NIH) time12",]
 p$df <- NULL
 p$z.ratio <- NULL
 p
 
-p <- as.data.frame(confint(pairs(test.emm), type = "response", adjust="none"))
-p <- p[p$contrast=="High (NIH) time12 / (Low (euro-lupus) time12)",]
+p <- as.data.frame(confint(pairs(test.emm, type = "response", adjust="none", reverse = TRUE)))
+p <- p[p$contrast=="(Low (euro-lupus) time12) / High (NIH) time12",]
 p$df <- NULL
 p$z.ratio <- NULL
 p
+
 ```
