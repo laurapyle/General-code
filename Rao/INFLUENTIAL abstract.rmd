@@ -1,0 +1,78 @@
+---
+title: "INFLUENTIAL - PAS abstract"
+author: "Laura Pyle"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    number_sections: yes
+    theme: readable
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+---
+
+```{r libraries,echo=FALSE, include=F}
+library(knitr)
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(arsenal)
+knitr::opts_chunk$set(echo = FALSE,warning = FALSE)
+```
+
+```{r data,echo=FALSE}
+alldata <- read.csv("/Users/pylell/Documents/Downtime/Rao/InFLUentialEHRData_DATA_LABELS_2024-10-25_1859.csv")
+
+######################
+# INCLUSION CRITERIA #
+######################
+
+# between 6 months and 18 years at time of discharge
+alldata$Discharge.Date.Time <- as.Date(alldata$Discharge.Date.Time, format = "%m/%d/%y")
+alldata$Admission.Date.Time <- as.Date(alldata$Admission.Date.Time, format = "%m/%d/%y")
+alldata$los <- alldata$Discharge.Date.Time - alldata$Admission.Date.Time
+# all records above seem to have Discharge after Admission 
+# no negative LOS, but some 0 LOS
+alldata$age_discharge <- alldata$Age.at.admission.in.days + alldata$los
+data <- alldata
+data <- data %>% filter(age_discharge >= 180 & age_discharge < 6570)
+# Patient hospitalized on a medical, surgical, rehabilitation, or psychiatry/behavioral medicine unit during the influenza vaccination season at your institution
+data <- data %>% filter(!(Unit == "Other"))
+
+######################
+# EXCLUSION CRITERIA #
+######################
+
+# Admitted to hematology/oncology service or unit
+data <- data %>% filter(!(Service == "Hematology/Oncology"))
+# Discharged from ICU setting
+data <- data %>% filter(ICU == "No")
+# Ward of state or foster child
+# NO CORRESPONDING VARIABLE
+# Death on record
+# NO CORRESPONDING VARIABLE
+# Flagged as “Does not wish to participate in research” 
+# NO CORRESPONDING VARIABLE
+
+# remove records with missing site number
+data <- data %>% filter(!is.na(Site))
+
+```
+
+# Questions
+
+1) Since we don't have DOB, it is OK to estimate whether patients are at least 6 months of age using age of 6 * 30 = 180 days?
+2) The exclusion criterion states that patients must not be discharged from the ICU. Is it possible someone could be in the ICU at the start of the admission but not discharged from there? If we exclude all records with ICU = 1, ~15k hospitalizations will be excluded
+3) Just to confirm: no corresponding variable to check ward of state, foster child, death on record, or flagged as does not wish to participate in research
+4) 964 records with missing site number - these will be deleted for analysis
+
+```{r,echo=FALSE}
+# Create descriptive table using alldata of eligiblity criteria
+t1 <- tableby(Site ~ age_discharge + Unit + Service + ICU, data = alldata, control = list(digits = 2))
+```
+
+# Summary statistics on hospitalization data prior to applying eligibility criteria
+
+```{r, include=TRUE, results='asis'}
+summary(t1,pfootnote = T)
+```
