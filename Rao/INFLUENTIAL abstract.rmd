@@ -17,11 +17,68 @@ library(tidyverse)
 library(ggplot2)
 library(dplyr)
 library(arsenal)
+library(stringr)
 knitr::opts_chunk$set(echo = FALSE,warning = FALSE)
 ```
 
 ```{r data,echo=FALSE}
-alldata <- read.csv("/Users/pylell/Documents/Downtime/Rao/InFLUentialEHRData_DATA_LABELS_2024-10-25_1859.csv")
+alldata <- read.csv("/Volumes/pylell/Rao/PAS 2025 abstract/InFLUentialEHRData_DATA_LABELS_2024-10-25_1859.csv")
+# remove records with missing site number
+alldata <- alldata %>% filter(!is.na(Site))
+
+# first thing to do is to limit the hospitalizations to those between first and last screening date per season
+alldata$Screen.Date.1 <- ifelse(alldata$Screen.Date.1 %in% c("", " "), NA, alldata$Screen.Date.1)
+alldata$Screen.Date.2 <- ifelse(alldata$Screen.Date.2 %in% c("", " "), NA, alldata$Screen.Date.2)
+# find first and last screen date by site
+s1 <- alldata %>% select(Site, Screen.Date.1)
+colnames(s1) <- c("Site", "Screen Date")
+s2 <- alldata %>% select(Site, Screen.Date.2)
+colnames(s2) <- c("Site", "Screen Date")
+s <- rbind(s1, s2)
+s$`Screen Date` <- as.Date(s$`Screen Date`, format = "%m/%d/%y")
+s <- s %>% filter(!is.na(`Screen Date`))
+s_unique <- unique(s)
+s_chco <- s_unique %>% filter(Site == "Children's Hospital Colorado")
+s_lurie <- s_unique %>% filter(Site == "Lurie Children's Hospital of Chicago")
+s_seattle <- s_unique %>% filter(Site == "Seattle Children's Hospital")
+s_chco <- s_chco[order(s_chco$`Screen Date`),]
+s_lurie <- s_lurie[order(s_lurie$`Screen Date`),]
+s_seattle <- s_seattle[order(s_seattle$`Screen Date`),]
+
+# CHCO
+# 2023-09-15 - 2024-04-25
+# Lurie
+# 2019-09-03 - 2020-05-31
+# 2020-09-01 - 2021-04-26
+# 2021-09-08 - 2022-06-01
+# 2022-09-01 - 2023-05-01
+# 2023-09-11 - 2024-04-29
+# Seattle
+# 2023-11-29 - 2024-10-08
+
+
+
+
+
+# Seattle
+
+site_data <- NULL
+site_data$first_screen <- alldata %>% group_by(Site) %>% summarise(min(Screen.Date.1,
+                                                                         Screen.Date.2, na.rm = T))
+site_data <- as.data.frame(site_data)
+colnames(site_data) <- c("Site", "First screen")
+last_screen <- NULL
+last_screen <- alldata %>% group_by(Site) %>% summarise(max(Screen.Date.1,
+                                                                         Screen.Date.2, na.rm = T))
+last_screen <- as.data.frame(last_screen)
+colnames(last_screen) <- c("Site", "Last screen")
+site_data <- left_join(site_data, last_screen, by = "Site")
+# need to merge first and last screen date back to patient data
+alldata <- left_join(alldata, site_data, by = "Site")
+# calculate variable to indicate before first screen or after last screen
+alldata$outside_date_range <- ifelse(alldata$Admission.Date.Time)
+# include record counts in the table below or just exclude?
+
 
 ######################
 # INCLUSION CRITERIA #
@@ -34,6 +91,8 @@ alldata$los <- alldata$Discharge.Date.Time - alldata$Admission.Date.Time
 # all records above seem to have Discharge after Admission 
 # no negative LOS, but some 0 LOS
 alldata$age_discharge <- alldata$Age.at.admission.in.days + alldata$los
+
+# apply eligibility criteria
 data <- alldata
 data <- data %>% filter(age_discharge >= 180 & age_discharge < 6570)
 # Patient hospitalized on a medical, surgical, rehabilitation, or psychiatry/behavioral medicine unit during the influenza vaccination season at your institution
@@ -54,8 +113,6 @@ data <- data %>% filter(ICU == "No")
 # Flagged as “Does not wish to participate in research” 
 # NO CORRESPONDING VARIABLE
 
-# remove records with missing site number
-data <- data %>% filter(!is.na(Site))
 
 ```
 
@@ -64,7 +121,8 @@ data <- data %>% filter(!is.na(Site))
 1) Since we don't have DOB, it is OK to estimate whether patients are at least 6 months of age using age of 6 * 30 = 180 days?
 2) The exclusion criterion states that patients must not be discharged from the ICU. Is it possible someone could be in the ICU at the start of the admission but not discharged from there? If we exclude all records with ICU = 1, ~15k hospitalizations will be excluded
 3) Just to confirm: no corresponding variable to check ward of state, foster child, death on record, or flagged as does not wish to participate in research
-4) 964 records with missing site number - these will be deleted for analysis
+4) 964 records with missing site number - these were excluded
+5) To exclude hospitalizations not between the first and last date of screening in a season, I excluded based on the admission date only. Would it be better to require that the discharge date was before the last screening date?
 
 ```{r,echo=FALSE}
 # Create descriptive table using alldata of eligiblity criteria
