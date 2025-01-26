@@ -11,7 +11,7 @@
 
 <meta name="author" content="Laura Pyle" />
 
-<meta name="date" content="2024-10-26" />
+<meta name="date" content="2025-01-25" />
 
 <title>INFLUENTIAL - PAS abstract</title>
 
@@ -1493,760 +1493,437 @@ border-radius: 0px;
 
 <h1 class="title toc-ignore">INFLUENTIAL - PAS abstract</h1>
 <h4 class="author">Laura Pyle</h4>
-<h4 class="date">26 October 2024</h4>
+<h4 class="date">25 January 2025</h4>
 
 </div>
 
 
-<div id="questions" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Questions</h1>
+<div id="methods" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Methods</h1>
+<ul>
+<li>For purposes of finding the first and last date of screening by site
+and season, the range of possible screening dates was set as August 1 -
+June 1</li>
+<li>8156 hospitalizations with admission date before the first date of
+screening for the season or with discharge dates after the last date of
+screening for the season were excluded from analysis</li>
+<li>11,472 of 78,832 patients had more than one hospitalization. The
+unit of analysis was hospitalization.</li>
+</ul>
+</div>
+<div id="questions" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Questions</h1>
 <ol style="list-style-type: decimal">
 <li>Since we don’t have DOB, it is OK to estimate whether patients are
 at least 6 months of age using age of 6 * 30 = 180 days?</li>
 <li>The exclusion criterion states that patients must not be discharged
 from the ICU. Is it possible someone could be in the ICU at the start of
 the admission but not discharged from there? If we exclude all records
-with ICU = 1, ~15k hospitalizations will be excluded</li>
+with ICU = 1, ~19k hospitalizations will be excluded</li>
 <li>Just to confirm: no corresponding variable to check ward of state,
 foster child, death on record, or flagged as does not wish to
 participate in research</li>
-<li>964 records with missing site number - these will be deleted for
-analysis</li>
+<li>To exclude hospitalizations not between the first and last date of
+screening in a season, I excluded based on the admission date only.
+Would it be better to require that the discharge date was before the
+last screening date?</li>
 </ol>
 </div>
-<div id="summary-statistics-on-hospitalization-data-prior-to-applying-eligibility-criteria" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Summary statistics on
-hospitalization data prior to applying eligibility criteria</h1>
-<table>
+<div id="results" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Results</h1>
+<div id="eligibility-criteria" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Eligibility
+criteria</h2>
+<table style="width:100%;">
 <colgroup>
-<col width="23%" />
-<col width="6%" />
-<col width="17%" />
-<col width="21%" />
+<col width="25%" />
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
 <col width="17%" />
 <col width="8%" />
-<col width="4%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th align="left"></th>
-<th align="center">(N=964)</th>
-<th align="center">Children’s Hospital Colorado (N=41194)</th>
-<th align="center">Lurie Children’s Hospital of Chicago (N=29218)</th>
-<th align="center">Seattle Children’s Hospital (N=6015)</th>
-<th align="center">Total (N=77391)</th>
+<th align="center">M1 (N=28256)</th>
+<th align="center">M2 (N=40735)</th>
+<th align="center">M3 (N=29218)</th>
+<th align="center">Total (N=98209)</th>
 <th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left"><strong>age_discharge</strong></td>
+<td align="left"><strong>not_eligible_age</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
-<td align="center"></td>
-<td align="right"></td>
+<td align="right">&lt; 0.001</td>
 </tr>
 <tr class="even">
-<td align="left">   N-Miss</td>
-<td align="center">964</td>
-<td align="center">0</td>
-<td align="center">0</td>
-<td align="center">0</td>
-<td align="center">964</td>
+<td align="left">   0</td>
+<td align="center">0 (0.0%)</td>
+<td align="center">266 (0.7%)</td>
+<td align="center">33 (0.1%)</td>
+<td align="center">299 (0.3%)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td align="left">   Mean (SD)</td>
-<td align="center">NA</td>
-<td align="center">2735.36 (2103.44)</td>
-<td align="center">2853.93 (2074.09)</td>
-<td align="center">3127.13 (2042.78)</td>
-<td align="center">2811.52 (2090.29)</td>
+<td align="left">   1</td>
+<td align="center">28256 (100.0%)</td>
+<td align="center">40469 (99.3%)</td>
+<td align="center">29185 (99.9%)</td>
+<td align="center">97910 (99.7%)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td align="left">   Range</td>
-<td align="center">NA</td>
-<td align="center">153.00 - 6572.00</td>
-<td align="center">182.00 - 6764.00</td>
-<td align="center">184.00 - 6568.00</td>
-<td align="center">153.00 - 6764.00</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left"><strong>Unit</strong></td>
+<td align="left"><strong>not_eligible_unit</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
-<td align="center"></td>
-<td align="right">&lt; 0.001<sup>2</sup></td>
-</tr>
-<tr class="even">
-<td align="left">   </td>
-<td align="center">964 (100.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1 (0.0%)</td>
-<td align="center">965 (1.2%)</td>
-<td align="right"></td>
+<td align="right">&lt; 0.001</td>
 </tr>
 <tr class="odd">
-<td align="left">   Medical</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">23351 (56.7%)</td>
-<td align="center">23520 (80.5%)</td>
-<td align="center">2473 (41.1%)</td>
-<td align="center">49344 (63.8%)</td>
+<td align="left">   0</td>
+<td align="center">28256 (100.0%)</td>
+<td align="center">40735 (100.0%)</td>
+<td align="center">29218 (100.0%)</td>
+<td align="center">98209 (100.0%)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td align="left">   Other</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1024 (2.5%)</td>
-<td align="center">128 (0.4%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1152 (1.5%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Psychiatry/Bev Med</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">2426 (5.9%)</td>
-<td align="center">5 (0.0%)</td>
-<td align="center">438 (7.3%)</td>
-<td align="center">2869 (3.7%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Rehab</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">4051 (9.8%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">229 (3.8%)</td>
-<td align="center">4280 (5.5%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Surgical</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">10342 (25.1%)</td>
-<td align="center">5565 (19.0%)</td>
-<td align="center">2874 (47.8%)</td>
-<td align="center">18781 (24.3%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left"><strong>Service</strong></td>
+<td align="left"><strong>not_eligible_service</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
-<td align="center"></td>
-<td align="right">&lt; 0.001<sup>2</sup></td>
+<td align="right">&lt; 0.001</td>
 </tr>
 <tr class="odd">
-<td align="left">   </td>
-<td align="center">964 (100.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">290 (4.8%)</td>
-<td align="center">1254 (1.6%)</td>
+<td align="left">   0</td>
+<td align="center">28152 (99.6%)</td>
+<td align="center">40733 (100.0%)</td>
+<td align="center">29218 (100.0%)</td>
+<td align="center">98103 (99.9%)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td align="left">   Abdominal Transplant Surgery</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">51 (0.1%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">51 (0.1%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Adolescent Medicine</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">275 (0.7%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">275 (0.4%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Allergy/Immunology</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">9 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">9 (0.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Anesthesiology</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">5 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">5 (0.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Audiology</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1 (0.0%)</td>
-<td align="center">1 (0.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Autonomic Medicine</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">130 (0.4%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">130 (0.2%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Behavior/Development</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">13 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">13 (0.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Bone Marrow Transplant</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1 (0.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Cardiac Intensive Care Unit</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">355 (1.2%)</td>
-<td align="center">5 (0.1%)</td>
-<td align="center">360 (0.5%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Cardiology</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1431 (3.5%)</td>
-<td align="center">1290 (4.4%)</td>
-<td align="center">204 (3.4%)</td>
-<td align="center">2925 (3.8%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Cardiothoracic Surgery</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">4 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">114 (1.9%)</td>
-<td align="center">118 (0.2%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   CCU Stepdown</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">470 (1.6%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">470 (0.6%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Clinical Research Center</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">109 (0.3%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">109 (0.1%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Community Md Service</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">663 (2.3%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">663 (0.9%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Community Other Service</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1 (0.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Craniofacial Medicine</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">35 (0.6%)</td>
-<td align="center">35 (0.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Critical Care</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">95 (0.2%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">15 (0.2%)</td>
-<td align="center">110 (0.1%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Critical Care Serv</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">2267 (7.8%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">2267 (2.9%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   CV Surgery</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">87 (0.3%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">87 (0.1%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Dentistry</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">4 (0.0%)</td>
-<td align="center">12 (0.2%)</td>
-<td align="center">16 (0.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Dermatology</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">5 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">5 (0.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Emergency</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">684 (1.7%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">3 (0.0%)</td>
-<td align="center">687 (0.9%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   EMU</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">522 (1.3%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">522 (0.7%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Endocrinology</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">845 (2.9%)</td>
-<td align="center">115 (1.9%)</td>
-<td align="center">960 (1.2%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Epilepsy</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1285 (4.4%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1285 (1.7%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Epileptology</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1 (0.0%)</td>
-<td align="center">1 (0.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Gastroenterology</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1376 (3.3%)</td>
-<td align="center">1948 (6.7%)</td>
-<td align="center">168 (2.8%)</td>
-<td align="center">3492 (4.5%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   General Surgery</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">429 (7.1%)</td>
-<td align="center">429 (0.6%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Genetics</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">20 (0.1%)</td>
-<td align="center">10 (0.2%)</td>
-<td align="center">30 (0.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Gynecology</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">17 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">17 (0.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Hematology/Oncology</td>
-<td align="center">0 (0.0%)</td>
+<td align="left">   1</td>
+<td align="center">104 (0.4%)</td>
 <td align="center">2 (0.0%)</td>
 <td align="center">0 (0.0%)</td>
-<td align="center">6 (0.1%)</td>
-<td align="center">8 (0.0%)</td>
+<td align="center">106 (0.1%)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td align="left">   Hospital Based Medicine</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1803 (6.2%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1803 (2.3%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Hospital Medicine</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">23459 (56.9%)</td>
-<td align="center">7303 (25.0%)</td>
-<td align="center">2138 (35.5%)</td>
-<td align="center">32900 (42.5%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Infectious Disease</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">44 (0.1%)</td>
-<td align="center">63 (0.2%)</td>
-<td align="center">1 (0.0%)</td>
-<td align="center">108 (0.1%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Intermediate Care</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">645 (2.2%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">645 (0.8%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Kidney Disease</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">470 (1.6%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">470 (0.6%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Liver Medical</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">322 (0.8%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">99 (1.6%)</td>
-<td align="center">421 (0.5%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Maternal Fetal Medicine/Obstetrics</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">18 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">18 (0.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Medical Imaging</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">4 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">4 (0.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Medical Observation</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">119 (0.4%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">119 (0.2%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Neonatology</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">138 (0.5%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">138 (0.2%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Nephrology</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">566 (1.4%)</td>
-<td align="center">704 (2.4%)</td>
-<td align="center">142 (2.4%)</td>
-<td align="center">1412 (1.8%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Neurology</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">378 (0.9%)</td>
-<td align="center">900 (3.1%)</td>
-<td align="center">440 (7.3%)</td>
-<td align="center">1718 (2.2%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Neurosurgery</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1081 (2.6%)</td>
-<td align="center">1758 (6.0%)</td>
-<td align="center">208 (3.5%)</td>
-<td align="center">3047 (3.9%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Ophthalmology</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">2 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1 (0.0%)</td>
-<td align="center">3 (0.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Orthopedic Surgery</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1958 (4.8%)</td>
-<td align="center">1041 (3.6%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">2999 (3.9%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Orthopedics</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">7 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">461 (7.7%)</td>
-<td align="center">468 (0.6%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Otolaryngology</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">538 (1.3%)</td>
-<td align="center">196 (0.7%)</td>
-<td align="center">389 (6.5%)</td>
-<td align="center">1123 (1.5%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Pediatric Surgery</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">3538 (8.6%)</td>
-<td align="center">2515 (8.6%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">6053 (7.8%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Plastic Surgery</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">85 (0.2%)</td>
-<td align="center">164 (0.6%)</td>
-<td align="center">67 (1.1%)</td>
-<td align="center">316 (0.4%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Psych/Behavioral Science</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">2493 (6.1%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">2493 (3.2%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Psychiatry</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">5 (0.0%)</td>
-<td align="center">401 (6.7%)</td>
-<td align="center">406 (0.5%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Pulmonary</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1626 (3.9%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">88 (1.5%)</td>
-<td align="center">1714 (2.2%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Pulmonary Habilitation</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">94 (0.3%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">94 (0.1%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Pulmonary Medicine</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1209 (4.1%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1209 (1.6%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Rehabilitation</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">287 (0.7%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">61 (1.0%)</td>
-<td align="center">348 (0.4%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Rheumatology</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">2 (0.0%)</td>
-<td align="center">357 (1.2%)</td>
-<td align="center">18 (0.3%)</td>
-<td align="center">377 (0.5%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Sleep Medicine</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">1 (0.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Transplant Services</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">26 (0.1%)</td>
-<td align="center">8 (0.1%)</td>
-<td align="center">34 (0.0%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Trauma</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">58 (0.2%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">58 (0.1%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   Urology</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">205 (0.5%)</td>
-<td align="center">266 (0.9%)</td>
-<td align="center">85 (1.4%)</td>
-<td align="center">556 (0.7%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left"><strong>ICU</strong></td>
+<td align="left"><strong>not_eligible_icu</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
-<td align="center"></td>
-<td align="right">&lt; 0.001<sup>2</sup></td>
+<td align="right">&lt; 0.001</td>
 </tr>
 <tr class="even">
-<td align="left">   </td>
-<td align="center">964 (100.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">964 (1.2%)</td>
-<td align="right"></td>
-</tr>
-<tr class="odd">
-<td align="left">   No</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">32172 (78.1%)</td>
+<td align="left">   0</td>
+<td align="center">24609 (87.1%)</td>
+<td align="center">31860 (78.2%)</td>
 <td align="center">22649 (77.5%)</td>
-<td align="center">5261 (87.5%)</td>
-<td align="center">60082 (77.6%)</td>
+<td align="center">79118 (80.6%)</td>
 <td align="right"></td>
 </tr>
-<tr class="even">
-<td align="left">   Yes</td>
-<td align="center">0 (0.0%)</td>
-<td align="center">9022 (21.9%)</td>
+<tr class="odd">
+<td align="left">   1</td>
+<td align="center">3647 (12.9%)</td>
+<td align="center">8875 (21.8%)</td>
 <td align="center">6569 (22.5%)</td>
-<td align="center">754 (12.5%)</td>
-<td align="center">16345 (21.1%)</td>
+<td align="center">19091 (19.4%)</td>
 <td align="right"></td>
 </tr>
 </tbody>
 </table>
-<ol style="list-style-type: decimal">
-<li>Linear Model ANOVA</li>
-<li>Pearson’s Chi-squared test</li>
-</ol>
+</div>
+<div id="screening-dates-by-site-and-season" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Screening dates by
+site and season</h2>
+<table>
+<thead>
+<tr class="header">
+<th align="left">site_long</th>
+<th align="left">season</th>
+<th align="left">first_screen</th>
+<th align="left">last_screen</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">CHCO</td>
+<td align="left">2018-2019</td>
+<td align="left">2018-09-15</td>
+<td align="left">2019-04-03</td>
+</tr>
+<tr class="even">
+<td align="left">CHCO</td>
+<td align="left">2019-2020</td>
+<td align="left">2019-09-07</td>
+<td align="left">2020-05-14</td>
+</tr>
+<tr class="odd">
+<td align="left">CHCO</td>
+<td align="left">2020-2021</td>
+<td align="left">2020-09-15</td>
+<td align="left">2021-05-02</td>
+</tr>
+<tr class="even">
+<td align="left">CHCO</td>
+<td align="left">2021-2022</td>
+<td align="left">2021-08-07</td>
+<td align="left">2022-05-23</td>
+</tr>
+<tr class="odd">
+<td align="left">CHCO</td>
+<td align="left">2022-2023</td>
+<td align="left">2022-09-13</td>
+<td align="left">2023-05-17</td>
+</tr>
+<tr class="even">
+<td align="left">CHCO</td>
+<td align="left">2023-2024</td>
+<td align="left">2023-09-15</td>
+<td align="left">2024-05-27</td>
+</tr>
+<tr class="odd">
+<td align="left">Lurie</td>
+<td align="left">2019-2020</td>
+<td align="left">2019-09-03</td>
+<td align="left">2020-05-31</td>
+</tr>
+<tr class="even">
+<td align="left">Lurie</td>
+<td align="left">2020-2021</td>
+<td align="left">2020-09-01</td>
+<td align="left">2021-04-26</td>
+</tr>
+<tr class="odd">
+<td align="left">Lurie</td>
+<td align="left">2021-2022</td>
+<td align="left">2021-09-08</td>
+<td align="left">2022-05-30</td>
+</tr>
+<tr class="even">
+<td align="left">Lurie</td>
+<td align="left">2022-2023</td>
+<td align="left">2022-09-01</td>
+<td align="left">2023-05-01</td>
+</tr>
+<tr class="odd">
+<td align="left">Lurie</td>
+<td align="left">2023-2024</td>
+<td align="left">2023-09-11</td>
+<td align="left">2024-04-29</td>
+</tr>
+<tr class="even">
+<td align="left">SCH</td>
+<td align="left">2018-2019</td>
+<td align="left">2018-10-01</td>
+<td align="left">2019-05-24</td>
+</tr>
+<tr class="odd">
+<td align="left">SCH</td>
+<td align="left">2019-2020</td>
+<td align="left">2019-09-30</td>
+<td align="left">2020-05-09</td>
+</tr>
+<tr class="even">
+<td align="left">SCH</td>
+<td align="left">2020-2021</td>
+<td align="left">2020-10-03</td>
+<td align="left">2021-04-19</td>
+</tr>
+<tr class="odd">
+<td align="left">SCH</td>
+<td align="left">2021-2022</td>
+<td align="left">2021-10-04</td>
+<td align="left">2022-05-31</td>
+</tr>
+<tr class="even">
+<td align="left">SCH</td>
+<td align="left">2022-2023</td>
+<td align="left">2022-10-03</td>
+<td align="left">2023-05-12</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="count-of-unique-eligible-patients-by-site-and-season" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Count of unique
+eligible patients by site and season</h2>
+<pre><code>       
+        2018-2019 2019-2020 2020-2021 2021-2022 2022-2023 2023-2024
+  CHCO       4853      5207      3564      4615      5027      4991
+  Lurie      2809      3304      2691      3004      3057      3422
+  SCH        4803      3966      3304      4211      4532         0</code></pre>
+</div>
+<div id="count-of-unique-hospitalizations-for-eligible-patients-by-site-and-season" class="section level2" number="3.4">
+<h2><span class="header-section-number">3.4</span> Count of unique
+hospitalizations for eligible patients by site and season</h2>
+<pre><code>       
+        2018-2019 2019-2020 2020-2021 2021-2022 2022-2023 2023-2024
+  CHCO       5458      5841      4021      5154      5584      5636
+  Lurie      3623      3968      3276      3745      3837      4178
+  SCH        5703      4773      3860      4997      5178         0</code></pre>
+</div>
+</div>
+<div id="summary-of-counts" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Summary of counts</h1>
+<table>
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="23%" />
+<col width="17%" />
+<col width="31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">site_long</th>
+<th align="left">season</th>
+<th align="right">hospitalizations</th>
+<th align="right"># Screenings</th>
+<th align="right"># w/ contraindications</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">CHCO</td>
+<td align="left">2018-2019</td>
+<td align="right">5458</td>
+<td align="right">4499</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Lurie</td>
+<td align="left">2018-2019</td>
+<td align="right">3623</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">SCH</td>
+<td align="left">2018-2019</td>
+<td align="right">5703</td>
+<td align="right">5402</td>
+<td align="right">364</td>
+</tr>
+<tr class="even">
+<td align="left">CHCO</td>
+<td align="left">2019-2020</td>
+<td align="right">5841</td>
+<td align="right">4976</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">Lurie</td>
+<td align="left">2019-2020</td>
+<td align="right">3968</td>
+<td align="right">3215</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">SCH</td>
+<td align="left">2019-2020</td>
+<td align="right">4773</td>
+<td align="right">3736</td>
+<td align="right">235</td>
+</tr>
+<tr class="odd">
+<td align="left">CHCO</td>
+<td align="left">2020-2021</td>
+<td align="right">4021</td>
+<td align="right">3608</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Lurie</td>
+<td align="left">2020-2021</td>
+<td align="right">3276</td>
+<td align="right">2118</td>
+<td align="right">7</td>
+</tr>
+<tr class="odd">
+<td align="left">SCH</td>
+<td align="left">2020-2021</td>
+<td align="right">3860</td>
+<td align="right">2958</td>
+<td align="right">20</td>
+</tr>
+<tr class="even">
+<td align="left">CHCO</td>
+<td align="left">2021-2022</td>
+<td align="right">5154</td>
+<td align="right">5123</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">Lurie</td>
+<td align="left">2021-2022</td>
+<td align="right">3745</td>
+<td align="right">2532</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">SCH</td>
+<td align="left">2021-2022</td>
+<td align="right">4997</td>
+<td align="right">2438</td>
+<td align="right">13</td>
+</tr>
+<tr class="odd">
+<td align="left">CHCO</td>
+<td align="left">2022-2023</td>
+<td align="right">5584</td>
+<td align="right">5082</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Lurie</td>
+<td align="left">2022-2023</td>
+<td align="right">3837</td>
+<td align="right">2357</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">SCH</td>
+<td align="left">2022-2023</td>
+<td align="right">5178</td>
+<td align="right">2590</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">CHCO</td>
+<td align="left">2023-2024</td>
+<td align="right">5636</td>
+<td align="right">5365</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">Lurie</td>
+<td align="left">2023-2024</td>
+<td align="right">4178</td>
+<td align="right">2427</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">SCH</td>
+<td align="left">2023-2024</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
 </div>
 
 

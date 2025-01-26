@@ -18,94 +18,107 @@ library(ggplot2)
 library(dplyr)
 library(arsenal)
 library(stringr)
-knitr::opts_chunk$set(echo = FALSE,warning = FALSE)
+knitr::opts_chunk$set(echo = FALSE,warning = FALSE, message = FALSE)
 ```
 
-```{r data,echo=FALSE}
-alldata <- read.csv("/Volumes/pylell/Rao/PAS 2025 abstract/InFLUentialEHRData_DATA_LABELS_2024-10-25_1859.csv")
+```{r data,echo=FALSE,warning=FALSE}
+# latest dataset should contain EPIC and Cerner data
+redcap <- read.csv('/Volumes/pylell/Rao/PHM abstract/Data raw/InFLUentialMainSites_DATA_2025-01-16_1900.csv')
+
 # remove records with missing site number
-alldata <- alldata %>% filter(!is.na(Site))
+alldata <- redcap %>% filter(!is.na(site))
+alldata$site_long <- ifelse(alldata$site == "M1", "SCH",
+                            ifelse(alldata$site == "M2", "CHCO", "Lurie"))
+
+# combine contraindication columns
+alldata <- alldata %>% mutate(
+  contraindication_summary = pmax(alldata$contraindication, alldata$contraindication2, na.rm = T)
+)
 
 # first thing to do is to limit the hospitalizations to those between first and last screening date per season
-alldata$Screen.Date.1 <- ifelse(alldata$Screen.Date.1 %in% c("", " "), NA, alldata$Screen.Date.1)
-alldata$Screen.Date.2 <- ifelse(alldata$Screen.Date.2 %in% c("", " "), NA, alldata$Screen.Date.2)
+alldata$screen_date1 <- ifelse(alldata$screen_date1 %in% c("", " "), NA, alldata$screen_date1)
+alldata$screen_date2 <- ifelse(alldata$screen_date2 %in% c("", " "), NA, alldata$screen_date2)
 # find first and last screen date by site
-s1 <- alldata %>% select(Site, Screen.Date.1)
-colnames(s1) <- c("Site", "Screen Date")
-s2 <- alldata %>% select(Site, Screen.Date.2)
-colnames(s2) <- c("Site", "Screen Date")
+s1 <- alldata %>% select(site, screen_date1)
+colnames(s1) <- c("site", "Screen Date")
+s2 <- alldata %>% select(site, screen_date2)
+colnames(s2) <- c("site", "Screen Date")
 s <- rbind(s1, s2)
-s$`Screen Date` <- as.Date(s$`Screen Date`, format = "%m/%d/%y")
+s$`Screen Date` <- as.Date(s$`Screen Date`, format = "%Y-%m-%d")
 s <- s %>% filter(!is.na(`Screen Date`))
 s_unique <- unique(s)
-s_chco <- s_unique %>% filter(Site == "Children's Hospital Colorado")
-s_lurie <- s_unique %>% filter(Site == "Lurie Children's Hospital of Chicago")
-s_seattle <- s_unique %>% filter(Site == "Seattle Children's Hospital")
-s_chco <- s_chco[order(s_chco$`Screen Date`),]
-s_lurie <- s_lurie[order(s_lurie$`Screen Date`),]
-s_seattle <- s_seattle[order(s_seattle$`Screen Date`),]
+# write screening dates to file
+write.csv(s_unique, "/Volumes/pylell/Rao/PHM abstract/screen_dates.csv", row.names = FALSE)
 
-# CHCO
-# 2023-09-15 - 2024-04-25
-# Lurie
-# 2019-09-03 - 2020-05-31
-# 2020-09-01 - 2021-04-26
-# 2021-09-08 - 2022-06-01
-# 2022-09-01 - 2023-05-01
-# 2023-09-11 - 2024-04-29
-# Seattle
-# 2023-11-29 - 2024-10-08
-
-
-
-
-
-# Seattle
-
-site_data <- NULL
-site_data$first_screen <- alldata %>% group_by(Site) %>% summarise(min(Screen.Date.1,
-                                                                         Screen.Date.2, na.rm = T))
-site_data <- as.data.frame(site_data)
-colnames(site_data) <- c("Site", "First screen")
-last_screen <- NULL
-last_screen <- alldata %>% group_by(Site) %>% summarise(max(Screen.Date.1,
-                                                                         Screen.Date.2, na.rm = T))
-last_screen <- as.data.frame(last_screen)
-colnames(last_screen) <- c("Site", "Last screen")
-site_data <- left_join(site_data, last_screen, by = "Site")
-# need to merge first and last screen date back to patient data
-alldata <- left_join(alldata, site_data, by = "Site")
-# calculate variable to indicate before first screen or after last screen
-alldata$outside_date_range <- ifelse(alldata$Admission.Date.Time)
-# include record counts in the table below or just exclude?
-
+# summarize screening data by site
+# first create a variable for season using August 1 as earliest date and June 1 as latest
+site_data <- alldata
+site_data <- site_data %>%
+  mutate(
+    season = case_when(
+      screen_date1>"2018-08-01" & screen_date1<"2019-06-01" ~ "2018-2019",
+      screen_date1>"2019-08-01" & screen_date1<"2020-06-01" ~ "2019-2020",
+      screen_date1>"2020-08-01" & screen_date1<"2021-06-01" ~ "2020-2021",
+      screen_date1>"2021-08-01" & screen_date1<"2022-06-01" ~ "2021-2022",
+      screen_date1>"2022-08-01" & screen_date1<"2023-06-01" ~ "2022-2023",
+      screen_date1>"2023-08-01" & screen_date1<"2024-06-01" ~ "2023-2024",
+      .default = NA
+    )
+  )
+# for purposes of finding earliest and latest screen dates by site and season,
+# remove hospitalizations with no screening or outside possible date range
+site_data <- site_data %>% filter(!is.na(season))
+screen_dates <- site_data %>% group_by(site_long, season) %>% summarise(first_screen = min(screen_date1),
+                                                                   last_screen = max(screen_date1))
+  
+# in the patient level data, create a variable for season based on admission date
+# merge in the site level data by site and season and exclude hospitalizations
+# outside the date range for that season
+# make sure both admission and discharge are within the first and last dates of screening
+alldata <- alldata %>%
+  mutate(
+    season = case_when(
+      adm_date>"2018-08-01" & adm_date<"2019-06-01" ~ "2018-2019",
+      adm_date>"2019-08-01" & adm_date<"2020-06-01" ~ "2019-2020",
+      adm_date>"2020-08-01" & adm_date<"2021-06-01" ~ "2020-2021",
+      adm_date>"2021-08-01" & adm_date<"2022-06-01" ~ "2021-2022",
+      adm_date>"2022-08-01" & adm_date<"2023-06-01" ~ "2022-2023",
+      adm_date>"2023-08-01" & adm_date<"2024-06-01" ~ "2023-2024",
+      .default = NA
+    )
+  )
+alldata <- left_join(alldata, screen_dates, by = c("site_long", "season"))
+alldata$in_window <- ifelse(as.Date(alldata$adm_date)>=alldata$first_screen &
+                                   as.Date(alldata$dish_date)<=alldata$last_screen, "Y", "N")
+# no screening data for Lurie in 2018-2019, so will exclude all admissions there for the season
+x <- alldata[is.na(alldata$in_window) | alldata$in_window == "N",]
+num_excluded <- nrow(x)
 
 ######################
 # INCLUSION CRITERIA #
 ######################
 
 # between 6 months and 18 years at time of discharge
-alldata$Discharge.Date.Time <- as.Date(alldata$Discharge.Date.Time, format = "%m/%d/%y")
-alldata$Admission.Date.Time <- as.Date(alldata$Admission.Date.Time, format = "%m/%d/%y")
-alldata$los <- alldata$Discharge.Date.Time - alldata$Admission.Date.Time
+alldata$dish_date <- as.Date(alldata$dish_date)
+alldata$adm_date <- as.Date(alldata$adm_date)
+alldata$los <- alldata$dish_date - alldata$adm_date
 # all records above seem to have Discharge after Admission 
 # no negative LOS, but some 0 LOS
-alldata$age_discharge <- alldata$Age.at.admission.in.days + alldata$los
-
-# apply eligibility criteria
-data <- alldata
-data <- data %>% filter(age_discharge >= 180 & age_discharge < 6570)
-# Patient hospitalized on a medical, surgical, rehabilitation, or psychiatry/behavioral medicine unit during the influenza vaccination season at your institution
-data <- data %>% filter(!(Unit == "Other"))
+alldata$age_discharge <- alldata$age_admission + alldata$los
 
 ######################
 # EXCLUSION CRITERIA #
 ######################
 
+# apply eligibility criteria
+data <- alldata
+data$not_eligible_age <- as.factor(ifelse(data$age_discharge >= 180 & data$age_discharge < 6570, 1, 0))
+# Patient hospitalized on a medical, surgical, rehabilitation, or psychiatry/behavioral medicine unit during the influenza vaccination season at your institution
+data$not_eligible_unit <- as.factor(ifelse(data$unit == "Other", 1, 0))
 # Admitted to hematology/oncology service or unit
-data <- data %>% filter(!(Service == "Hematology/Oncology"))
+data$not_eligible_service <- as.factor(ifelse(is.na(data$service) | data$service == 32, 1, 0))
 # Discharged from ICU setting
-data <- data %>% filter(ICU == "No")
+data$not_eligible_icu <- as.factor(ifelse(data$icu == 1, 1, 0))
 # Ward of state or foster child
 # NO CORRESPONDING VARIABLE
 # Death on record
@@ -113,24 +126,82 @@ data <- data %>% filter(ICU == "No")
 # Flagged as “Does not wish to participate in research” 
 # NO CORRESPONDING VARIABLE
 
+# remove ineligible patients
+eligible <- data %>% filter(age_discharge >= 180 & age_discharge < 6570)
+eligible <- eligible %>% filter(!unit == "Other")
+eligible <- eligible %>% filter(!(service == 32) & !is.na(service))
+eligible <- eligible %>% filter(icu == 0)
 
+# count of unique eligible patients by site and season
+eligible_unique <- eligible %>% select(site_long, season, sid) %>% unique()
+#eligible_summary <- eligible %>% group_by(site_long, season) %>% summarise(patient_count = tally())
+
+# count of unique hospitalizations for eligible patients by site and season
+eligible_hosp_unique <- eligible %>% select(site_long, season, hid) 
+#eligible_hosp_summary <- eligible_hosp_unique %>% group_by(site_long, season) %>% summarise(hospitalization_count = tally())
+
+# find hospitalizations who were screened
+eligible_screened <- eligible 
+eligible_screened <- eligible_screened %>% filter(screening == 1)
+es <- as.data.frame(table(eligible_screened$site_long, eligible_screened$season))
+colnames(es) <- c("site_long", "season", "# Screenings")
+
+# find those screened with contraindications
+eligible_screened_contra <- eligible_screened %>% filter(contraindication_summary == 1)
+cs <- as.data.frame(table(eligible_screened_contra$site_long, eligible_screened_contra$season))
+colnames(cs) <- c("site_long", "season", "# w/ contraindications")
+
+# create a table summarizing the descriptive statistics
+t2 <- as.data.frame(table(eligible_hosp_unique$site_long, eligible_hosp_unique$season))
+colnames(t2) <- c("site_long", "season", "hospitalizations")
+t2 <- left_join(t2, es, by = c("site_long", "season"))
+t2 <- left_join(t2, cs, by = c("site_long", "season"))
+
+# need to figure out why NA in contraindication
 ```
+
+# Methods
+
+- For purposes of finding the first and last date of screening by site and season, the range of possible screening dates was set as August 1 - June 1
+- `r num_excluded` hospitalizations with admission date before the first date of screening for the season or with discharge dates after the last date of screening for the season were excluded from analysis
+- 11,472 of 78,832 patients had more than one hospitalization. The unit of analysis was hospitalization.
 
 # Questions
 
 1) Since we don't have DOB, it is OK to estimate whether patients are at least 6 months of age using age of 6 * 30 = 180 days?
-2) The exclusion criterion states that patients must not be discharged from the ICU. Is it possible someone could be in the ICU at the start of the admission but not discharged from there? If we exclude all records with ICU = 1, ~15k hospitalizations will be excluded
+2) The exclusion criterion states that patients must not be discharged from the ICU. Is it possible someone could be in the ICU at the start of the admission but not discharged from there? If we exclude all records with ICU = 1, ~19k hospitalizations will be excluded
 3) Just to confirm: no corresponding variable to check ward of state, foster child, death on record, or flagged as does not wish to participate in research
-4) 964 records with missing site number - these were excluded
-5) To exclude hospitalizations not between the first and last date of screening in a season, I excluded based on the admission date only. Would it be better to require that the discharge date was before the last screening date?
+4) To exclude hospitalizations not between the first and last date of screening in a season, I excluded based on the admission date only. Would it be better to require that the discharge date was before the last screening date?
+
+# Results
+
+## Eligibility criteria
 
 ```{r,echo=FALSE}
 # Create descriptive table using alldata of eligiblity criteria
-t1 <- tableby(Site ~ age_discharge + Unit + Service + ICU, data = alldata, control = list(digits = 2))
+t1 <- tableby(site ~ not_eligible_age + not_eligible_unit + not_eligible_service + not_eligible_icu, 
+              data = data, control = list(digits = 2))
 ```
 
-# Summary statistics on hospitalization data prior to applying eligibility criteria
+```{r, results = "asis"}
+summary(t1)
+```
 
-```{r, include=TRUE, results='asis'}
-summary(t1,pfootnote = T)
+## Screening dates by site and season
+
+```{r, echo=FALSE, comment = ""}
+kable(screen_dates)
+```
+
+## Count of unique eligible patients by site and season
+
+```{r,echo=FALSE, comment=""}
+#kable(eligible_summary)
+table(eligible_unique$site_long, eligible_unique$season)
+```
+
+# Summary of counts
+
+```{r,echo=FALSE, comment=""}
+kable(t2)
 ```
