@@ -34,6 +34,10 @@ alldata$site_long <- ifelse(alldata$site == "M1", "SCH",
 alldata <- alldata %>% mutate(
   contraindication_summary = pmax(alldata$contraindication, alldata$contraindication2, na.rm = T)
 )
+# combine previous vaccination columns
+alldata <- alldata %>% mutate(
+  priorvacc_summary = pmax(alldata$screen_priorvacc1, alldata$screen_priorvacc2, na.rm = T)
+)
 
 # first thing to do is to limit the hospitalizations to those between first and last screening date per season
 alldata$screen_date1 <- ifelse(alldata$screen_date1 %in% c("", " "), NA, alldata$screen_date1)
@@ -146,18 +150,29 @@ eligible_screened <- eligible_screened %>% filter(screening == 1)
 es <- as.data.frame(table(eligible_screened$site_long, eligible_screened$season))
 colnames(es) <- c("site_long", "season", "# Screenings")
 
+# create a table with number of hospitalizations and screenings
+t2 <- as.data.frame(table(eligible_hosp_unique$site_long, eligible_hosp_unique$season))
+colnames(t2) <- c("site_long", "season", "hospitalizations")
+t2 <- left_join(t2, es, by = c("site_long", "season"))
+t2$percent_screened <- round((t2$`# Screenings` / t2$hospitalizations) * 100,2)
+
 # find those screened with contraindications
 eligible_screened_contra <- eligible_screened %>% filter(contraindication_summary == 1)
 cs <- as.data.frame(table(eligible_screened_contra$site_long, eligible_screened_contra$season))
 colnames(cs) <- c("site_long", "season", "# w/ contraindications")
+t3 <- as.data.frame(table(eligible_hosp_unique$site_long, eligible_hosp_unique$season))
+colnames(t3) <- c("site_long", "season", "hospitalizations")
+t3 <- left_join(t3, cs, by = c("site_long", "season"))
+t3$`# w/ contraindications` <- ifelse(is.na(t3$`# w/ contraindications`), 0, t3$`# w/ contraindications`)
+t3$percent_contraindication <- round((t3$`# w/ contraindications` / t3$hospitalizations) * 100,2)
 
-# create a table summarizing the descriptive statistics
-t2 <- as.data.frame(table(eligible_hosp_unique$site_long, eligible_hosp_unique$season))
-colnames(t2) <- c("site_long", "season", "hospitalizations")
-t2 <- left_join(t2, es, by = c("site_long", "season"))
-t2 <- left_join(t2, cs, by = c("site_long", "season"))
+# Find hospitalizations without contraindications and no vaccination this season (i.e., eligible for vaccine)
+eligible_screened_no_contra <- eligible_screened %>% 
+  filter(contraindication_summary == 0 | is.na(contraindication_summary))
+eligible_screened_no_contra_no_vacc <- eligible_screened_no_contra %>% filter(priorvacc_summary == 0 | is.na(priorvacc_summary))
 
-# need to figure out why NA in contraindication
+# patients who received vaccination
+
 ```
 
 # Methods
@@ -171,7 +186,7 @@ t2 <- left_join(t2, cs, by = c("site_long", "season"))
 1) Since we don't have DOB, it is OK to estimate whether patients are at least 6 months of age using age of 6 * 30 = 180 days?
 2) The exclusion criterion states that patients must not be discharged from the ICU. Is it possible someone could be in the ICU at the start of the admission but not discharged from there? If we exclude all records with ICU = 1, ~19k hospitalizations will be excluded
 3) Just to confirm: no corresponding variable to check ward of state, foster child, death on record, or flagged as does not wish to participate in research
-4) To exclude hospitalizations not between the first and last date of screening in a season, I excluded based on the admission date only. Would it be better to require that the discharge date was before the last screening date?
+4) There are a lot of missing values for contraindication and previous vaccine questions. If these were left blank, I assumed there was no contraindication or prior vaccine.
 
 # Results
 
@@ -200,8 +215,20 @@ kable(screen_dates)
 table(eligible_unique$site_long, eligible_unique$season)
 ```
 
-# Summary of counts
+# Hospitalizations and screenings
 
 ```{r,echo=FALSE, comment=""}
 kable(t2)
+```
+
+# Contraindications
+
+```{r,echo=FALSE, comment=""}
+kable(t3)
+```
+
+# Patients screened and eligible for flu vaccine (no contraindication, no vaccination this season)
+
+```{r,echo=FALSE, comment=""}
+table(eligible_screened_no_contra_no_vacc$site_long, eligible_screened_no_contra_no_vacc$season)
 ```

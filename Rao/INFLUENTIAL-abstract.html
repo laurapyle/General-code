@@ -11,7 +11,7 @@
 
 <meta name="author" content="Laura Pyle" />
 
-<meta name="date" content="2025-01-25" />
+<meta name="date" content="2025-01-26" />
 
 <title>INFLUENTIAL - PAS abstract</title>
 
@@ -1493,7 +1493,7 @@ border-radius: 0px;
 
 <h1 class="title toc-ignore">INFLUENTIAL - PAS abstract</h1>
 <h4 class="author">Laura Pyle</h4>
-<h4 class="date">25 January 2025</h4>
+<h4 class="date">26 January 2025</h4>
 
 </div>
 
@@ -1523,10 +1523,9 @@ with ICU = 1, ~19k hospitalizations will be excluded</li>
 <li>Just to confirm: no corresponding variable to check ward of state,
 foster child, death on record, or flagged as does not wish to
 participate in research</li>
-<li>To exclude hospitalizations not between the first and last date of
-screening in a season, I excluded based on the admission date only.
-Would it be better to require that the discharge date was before the
-last screening date?</li>
+<li>There are a lot of missing values for contraindication and previous
+vaccine questions. If these were left blank, I assumed there was no
+contraindication or prior vaccine.</li>
 </ol>
 </div>
 <div id="results" class="section level1" number="3">
@@ -1766,25 +1765,17 @@ eligible patients by site and season</h2>
   Lurie      2809      3304      2691      3004      3057      3422
   SCH        4803      3966      3304      4211      4532         0</code></pre>
 </div>
-<div id="count-of-unique-hospitalizations-for-eligible-patients-by-site-and-season" class="section level2" number="3.4">
-<h2><span class="header-section-number">3.4</span> Count of unique
-hospitalizations for eligible patients by site and season</h2>
-<pre><code>       
-        2018-2019 2019-2020 2020-2021 2021-2022 2022-2023 2023-2024
-  CHCO       5458      5841      4021      5154      5584      5636
-  Lurie      3623      3968      3276      3745      3837      4178
-  SCH        5703      4773      3860      4997      5178         0</code></pre>
 </div>
-</div>
-<div id="summary-of-counts" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Summary of counts</h1>
+<div id="hospitalizations-and-screenings" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Hospitalizations and
+screenings</h1>
 <table>
 <colgroup>
-<col width="13%" />
-<col width="13%" />
-<col width="23%" />
-<col width="17%" />
-<col width="31%" />
+<col width="14%" />
+<col width="14%" />
+<col width="25%" />
+<col width="19%" />
+<col width="25%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1792,7 +1783,7 @@ hospitalizations for eligible patients by site and season</h2>
 <th align="left">season</th>
 <th align="right">hospitalizations</th>
 <th align="right"># Screenings</th>
-<th align="right"># w/ contraindications</th>
+<th align="right">percent_screened</th>
 </tr>
 </thead>
 <tbody>
@@ -1801,129 +1792,288 @@ hospitalizations for eligible patients by site and season</h2>
 <td align="left">2018-2019</td>
 <td align="right">5458</td>
 <td align="right">4499</td>
-<td align="right">NA</td>
+<td align="right">82.43</td>
 </tr>
 <tr class="even">
 <td align="left">Lurie</td>
 <td align="left">2018-2019</td>
 <td align="right">3623</td>
 <td align="right">0</td>
-<td align="right">0</td>
+<td align="right">0.00</td>
 </tr>
 <tr class="odd">
 <td align="left">SCH</td>
 <td align="left">2018-2019</td>
 <td align="right">5703</td>
 <td align="right">5402</td>
-<td align="right">364</td>
+<td align="right">94.72</td>
 </tr>
 <tr class="even">
 <td align="left">CHCO</td>
 <td align="left">2019-2020</td>
 <td align="right">5841</td>
 <td align="right">4976</td>
-<td align="right">NA</td>
+<td align="right">85.19</td>
 </tr>
 <tr class="odd">
 <td align="left">Lurie</td>
 <td align="left">2019-2020</td>
 <td align="right">3968</td>
 <td align="right">3215</td>
-<td align="right">6</td>
+<td align="right">81.02</td>
 </tr>
 <tr class="even">
 <td align="left">SCH</td>
 <td align="left">2019-2020</td>
 <td align="right">4773</td>
 <td align="right">3736</td>
-<td align="right">235</td>
+<td align="right">78.27</td>
 </tr>
 <tr class="odd">
 <td align="left">CHCO</td>
 <td align="left">2020-2021</td>
 <td align="right">4021</td>
 <td align="right">3608</td>
-<td align="right">NA</td>
+<td align="right">89.73</td>
 </tr>
 <tr class="even">
 <td align="left">Lurie</td>
 <td align="left">2020-2021</td>
 <td align="right">3276</td>
 <td align="right">2118</td>
-<td align="right">7</td>
+<td align="right">64.65</td>
 </tr>
 <tr class="odd">
 <td align="left">SCH</td>
 <td align="left">2020-2021</td>
 <td align="right">3860</td>
 <td align="right">2958</td>
-<td align="right">20</td>
+<td align="right">76.63</td>
 </tr>
 <tr class="even">
 <td align="left">CHCO</td>
 <td align="left">2021-2022</td>
 <td align="right">5154</td>
 <td align="right">5123</td>
-<td align="right">NA</td>
+<td align="right">99.40</td>
 </tr>
 <tr class="odd">
 <td align="left">Lurie</td>
 <td align="left">2021-2022</td>
 <td align="right">3745</td>
 <td align="right">2532</td>
-<td align="right">2</td>
+<td align="right">67.61</td>
 </tr>
 <tr class="even">
 <td align="left">SCH</td>
 <td align="left">2021-2022</td>
 <td align="right">4997</td>
 <td align="right">2438</td>
-<td align="right">13</td>
+<td align="right">48.79</td>
 </tr>
 <tr class="odd">
 <td align="left">CHCO</td>
 <td align="left">2022-2023</td>
 <td align="right">5584</td>
 <td align="right">5082</td>
-<td align="right">NA</td>
+<td align="right">91.01</td>
 </tr>
 <tr class="even">
 <td align="left">Lurie</td>
 <td align="left">2022-2023</td>
 <td align="right">3837</td>
 <td align="right">2357</td>
-<td align="right">2</td>
+<td align="right">61.43</td>
 </tr>
 <tr class="odd">
 <td align="left">SCH</td>
 <td align="left">2022-2023</td>
 <td align="right">5178</td>
 <td align="right">2590</td>
-<td align="right">7</td>
+<td align="right">50.02</td>
 </tr>
 <tr class="even">
 <td align="left">CHCO</td>
 <td align="left">2023-2024</td>
 <td align="right">5636</td>
 <td align="right">5365</td>
-<td align="right">NA</td>
+<td align="right">95.19</td>
 </tr>
 <tr class="odd">
 <td align="left">Lurie</td>
 <td align="left">2023-2024</td>
 <td align="right">4178</td>
 <td align="right">2427</td>
-<td align="right">2</td>
+<td align="right">58.09</td>
 </tr>
 <tr class="even">
 <td align="left">SCH</td>
 <td align="left">2023-2024</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">0</td>
+<td align="right">NaN</td>
 </tr>
 </tbody>
 </table>
+</div>
+<div id="contraindications" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Contraindications</h1>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="11%" />
+<col width="20%" />
+<col width="27%" />
+<col width="29%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">site_long</th>
+<th align="left">season</th>
+<th align="right">hospitalizations</th>
+<th align="right"># w/ contraindications</th>
+<th align="right">percent_contraindication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">CHCO</td>
+<td align="left">2018-2019</td>
+<td align="right">5458</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="even">
+<td align="left">Lurie</td>
+<td align="left">2018-2019</td>
+<td align="right">3623</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="odd">
+<td align="left">SCH</td>
+<td align="left">2018-2019</td>
+<td align="right">5703</td>
+<td align="right">364</td>
+<td align="right">6.38</td>
+</tr>
+<tr class="even">
+<td align="left">CHCO</td>
+<td align="left">2019-2020</td>
+<td align="right">5841</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="odd">
+<td align="left">Lurie</td>
+<td align="left">2019-2020</td>
+<td align="right">3968</td>
+<td align="right">6</td>
+<td align="right">0.15</td>
+</tr>
+<tr class="even">
+<td align="left">SCH</td>
+<td align="left">2019-2020</td>
+<td align="right">4773</td>
+<td align="right">235</td>
+<td align="right">4.92</td>
+</tr>
+<tr class="odd">
+<td align="left">CHCO</td>
+<td align="left">2020-2021</td>
+<td align="right">4021</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="even">
+<td align="left">Lurie</td>
+<td align="left">2020-2021</td>
+<td align="right">3276</td>
+<td align="right">7</td>
+<td align="right">0.21</td>
+</tr>
+<tr class="odd">
+<td align="left">SCH</td>
+<td align="left">2020-2021</td>
+<td align="right">3860</td>
+<td align="right">20</td>
+<td align="right">0.52</td>
+</tr>
+<tr class="even">
+<td align="left">CHCO</td>
+<td align="left">2021-2022</td>
+<td align="right">5154</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="odd">
+<td align="left">Lurie</td>
+<td align="left">2021-2022</td>
+<td align="right">3745</td>
+<td align="right">2</td>
+<td align="right">0.05</td>
+</tr>
+<tr class="even">
+<td align="left">SCH</td>
+<td align="left">2021-2022</td>
+<td align="right">4997</td>
+<td align="right">13</td>
+<td align="right">0.26</td>
+</tr>
+<tr class="odd">
+<td align="left">CHCO</td>
+<td align="left">2022-2023</td>
+<td align="right">5584</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="even">
+<td align="left">Lurie</td>
+<td align="left">2022-2023</td>
+<td align="right">3837</td>
+<td align="right">2</td>
+<td align="right">0.05</td>
+</tr>
+<tr class="odd">
+<td align="left">SCH</td>
+<td align="left">2022-2023</td>
+<td align="right">5178</td>
+<td align="right">7</td>
+<td align="right">0.14</td>
+</tr>
+<tr class="even">
+<td align="left">CHCO</td>
+<td align="left">2023-2024</td>
+<td align="right">5636</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="odd">
+<td align="left">Lurie</td>
+<td align="left">2023-2024</td>
+<td align="right">4178</td>
+<td align="right">2</td>
+<td align="right">0.05</td>
+</tr>
+<tr class="even">
+<td align="left">SCH</td>
+<td align="left">2023-2024</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">NaN</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="patients-screened-and-eligible-for-flu-vaccine-no-contraindication-no-vaccination-this-season" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Patients screened and
+eligible for flu vaccine (no contraindication, no vaccination this
+season)</h1>
+<pre><code>       
+        2018-2019 2019-2020 2020-2021 2021-2022 2022-2023 2023-2024
+  CHCO       4499      4976      3608      5116      5076      5353
+  Lurie         0      3209      2111      2530      2355      2425
+  SCH        1819      1365      1378      1325      1559         0</code></pre>
 </div>
 
 
