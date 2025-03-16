@@ -1,0 +1,106 @@
+---
+title: "CGM and OGTT Trajectories in CF"
+author: "Tim Vigers"
+date: "today"
+date-format: long
+format:
+  html:
+    toc: true
+    toc-depth: 5
+    toc-float: true
+    code-fold: false
+    self-contained: true
+    fig-cap-location: top
+    page-layout: full
+    theme:
+      light: flatly
+      dark: darkly
+bibliography: /home/timvigers/Documents/Miscellaneous/zotero.bib
+csl: /home/timvigers/GitHub/styles/american-medical-association.csl
+editor: source
+---
+
+```{r setup}
+#| include: false
+library(tidyverse)
+library(lubridate)
+library(hms)
+library(tools)
+library(readxl)
+library(traj)
+knitr::opts_knit$set(root.dir = "/Users/pylell/Library/CloudStorage/OneDrive-TheUniversityofColoradoDenver/Vigers/CF/Christine Chan/EnVision CF")
+```
+
+```{r data cleaning}
+# Import OGTT and insulin data
+df <- read.csv("./Data_Raw/EnvisionCF_DATA_2024-07-19_1236.csv", na.strings = "")
+# CGM data
+files <- list.files("./Data_Clean/CGM/Cleaned", full.names = T)
+cgms <- lapply(files, function(f) {
+  # Read data
+  cgm <- read.csv(f, na.strings = "")
+  # Format ID and visit name
+  id <- basename(f)
+  id <- sub("_sensor_raw_data_upload\\.csv", "", id)
+  visit <- str_extract(id, "visit_._arm_.")
+  id <- sub("_visit_._arm_.", "", id)
+  # Split date and time for averaging
+  cgm$timestamp <- parse_date_time(cgm$timestamp, c("ymd HMS", "ymd"))
+  cgm$timestamp <- round_date(cgm$timestamp, "15 minutes")
+  cgm$date <- as.Date(cgm$timestamp)
+  cgm$time <- as_hms(cgm$timestamp)
+  # Format dataframe and return
+  cgm$study_id <- id
+  cgm$redcap_event_name <- visit
+  cgm <- cgm %>% select(study_id, redcap_event_name, date, time, sensorglucose)
+  return(cgm)
+})
+cgms <- do.call(rbind, cgms)
+# For each wear, average by time of day and convert to wide
+cgms <- cgms %>%
+  mutate(time = as.numeric(time)) %>%
+  group_by(study_id, redcap_event_name, time) %>%
+  summarise(sensorglucose = mean(sensorglucose, na.rm = T), .groups = "drop") %>%
+  pivot_wider(names_from = time, values_from = sensorglucose)
+# Select and merge
+df <- df %>%
+  select(study_id, redcap_event_name, num_hospitalizations, timepoint_120_min) %>%
+  drop_na()
+df <- left_join(cgms, df)
+# Number of exacerbations to categorical
+df$num_hospitalizations <- factor(df$num_hospitalizations,
+  levels = c(0:9), labels = c("0", "1", "2", "3", rep("4+", 6))
+)
+df <- df %>%
+  select(
+    study_id, redcap_event_name, num_hospitalizations, timepoint_120_min,
+    everything()
+  )
+# Save for Laura
+#write.csv(df,file = "./Data_Clean/trajectories.csv",row.names = F,na="")
+# Unique identifier
+df$ID <- 1:nrow(df)
+# Make a dataframe for time
+time <- data.frame(matrix(rep(seq(0, 85500, by = 900), nrow(df)),
+  byrow = T,
+  ncol = length(seq(0, 85500, by = 900))
+))
+time$ID <- df$ID
+time <- time %>% select(ID, everything())
+```
+
+# Basic Trajectory Analysis
+
+```{r}
+set.seed(1017)
+step1 <- Step1Measures(
+  Data = df[, c("ID", seq(0, 85500, by = 900))],
+  Time = time, ID = T
+)
+summary(step1)
+step2 <- Step2Selection(trajMeasures = step1)
+summary(step2)
+print(step2)
+step3 <- Step3Clusters(trajSelection = step2)
+plot(step3, spline = T)
+```
