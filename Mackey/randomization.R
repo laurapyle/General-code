@@ -13,17 +13,66 @@ set.seed(1234586444)
 # sequence for both high and low A1c (i.e., up to 16)
 rand1a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 1, A1c <8%")
 rand1b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 1, A1c >=8%")
-
-
-
-rand <- rbind(rand_males_lt45_bmilt30, rand_males_ge45_bmilt30, rand_males_lt45_bmige30, rand_males_ge45_bmige30,
-              rand_females_lt45_bmilt30, rand_females_ge45_bmilt30, rand_females_lt45_bmige30, rand_females_ge45_bmige30)
-rand <- rand %>% select(strata, treatment_char)
-colnames(rand) <- c("Strata", "Arm (char)")
+rand2a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 2, A1c <8%")
+rand2b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 2, A1c >=8%")
+rand3a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 3, A1c <8%")
+rand3b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 3, A1c >=8%")
+rand4a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 4, A1c <8%")
+rand4b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 4, A1c >=8%")
+rand5a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 5, A1c <8%")
+rand5b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 5, A1c >=8%")
+rand6a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 6, A1c <8%")
+rand6b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 6, A1c >=8%")
+rand7a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 7, A1c <8%")
+rand7b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 7, A1c >=8%")
+rand8a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 8, A1c <8%")
+rand8b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 8, A1c >=8%")
+rand9a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 9, A1c <8%")
+rand9b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 9, A1c >=8%")
+rand10a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 10, A1c <8%")
+rand10b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 10, A1c >=8%")
+rand11a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 11, A1c <8%")
+rand11b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 11, A1c >=8%")
+rand12a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 12, A1c <8%")
+rand12b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 12, A1c >=8%")
+rand13a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 13, A1c <8%")
+rand13b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 13, A1c >=8%")
+rand14a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 14, A1c <8%")
+rand14b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 14, A1c >=8%")
+rand15a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 15, A1c <8%")
+rand15b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 15, A1c >=8%")
+rand16a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 16, A1c <8%")
+rand16b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 16, A1c >=8%")
+rand17a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 17, A1c <8%")
+rand17b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 17, A1c >=8%")
+rand18a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 18, A1c <8%")
+rand18b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 18, A1c >=8%")
+rand19a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 19, A1c <8%")
+rand19b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 19, A1c >=8%")
+rand20a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 20, A1c <8%")
+rand20b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 20, A1c >=8%")
+rand21a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 21, A1c <8%")
+rand21b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 21, A1c >=8%")
+rand22a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 22, A1c <8%")
+rand22b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 22, A1c >=8%")
+rand23a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 23, A1c <8%")
+rand23b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 23, A1c >=8%")
+rand24a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 24, A1c <8%")
+rand24b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 24, A1c >=8%")
+rand25a <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 25, A1c <8%")
+rand25b <- blockrand(n=16, levels = c(1:2), block.sizes = 1, stratum = "Cohort 25, A1c >=8%")
+rand <- rbind(rand1a, rand1b, rand2a, rand2b, rand3a, rand3b, rand4a, rand4b, rand5a, rand5b, rand6a, rand6b, rand7a, rand7b,
+              rand8a, rand8b, rand9a, rand9b, rand10a, rand10b, rand11a, rand11b, rand12a, rand12b, rand13a, rand13b, 
+              rand14a, rand14b, rand15a, rand15b, rand16a, rand16b, rand17a, rand17b, rand18a, rand18b,
+              rand19a, rand19b, rand20a, rand20b, rand21a, rand21b, rand22a, rand22b, rand23a, rand23b,
+              rand24a, rand24b, rand25a, rand25b)
+rand$treatment_char <- ifelse(rand$treatment == "1", "HealthEd-T1D", "BREATHE-T1D")
+rand <- rand %>% select(stratum, treatment_char)
+colnames(rand) <- c("Stratum", "Arm (char)")
 
 # output
 write.csv(rand, 
-          "/Users/pylell/Library/CloudStorage/OneDrive-SharedLibraries-UW/Nowak/ADPKD GLP1-Ra/Randomization/rand_sequence_ADPKD_GLP1Ra.csv",
+          "/Users/pylell/Library/CloudStorage/OneDrive-SharedLibraries-UW/Mackey/Randomization/rand_sequence_BREATHE-T1D.csv",
           row.names = F)
 
 
