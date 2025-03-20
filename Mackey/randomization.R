@@ -1,6 +1,7 @@
 library(readxl)
 library(blockrand)
 library(dplyr)
+library(stringr)
 
 set.seed(1234586444)
 
@@ -69,6 +70,35 @@ rand <- rbind(rand1a, rand1b, rand2a, rand2b, rand3a, rand3b, rand4a, rand4b, ra
 rand$treatment_char <- ifelse(rand$treatment == "1", "HealthEd-T1D", "BREATHE-T1D")
 rand <- rand %>% select(stratum, treatment_char)
 colnames(rand) <- c("Stratum", "Arm (char)")
+
+rand$cohort <- NA
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 1, A1c <8%", "Cohort 1, A1c >=8%"), 1, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 2, A1c <8%", "Cohort 2, A1c >=8%"), 2, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 3, A1c <8%", "Cohort 3, A1c >=8%"), 3, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 4, A1c <8%", "Cohort 4, A1c >=8%"), 4, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 5, A1c <8%", "Cohort 5, A1c >=8%"), 5, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 6, A1c <8%", "Cohort 6, A1c >=8%"), 6, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 7, A1c <8%", "Cohort 7, A1c >=8%"), 7, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 8, A1c <8%", "Cohort 8, A1c >=8%"), 8, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 9, A1c <8%", "Cohort 9, A1c >=8%"), 9, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 10, A1c <8%", "Cohort 10, A1c >=8%"), 10, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 11, A1c <8%", "Cohort 11, A1c >=8%"), 11, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 12, A1c <8%", "Cohort 12, A1c >=8%"), 12, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 13, A1c <8%", "Cohort 13, A1c >=8%"), 13, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 14, A1c <8%", "Cohort 14, A1c >=8%"), 14, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 15, A1c <8%", "Cohort 15, A1c >=8%"), 15, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 16, A1c <8%", "Cohort 16, A1c >=8%"), 16, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 17, A1c <8%", "Cohort 17, A1c >=8%"), 17, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 18, A1c <8%", "Cohort 18, A1c >=8%"), 18, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 19, A1c <8%", "Cohort 19, A1c >=8%"), 19, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 20, A1c <8%", "Cohort 20, A1c >=8%"), 20, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 21, A1c <8%", "Cohort 21, A1c >=8%"), 21, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 22, A1c <8%", "Cohort 22, A1c >=8%"), 22, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 23, A1c <8%", "Cohort 23, A1c >=8%"), 23, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 24, A1c <8%", "Cohort 24, A1c >=8%"), 24, rand$cohort)
+rand$cohort <- ifelse(rand$Stratum %in% c("Cohort 25, A1c <8%", "Cohort 25, A1c >=8%"), 25, rand$cohort)
+
+rand$a1c_cutoff <- ifelse(str_detect(rand$Stratum, ">=8%"), 1, 0)
 
 # output
 write.csv(rand, 
