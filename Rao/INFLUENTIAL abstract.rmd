@@ -23,7 +23,7 @@ knitr::opts_chunk$set(echo = FALSE,warning = FALSE, message = FALSE)
 
 ```{r data,echo=FALSE,warning=FALSE}
 # latest dataset should contain EPIC and Cerner data
-redcap <- read.csv('/Volumes/pylell/Rao/PHM abstract/Data raw/InFLUentialMainSites_DATA_2025-01-16_1900.csv')
+redcap <- read.csv('/Volumes/pylell/Rao/ID Week abstract/Data raw/InFLUentialMainSites_DATA_2025-03-30_1812.csv')
 
 # remove records with missing site number
 alldata <- redcap %>% filter(!is.na(site))
@@ -52,10 +52,11 @@ s$`Screen Date` <- as.Date(s$`Screen Date`, format = "%Y-%m-%d")
 s <- s %>% filter(!is.na(`Screen Date`))
 s_unique <- unique(s)
 # write screening dates to file
-write.csv(s_unique, "/Volumes/pylell/Rao/PHM abstract/screen_dates.csv", row.names = FALSE)
+#write.csv(s_unique, "/Volumes/pylell/Rao/PHM abstract/screen_dates.csv", row.names = FALSE)
 
 # summarize screening data by site
 # first create a variable for season using August 1 as earliest date and June 1 as latest
+# using screening data not admissions data because we want to know when sites stopped and started screening
 site_data <- alldata
 site_data <- site_data %>%
   mutate(
@@ -108,7 +109,9 @@ alldata$adm_date <- as.Date(alldata$adm_date)
 alldata$los <- alldata$dish_date - alldata$adm_date
 # all records above seem to have Discharge after Admission 
 # no negative LOS, but some 0 LOS
-alldata$age_discharge <- alldata$age_admission + alldata$los
+alldata$age_discharge_yrs <- floor((alldata$age_admission + alldata$los)/365.25)
+alldata$age_discharge_mo <- floor((alldata$age_admission + alldata$los)/12)
+# everyone is within age range
 
 ######################
 # EXCLUSION CRITERIA #
@@ -116,13 +119,14 @@ alldata$age_discharge <- alldata$age_admission + alldata$los
 
 # apply eligibility criteria
 data <- alldata
-data$not_eligible_age <- as.factor(ifelse(data$age_discharge >= 180 & data$age_discharge < 6570, 1, 0))
+data$eligible_age <- as.factor(ifelse(data$age_discharge_mo >= 6 & data$age_discharge_yrs <= 18, 1, 0))
 # Patient hospitalized on a medical, surgical, rehabilitation, or psychiatry/behavioral medicine unit during the influenza vaccination season at your institution
-data$not_eligible_unit <- as.factor(ifelse(data$unit == "Other", 1, 0))
+data$eligible_season <- as.factor(ifelse(!is.na(alldata$in_window) & alldata$in_window == "Y", 1, 0))
+data$eligible_unit <- as.factor(ifelse(data$unit == 99, 0, 1))
 # Admitted to hematology/oncology service or unit
-data$not_eligible_service <- as.factor(ifelse(is.na(data$service) | data$service == 32, 1, 0))
+data$eligible_service <- as.factor(ifelse(is.na(data$service) | data$service == 32, 0, 1))
 # Discharged from ICU setting
-data$not_eligible_icu <- as.factor(ifelse(data$icu == 1, 1, 0))
+data$eligible_icu <- as.factor(ifelse(data$icu == 1, 0, 1))
 # Ward of state or foster child
 # NO CORRESPONDING VARIABLE
 # Death on record
@@ -131,10 +135,11 @@ data$not_eligible_icu <- as.factor(ifelse(data$icu == 1, 1, 0))
 # NO CORRESPONDING VARIABLE
 
 # remove ineligible patients
-eligible <- data %>% filter(age_discharge >= 180 & age_discharge < 6570)
-eligible <- eligible %>% filter(!unit == "Other")
-eligible <- eligible %>% filter(!(service == 32) & !is.na(service))
-eligible <- eligible %>% filter(icu == 0)
+eligible <- data %>% filter(eligible_age == 1)
+eligible <- eligible %>% filter(eligible_season == 1)
+eligible <- eligible %>% filter(eligible_unit == 1)
+eligible <- eligible %>% filter(eligible_service == 1)
+eligible <- eligible %>% filter(eligible_icu == 1)
 
 # count of unique eligible patients by site and season
 eligible_unique <- eligible %>% select(site_long, season, sid) %>% unique()
@@ -149,6 +154,7 @@ eligible_screened <- eligible
 eligible_screened <- eligible_screened %>% filter(screening == 1)
 es <- as.data.frame(table(eligible_screened$site_long, eligible_screened$season))
 colnames(es) <- c("site_long", "season", "# Screenings")
+# STOPPED HERE: NO SCREENINGS FOR SCH IN 2023-2024
 
 # create a table with number of hospitalizations and screenings
 t2 <- as.data.frame(table(eligible_hosp_unique$site_long, eligible_hosp_unique$season))
@@ -194,7 +200,7 @@ eligible_screened_no_contra_no_vacc <- eligible_screened_no_contra %>% filter(pr
 
 ```{r,echo=FALSE}
 # Create descriptive table using alldata of eligiblity criteria
-t1 <- tableby(site ~ not_eligible_age + not_eligible_unit + not_eligible_service + not_eligible_icu, 
+t1 <- tableby(site ~ eligible_age + eligible_season + eligible_unit + eligible_service + eligible_icu, 
               data = data, control = list(digits = 2))
 ```
 

@@ -2,3 +2,4 @@
 .Rhistory
 *.html
 *.html
+.DS_Store
