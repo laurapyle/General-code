@@ -3,7 +3,7 @@ library(blockrand)
 library(dplyr)
 library(stringr)
 
-set.seed(1234586444)
+set.seed(1234443654)
 
 # stratify randomization by cohort and A1c (>=8%, <8%)
 # recruiting up to 230 to account for dropout (final N = 200)
