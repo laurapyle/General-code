@@ -21,9 +21,51 @@ library(stringr)
 knitr::opts_chunk$set(echo = FALSE,warning = FALSE, message = FALSE)
 ```
 
+```{r,echo=FALSE, include=F}
+check_vaccination_dates <- function(data) {
+  # Create a new column for the result, default to 0
+  data$vaccine_this_season <- 0
+  
+  # Get column names for vaccination dates
+  vaxx_cols <- paste0("fluvaxxdate_", 1:29)
+  
+  # Loop through each row in the dataset
+  for (i in 1:nrow(data)) {
+    # Get the screening date range for this person
+    first_screen <- data$first_screen[i]
+    last_screen <- data$last_screen[i]
+    adm_date <- data$adm_date[i]
+    dish_date <- data$dish_date[i]
+    
+    # Skip if screening dates are missing
+    if (is.na(first_screen) || is.na(last_screen)) {
+      next
+    }
+    
+    # Check each vaccination date column
+    for (col in vaxx_cols) {
+      # Skip if this vaccination date is missing
+      if (is.na(data[[col]][i])) {
+        next
+      }
+      
+      # Check if the vaccination date falls within the screening period
+      vaxx_date <- data[[col]][i]
+      if (vaxx_date >= first_screen && vaxx_date <= last_screen && vaxx_date < adm_date) {
+        data$vaccine_this_season[i] <- 1 }
+      if (vaxx_date >= first_screen && vaxx_date <= last_screen && vaxx_date >= adm_date 
+          && vaxx_date <= dish_date) {
+        data$vaccine_during_hosp[i] <- 1 }
+    }
+  }
+  
+  return(data)
+}
+```
+
 ```{r data,echo=FALSE,warning=FALSE}
 # latest dataset should contain EPIC and Cerner data
-redcap <- read.csv('/Volumes/pylell/Rao/ID Week abstract/Data raw/InFLUentialMainSites_DATA_2025-03-30_1812.csv')
+redcap <- read.csv('/Users/pylell/Library/CloudStorage/OneDrive-SharedLibraries-UW/Rao/ID Week abstract/Data raw/InFLUentialMainSites_DATA_2025-04-20_1846.csv')
 
 # remove records with missing site number
 alldata <- redcap %>% filter(!is.na(site))
@@ -75,7 +117,7 @@ site_data <- site_data %>%
 site_data <- site_data %>% filter(!is.na(season))
 screen_dates <- site_data %>% group_by(site_long, season) %>% summarise(first_screen = min(screen_date1),
                                                                    last_screen = max(screen_date1))
-  
+
 # in the patient level data, create a variable for season based on admission date
 # merge in the site level data by site and season and exclude hospitalizations
 # outside the date range for that season
@@ -106,12 +148,12 @@ num_excluded <- nrow(x)
 # between 6 months and 18 years at time of discharge
 alldata$dish_date <- as.Date(alldata$dish_date)
 alldata$adm_date <- as.Date(alldata$adm_date)
-alldata$los <- alldata$dish_date - alldata$adm_date
+alldata$los <- as.numeric(alldata$dish_date - alldata$adm_date)
 # all records above seem to have Discharge after Admission 
 # no negative LOS, but some 0 LOS
-alldata$age_discharge_yrs <- floor((alldata$age_admission + alldata$los)/365.25)
-alldata$age_discharge_mo <- floor((alldata$age_admission + alldata$los)/12)
-# everyone is within age range
+alldata$age_discharge_days <- alldata$age_admission + alldata$los
+alldata$age_discharge_yrs <- (alldata$age_admission + alldata$los)/365.25
+alldata$age_discharge_mo <- (alldata$age_admission + alldata$los)/30.437
 
 ######################
 # EXCLUSION CRITERIA #
@@ -154,7 +196,6 @@ eligible_screened <- eligible
 eligible_screened <- eligible_screened %>% filter(screening == 1)
 es <- as.data.frame(table(eligible_screened$site_long, eligible_screened$season))
 colnames(es) <- c("site_long", "season", "# Screenings")
-# STOPPED HERE: NO SCREENINGS FOR SCH IN 2023-2024
 
 # create a table with number of hospitalizations and screenings
 t2 <- as.data.frame(table(eligible_hosp_unique$site_long, eligible_hosp_unique$season))
@@ -175,7 +216,17 @@ t3$percent_contraindication <- round((t3$`# w/ contraindications` / t3$hospitali
 # Find hospitalizations without contraindications and no vaccination this season (i.e., eligible for vaccine)
 eligible_screened_no_contra <- eligible_screened %>% 
   filter(contraindication_summary == 0 | is.na(contraindication_summary))
-eligible_screened_no_contra_no_vacc <- eligible_screened_no_contra %>% filter(priorvacc_summary == 0 | is.na(priorvacc_summary))
+# determine whether patient had a vaccination this season
+# need to check fluvaxxdate_1 through fluvaxxdate_29
+# if any of these dates are between first and last dates of screening for that site
+#screen_dates$site <- ifelse(screen_dates$site_long == "CHCO", "M2",
+#                            ifelse(screen_dates$site_long == "Lurie", "M3", "M1"))
+#eligible_screened_no_contra <- full_join(eligible_screened_no_contra, screen_dates, by = c("site", "season"))
+eligible_screened_no_contra <- check_vaccination_dates(eligible_screened_no_contra)
+eligible_screened_no_contra_no_vacc <- eligible_screened_no_contra %>% filter(vaccine_this_season == 0)
+t4 <- as.data.frame(table(eligible_screened_no_contra_no_vacc$site_long, eligible_screened_no_contra_no_vacc$season))
+colnames(t4) <- c("site_long", "season", "Eligible for vaccination")
+# something not working - some patients both received this season prior to hosp and during hosp
 
 # patients who received vaccination
 
@@ -192,14 +243,14 @@ eligible_screened_no_contra_no_vacc <- eligible_screened_no_contra %>% filter(pr
 1) Since we don't have DOB, it is OK to estimate whether patients are at least 6 months of age using age of 6 * 30 = 180 days?
 2) The exclusion criterion states that patients must not be discharged from the ICU. Is it possible someone could be in the ICU at the start of the admission but not discharged from there? If we exclude all records with ICU = 1, ~19k hospitalizations will be excluded
 3) Just to confirm: no corresponding variable to check ward of state, foster child, death on record, or flagged as does not wish to participate in research
-4) There are a lot of missing values for contraindication and previous vaccine questions. If these were left blank, I assumed there was no contraindication or prior vaccine.
+4) There are a lot of missing values for contraindication. If these were left blank, I assumed there was no contraindication.
 
 # Results
 
 ## Eligibility criteria
 
 ```{r,echo=FALSE}
-# Create descriptive table using alldata of eligiblity criteria
+# Create descriptive table using alldata of eligibility criteria
 t1 <- tableby(site ~ eligible_age + eligible_season + eligible_unit + eligible_service + eligible_icu, 
               data = data, control = list(digits = 2))
 ```
@@ -236,5 +287,5 @@ kable(t3)
 # Patients screened and eligible for flu vaccine (no contraindication, no vaccination this season)
 
 ```{r,echo=FALSE, comment=""}
-table(eligible_screened_no_contra_no_vacc$site_long, eligible_screened_no_contra_no_vacc$season)
+kable(t4)
 ```

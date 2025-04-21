@@ -11,7 +11,7 @@
 
 <meta name="author" content="Laura Pyle" />
 
-<meta name="date" content="2025-01-26" />
+<meta name="date" content="2025-04-20" />
 
 <title>INFLUENTIAL - PAS abstract</title>
 
@@ -1493,7 +1493,7 @@ border-radius: 0px;
 
 <h1 class="title toc-ignore">INFLUENTIAL - PAS abstract</h1>
 <h4 class="author">Laura Pyle</h4>
-<h4 class="date">26 January 2025</h4>
+<h4 class="date">20 April 2025</h4>
 
 </div>
 
@@ -1504,7 +1504,7 @@ border-radius: 0px;
 <li>For purposes of finding the first and last date of screening by site
 and season, the range of possible screening dates was set as August 1 -
 June 1</li>
-<li>8156 hospitalizations with admission date before the first date of
+<li>8173 hospitalizations with admission date before the first date of
 screening for the season or with discharge dates after the last date of
 screening for the season were excluded from analysis</li>
 <li>11,472 of 78,832 patients had more than one hospitalization. The
@@ -1523,9 +1523,8 @@ with ICU = 1, ~19k hospitalizations will be excluded</li>
 <li>Just to confirm: no corresponding variable to check ward of state,
 foster child, death on record, or flagged as does not wish to
 participate in research</li>
-<li>There are a lot of missing values for contraindication and previous
-vaccine questions. If these were left blank, I assumed there was no
-contraindication or prior vaccine.</li>
+<li>There are a lot of missing values for contraindication. If these
+were left blank, I assumed there was no contraindication.</li>
 </ol>
 </div>
 <div id="results" class="section level1" number="3">
@@ -1533,28 +1532,28 @@ contraindication or prior vaccine.</li>
 <div id="eligibility-criteria" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Eligibility
 criteria</h2>
-<table style="width:100%;">
+<table>
 <colgroup>
-<col width="25%" />
+<col width="22%" />
 <col width="16%" />
 <col width="16%" />
 <col width="16%" />
-<col width="17%" />
+<col width="18%" />
 <col width="8%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th align="left"></th>
-<th align="center">M1 (N=28256)</th>
+<th align="center">M1 (N=34239)</th>
 <th align="center">M2 (N=40735)</th>
 <th align="center">M3 (N=29218)</th>
-<th align="center">Total (N=98209)</th>
+<th align="center">Total (N=104192)</th>
 <th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left"><strong>not_eligible_age</strong></td>
+<td align="left"><strong>eligible_age</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -1564,21 +1563,21 @@ criteria</h2>
 <tr class="even">
 <td align="left">   0</td>
 <td align="center">0 (0.0%)</td>
-<td align="center">266 (0.7%)</td>
-<td align="center">33 (0.1%)</td>
-<td align="center">299 (0.3%)</td>
+<td align="center">314 (0.8%)</td>
+<td align="center">19 (0.1%)</td>
+<td align="center">333 (0.3%)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
 <td align="left">   1</td>
-<td align="center">28256 (100.0%)</td>
-<td align="center">40469 (99.3%)</td>
-<td align="center">29185 (99.9%)</td>
-<td align="center">97910 (99.7%)</td>
+<td align="center">34239 (100.0%)</td>
+<td align="center">40421 (99.2%)</td>
+<td align="center">29199 (99.9%)</td>
+<td align="center">103859 (99.7%)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td align="left"><strong>not_eligible_unit</strong></td>
+<td align="left"><strong>eligible_season</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -1587,14 +1586,46 @@ criteria</h2>
 </tr>
 <tr class="odd">
 <td align="left">   0</td>
-<td align="center">28256 (100.0%)</td>
-<td align="center">40735 (100.0%)</td>
-<td align="center">29218 (100.0%)</td>
-<td align="center">98209 (100.0%)</td>
+<td align="center">441 (1.3%)</td>
+<td align="center">164 (0.4%)</td>
+<td align="center">7568 (25.9%)</td>
+<td align="center">8173 (7.8%)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td align="left"><strong>not_eligible_service</strong></td>
+<td align="left">   1</td>
+<td align="center">33798 (98.7%)</td>
+<td align="center">40571 (99.6%)</td>
+<td align="center">21650 (74.1%)</td>
+<td align="center">96019 (92.2%)</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>eligible_unit</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">&lt; 0.001</td>
+</tr>
+<tr class="even">
+<td align="left">   0</td>
+<td align="center">0 (0.0%)</td>
+<td align="center">507 (1.2%)</td>
+<td align="center">128 (0.4%)</td>
+<td align="center">635 (0.6%)</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">   1</td>
+<td align="center">34239 (100.0%)</td>
+<td align="center">40228 (98.8%)</td>
+<td align="center">29090 (99.6%)</td>
+<td align="center">103557 (99.4%)</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left"><strong>eligible_service</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -1603,22 +1634,22 @@ criteria</h2>
 </tr>
 <tr class="odd">
 <td align="left">   0</td>
-<td align="center">28152 (99.6%)</td>
-<td align="center">40733 (100.0%)</td>
-<td align="center">29218 (100.0%)</td>
-<td align="center">98103 (99.9%)</td>
-<td align="right"></td>
-</tr>
-<tr class="even">
-<td align="left">   1</td>
-<td align="center">104 (0.4%)</td>
+<td align="center">105 (0.3%)</td>
 <td align="center">2 (0.0%)</td>
 <td align="center">0 (0.0%)</td>
-<td align="center">106 (0.1%)</td>
+<td align="center">107 (0.1%)</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">   1</td>
+<td align="center">34134 (99.7%)</td>
+<td align="center">40733 (100.0%)</td>
+<td align="center">29218 (100.0%)</td>
+<td align="center">104085 (99.9%)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td align="left"><strong>not_eligible_icu</strong></td>
+<td align="left"><strong>eligible_icu</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -1627,18 +1658,18 @@ criteria</h2>
 </tr>
 <tr class="even">
 <td align="left">   0</td>
-<td align="center">24609 (87.1%)</td>
-<td align="center">31860 (78.2%)</td>
-<td align="center">22649 (77.5%)</td>
-<td align="center">79118 (80.6%)</td>
+<td align="center">4402 (12.9%)</td>
+<td align="center">8875 (21.8%)</td>
+<td align="center">6569 (22.5%)</td>
+<td align="center">19846 (19.0%)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
 <td align="left">   1</td>
-<td align="center">3647 (12.9%)</td>
-<td align="center">8875 (21.8%)</td>
-<td align="center">6569 (22.5%)</td>
-<td align="center">19091 (19.4%)</td>
+<td align="center">29837 (87.1%)</td>
+<td align="center">31860 (78.2%)</td>
+<td align="center">22649 (77.5%)</td>
+<td align="center">84346 (81.0%)</td>
 <td align="right"></td>
 </tr>
 </tbody>
@@ -1753,6 +1784,12 @@ site and season</h2>
 <td align="left">2022-10-03</td>
 <td align="left">2023-05-12</td>
 </tr>
+<tr class="odd">
+<td align="left">SCH</td>
+<td align="left">2023-2024</td>
+<td align="left">2023-10-02</td>
+<td align="left">2024-04-12</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1761,9 +1798,9 @@ site and season</h2>
 eligible patients by site and season</h2>
 <pre><code>       
         2018-2019 2019-2020 2020-2021 2021-2022 2022-2023 2023-2024
-  CHCO       4853      5207      3564      4615      5027      4991
-  Lurie      2809      3304      2691      3004      3057      3422
-  SCH        4803      3966      3304      4211      4532         0</code></pre>
+  CHCO       4834      5197      3558      4609      4905      4797
+  Lurie         0      3131      2295      2906      2741      2881
+  SCH        4798      3720      3299      4203      4527      4545</code></pre>
 </div>
 </div>
 <div id="hospitalizations-and-screenings" class="section level1" number="4">
@@ -1790,128 +1827,128 @@ screenings</h1>
 <tr class="odd">
 <td align="left">CHCO</td>
 <td align="left">2018-2019</td>
-<td align="right">5458</td>
-<td align="right">4499</td>
-<td align="right">82.43</td>
+<td align="right">5425</td>
+<td align="right">4480</td>
+<td align="right">82.58</td>
 </tr>
 <tr class="even">
 <td align="left">Lurie</td>
 <td align="left">2018-2019</td>
-<td align="right">3623</td>
 <td align="right">0</td>
-<td align="right">0.00</td>
+<td align="right">0</td>
+<td align="right">NaN</td>
 </tr>
 <tr class="odd">
 <td align="left">SCH</td>
 <td align="left">2018-2019</td>
-<td align="right">5703</td>
-<td align="right">5402</td>
-<td align="right">94.72</td>
+<td align="right">5697</td>
+<td align="right">5397</td>
+<td align="right">94.73</td>
 </tr>
 <tr class="even">
 <td align="left">CHCO</td>
 <td align="left">2019-2020</td>
-<td align="right">5841</td>
-<td align="right">4976</td>
-<td align="right">85.19</td>
+<td align="right">5830</td>
+<td align="right">4973</td>
+<td align="right">85.30</td>
 </tr>
 <tr class="odd">
 <td align="left">Lurie</td>
 <td align="left">2019-2020</td>
-<td align="right">3968</td>
-<td align="right">3215</td>
-<td align="right">81.02</td>
+<td align="right">3771</td>
+<td align="right">3080</td>
+<td align="right">81.68</td>
 </tr>
 <tr class="even">
 <td align="left">SCH</td>
 <td align="left">2019-2020</td>
-<td align="right">4773</td>
-<td align="right">3736</td>
-<td align="right">78.27</td>
+<td align="right">4445</td>
+<td align="right">3727</td>
+<td align="right">83.85</td>
 </tr>
 <tr class="odd">
 <td align="left">CHCO</td>
 <td align="left">2020-2021</td>
-<td align="right">4021</td>
-<td align="right">3608</td>
-<td align="right">89.73</td>
+<td align="right">4013</td>
+<td align="right">3603</td>
+<td align="right">89.78</td>
 </tr>
 <tr class="even">
 <td align="left">Lurie</td>
 <td align="left">2020-2021</td>
-<td align="right">3276</td>
-<td align="right">2118</td>
-<td align="right">64.65</td>
+<td align="right">2738</td>
+<td align="right">2085</td>
+<td align="right">76.15</td>
 </tr>
 <tr class="odd">
 <td align="left">SCH</td>
 <td align="left">2020-2021</td>
-<td align="right">3860</td>
-<td align="right">2958</td>
+<td align="right">3855</td>
+<td align="right">2954</td>
 <td align="right">76.63</td>
 </tr>
 <tr class="even">
 <td align="left">CHCO</td>
 <td align="left">2021-2022</td>
-<td align="right">5154</td>
-<td align="right">5123</td>
-<td align="right">99.40</td>
+<td align="right">5148</td>
+<td align="right">5121</td>
+<td align="right">99.48</td>
 </tr>
 <tr class="odd">
 <td align="left">Lurie</td>
 <td align="left">2021-2022</td>
-<td align="right">3745</td>
-<td align="right">2532</td>
-<td align="right">67.61</td>
+<td align="right">3586</td>
+<td align="right">2485</td>
+<td align="right">69.30</td>
 </tr>
 <tr class="even">
 <td align="left">SCH</td>
 <td align="left">2021-2022</td>
-<td align="right">4997</td>
-<td align="right">2438</td>
-<td align="right">48.79</td>
+<td align="right">4989</td>
+<td align="right">2435</td>
+<td align="right">48.81</td>
 </tr>
 <tr class="odd">
 <td align="left">CHCO</td>
 <td align="left">2022-2023</td>
-<td align="right">5584</td>
-<td align="right">5082</td>
-<td align="right">91.01</td>
+<td align="right">5454</td>
+<td align="right">4984</td>
+<td align="right">91.38</td>
 </tr>
 <tr class="even">
 <td align="left">Lurie</td>
 <td align="left">2022-2023</td>
-<td align="right">3837</td>
-<td align="right">2357</td>
-<td align="right">61.43</td>
+<td align="right">3388</td>
+<td align="right">2312</td>
+<td align="right">68.24</td>
 </tr>
 <tr class="odd">
 <td align="left">SCH</td>
 <td align="left">2022-2023</td>
-<td align="right">5178</td>
-<td align="right">2590</td>
-<td align="right">50.02</td>
+<td align="right">5171</td>
+<td align="right">2585</td>
+<td align="right">49.99</td>
 </tr>
 <tr class="even">
 <td align="left">CHCO</td>
 <td align="left">2023-2024</td>
-<td align="right">5636</td>
-<td align="right">5365</td>
-<td align="right">95.19</td>
+<td align="right">5425</td>
+<td align="right">5181</td>
+<td align="right">95.50</td>
 </tr>
 <tr class="odd">
 <td align="left">Lurie</td>
 <td align="left">2023-2024</td>
-<td align="right">4178</td>
-<td align="right">2427</td>
-<td align="right">58.09</td>
+<td align="right">3478</td>
+<td align="right">2371</td>
+<td align="right">68.17</td>
 </tr>
 <tr class="even">
 <td align="left">SCH</td>
 <td align="left">2023-2024</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">NaN</td>
+<td align="right">5252</td>
+<td align="right">3993</td>
+<td align="right">76.03</td>
 </tr>
 </tbody>
 </table>
@@ -1939,128 +1976,128 @@ screenings</h1>
 <tr class="odd">
 <td align="left">CHCO</td>
 <td align="left">2018-2019</td>
-<td align="right">5458</td>
+<td align="right">5425</td>
 <td align="right">0</td>
 <td align="right">0.00</td>
 </tr>
 <tr class="even">
 <td align="left">Lurie</td>
 <td align="left">2018-2019</td>
-<td align="right">3623</td>
 <td align="right">0</td>
-<td align="right">0.00</td>
+<td align="right">0</td>
+<td align="right">NaN</td>
 </tr>
 <tr class="odd">
 <td align="left">SCH</td>
 <td align="left">2018-2019</td>
-<td align="right">5703</td>
-<td align="right">364</td>
-<td align="right">6.38</td>
+<td align="right">5697</td>
+<td align="right">363</td>
+<td align="right">6.37</td>
 </tr>
 <tr class="even">
 <td align="left">CHCO</td>
 <td align="left">2019-2020</td>
-<td align="right">5841</td>
+<td align="right">5830</td>
 <td align="right">0</td>
 <td align="right">0.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Lurie</td>
 <td align="left">2019-2020</td>
-<td align="right">3968</td>
-<td align="right">6</td>
-<td align="right">0.15</td>
+<td align="right">3771</td>
+<td align="right">5</td>
+<td align="right">0.13</td>
 </tr>
 <tr class="even">
 <td align="left">SCH</td>
 <td align="left">2019-2020</td>
-<td align="right">4773</td>
+<td align="right">4445</td>
 <td align="right">235</td>
-<td align="right">4.92</td>
+<td align="right">5.29</td>
 </tr>
 <tr class="odd">
 <td align="left">CHCO</td>
 <td align="left">2020-2021</td>
-<td align="right">4021</td>
+<td align="right">4013</td>
 <td align="right">0</td>
 <td align="right">0.00</td>
 </tr>
 <tr class="even">
 <td align="left">Lurie</td>
 <td align="left">2020-2021</td>
-<td align="right">3276</td>
+<td align="right">2738</td>
 <td align="right">7</td>
-<td align="right">0.21</td>
+<td align="right">0.26</td>
 </tr>
 <tr class="odd">
 <td align="left">SCH</td>
 <td align="left">2020-2021</td>
-<td align="right">3860</td>
+<td align="right">3855</td>
 <td align="right">20</td>
 <td align="right">0.52</td>
 </tr>
 <tr class="even">
 <td align="left">CHCO</td>
 <td align="left">2021-2022</td>
-<td align="right">5154</td>
+<td align="right">5148</td>
 <td align="right">0</td>
 <td align="right">0.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Lurie</td>
 <td align="left">2021-2022</td>
-<td align="right">3745</td>
+<td align="right">3586</td>
 <td align="right">2</td>
-<td align="right">0.05</td>
+<td align="right">0.06</td>
 </tr>
 <tr class="even">
 <td align="left">SCH</td>
 <td align="left">2021-2022</td>
-<td align="right">4997</td>
+<td align="right">4989</td>
 <td align="right">13</td>
 <td align="right">0.26</td>
 </tr>
 <tr class="odd">
 <td align="left">CHCO</td>
 <td align="left">2022-2023</td>
-<td align="right">5584</td>
+<td align="right">5454</td>
 <td align="right">0</td>
 <td align="right">0.00</td>
 </tr>
 <tr class="even">
 <td align="left">Lurie</td>
 <td align="left">2022-2023</td>
-<td align="right">3837</td>
+<td align="right">3388</td>
 <td align="right">2</td>
-<td align="right">0.05</td>
+<td align="right">0.06</td>
 </tr>
 <tr class="odd">
 <td align="left">SCH</td>
 <td align="left">2022-2023</td>
-<td align="right">5178</td>
+<td align="right">5171</td>
 <td align="right">7</td>
 <td align="right">0.14</td>
 </tr>
 <tr class="even">
 <td align="left">CHCO</td>
 <td align="left">2023-2024</td>
-<td align="right">5636</td>
+<td align="right">5425</td>
 <td align="right">0</td>
 <td align="right">0.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Lurie</td>
 <td align="left">2023-2024</td>
-<td align="right">4178</td>
+<td align="right">3478</td>
 <td align="right">2</td>
-<td align="right">0.05</td>
+<td align="right">0.06</td>
 </tr>
 <tr class="even">
 <td align="left">SCH</td>
 <td align="left">2023-2024</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">NaN</td>
+<td align="right">5252</td>
+<td align="right">18</td>
+<td align="right">0.34</td>
 </tr>
 </tbody>
 </table>
@@ -2069,11 +2106,107 @@ screenings</h1>
 <h1><span class="header-section-number">6</span> Patients screened and
 eligible for flu vaccine (no contraindication, no vaccination this
 season)</h1>
-<pre><code>       
-        2018-2019 2019-2020 2020-2021 2021-2022 2022-2023 2023-2024
-  CHCO       4499      4976      3608      5116      5076      5353
-  Lurie         0      3209      2111      2530      2355      2425
-  SCH        1819      1365      1378      1325      1559         0</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">site_long</th>
+<th align="left">season</th>
+<th align="right">Eligible for vaccination</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">CHCO</td>
+<td align="left">2018-2019</td>
+<td align="right">2605</td>
+</tr>
+<tr class="even">
+<td align="left">Lurie</td>
+<td align="left">2018-2019</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">SCH</td>
+<td align="left">2018-2019</td>
+<td align="right">3202</td>
+</tr>
+<tr class="even">
+<td align="left">CHCO</td>
+<td align="left">2019-2020</td>
+<td align="right">2636</td>
+</tr>
+<tr class="odd">
+<td align="left">Lurie</td>
+<td align="left">2019-2020</td>
+<td align="right">2507</td>
+</tr>
+<tr class="even">
+<td align="left">SCH</td>
+<td align="left">2019-2020</td>
+<td align="right">2170</td>
+</tr>
+<tr class="odd">
+<td align="left">CHCO</td>
+<td align="left">2020-2021</td>
+<td align="right">2086</td>
+</tr>
+<tr class="even">
+<td align="left">Lurie</td>
+<td align="left">2020-2021</td>
+<td align="right">1707</td>
+</tr>
+<tr class="odd">
+<td align="left">SCH</td>
+<td align="left">2020-2021</td>
+<td align="right">1892</td>
+</tr>
+<tr class="even">
+<td align="left">CHCO</td>
+<td align="left">2021-2022</td>
+<td align="right">3000</td>
+</tr>
+<tr class="odd">
+<td align="left">Lurie</td>
+<td align="left">2021-2022</td>
+<td align="right">2061</td>
+</tr>
+<tr class="even">
+<td align="left">SCH</td>
+<td align="left">2021-2022</td>
+<td align="right">1616</td>
+</tr>
+<tr class="odd">
+<td align="left">CHCO</td>
+<td align="left">2022-2023</td>
+<td align="right">3192</td>
+</tr>
+<tr class="even">
+<td align="left">Lurie</td>
+<td align="left">2022-2023</td>
+<td align="right">1969</td>
+</tr>
+<tr class="odd">
+<td align="left">SCH</td>
+<td align="left">2022-2023</td>
+<td align="right">1793</td>
+</tr>
+<tr class="even">
+<td align="left">CHCO</td>
+<td align="left">2023-2024</td>
+<td align="right">3400</td>
+</tr>
+<tr class="odd">
+<td align="left">Lurie</td>
+<td align="left">2023-2024</td>
+<td align="right">2046</td>
+</tr>
+<tr class="even">
+<td align="left">SCH</td>
+<td align="left">2023-2024</td>
+<td align="right">2812</td>
+</tr>
+</tbody>
+</table>
 </div>
 
 
