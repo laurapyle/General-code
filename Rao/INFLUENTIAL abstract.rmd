@@ -51,11 +51,68 @@ check_vaccination_dates <- function(data) {
       
       # Check if the vaccination date falls within the screening period
       vaxx_date <- data[[col]][i]
-      if (vaxx_date >= first_screen && vaxx_date <= last_screen && vaxx_date < adm_date) {
-        data$vaccine_this_season[i] <- 1 }
-      if (vaxx_date >= first_screen && vaxx_date <= last_screen && vaxx_date >= adm_date 
-          && vaxx_date <= dish_date) {
-        data$vaccine_during_hosp[i] <- 1 }
+      data$vaccine_this_season[i] <- ifelse(vaxx_date >= first_screen & vaxx_date <= last_screen & vaxx_date < adm_date, 1, 0)
+      data$vaccine_during_hosp[i] <- ifelse(vaxx_date >= first_screen & vaxx_date <= last_screen & vaxx_date >= adm_date 
+          && vaxx_date <= dish_date, 1, 0)
+      
+     # if (vaxx_date >= first_screen && vaxx_date <= last_screen && vaxx_date < adm_date) {
+    #    data$vaccine_this_season[i] <- 1 }
+    #  if (vaxx_date >= first_screen && vaxx_date <= last_screen && vaxx_date >= adm_date 
+    #      && vaxx_date <= dish_date) {
+    #    data$vaccine_during_hosp[i] <- 1 }
+    }
+  }
+  
+  return(data)
+}
+```
+
+```{r,echo=FALSE, include=F}
+check_vaccination_dates_new <- function(data) {
+  # Create new columns for the results, default to 0
+  data$vaccine_this_season <- 0
+  data$vaccine_during_hosp <- 0
+  
+  # Get column names for vaccination dates
+  vaxx_cols <- paste0("fluvaxxdate_", 1:29)
+  
+  # Loop through each row in the dataset
+  for (i in 1:nrow(data)) {
+    # Get the screening date range for this person
+    first_date <- data$first_screen[i]
+    last_date <- data$last_screen[i]
+    adm_date <- data$adm_date[i]
+    dish_date <- data$dish_date[i]
+    
+    # Skip if screening dates or admission date are missing
+    if (is.na(first_date) || is.na(last_date) || is.na(adm_date)) {
+      next
+    }
+    
+    # Check each vaccination date column
+    for (col in vaxx_cols) {
+      # Skip if this vaccination date is missing
+      if (is.na(data[[col]][i])) {
+        next
+      }
+      
+      vaxx_date <- data[[col]][i]
+      
+      # Check if vaccination date is within screening period
+      if (vaxx_date >= first_date && vaxx_date <= last_date) {
+        
+        # Condition 1: Vaccination before hospital admission
+        if (vaxx_date < adm_date) {
+          data$vaccine_this_season[i] <- 1
+        }
+        
+        # Condition 2: Vaccination during hospitalization
+        if (!is.na(dish_date) && 
+            vaxx_date >= adm_date && 
+            vaxx_date <= dish_date) {
+          data$vaccine_during_hosp[i] <- 1
+        }
+      }
     }
   }
   
@@ -222,13 +279,18 @@ eligible_screened_no_contra <- eligible_screened %>%
 #screen_dates$site <- ifelse(screen_dates$site_long == "CHCO", "M2",
 #                            ifelse(screen_dates$site_long == "Lurie", "M3", "M1"))
 #eligible_screened_no_contra <- full_join(eligible_screened_no_contra, screen_dates, by = c("site", "season"))
-eligible_screened_no_contra <- check_vaccination_dates(eligible_screened_no_contra)
+eligible_screened_no_contra <- check_vaccination_dates_new(eligible_screened_no_contra)
 eligible_screened_no_contra_no_vacc <- eligible_screened_no_contra %>% filter(vaccine_this_season == 0)
 t4 <- as.data.frame(table(eligible_screened_no_contra_no_vacc$site_long, eligible_screened_no_contra_no_vacc$season))
 colnames(t4) <- c("site_long", "season", "Eligible for vaccination")
-# something not working - some patients both received this season prior to hosp and during hosp
 
 # patients who received vaccination
+eligible_screened_no_contra_no_vacc_inhospvacc <- eligible_screened_no_contra_no_vacc %>% filter(vaccine_during_hosp == 1)
+t5 <- as.data.frame(table(eligible_screened_no_contra_no_vacc_inhospvacc$site_long, eligible_screened_no_contra_no_vacc_inhospvacc$season))
+colnames(t5) <- c("site_long", "season", "Received vaccination in hospital")
+t5 <- full_join(t5, t4, by = c("site_long", "season"))
+t5$percent_vacc <- round((t5$`Received vaccination in hospital` / t5$`Eligible for vaccination`) * 100,2)
+t5 <- t5 %>% arrange(site_long, season)
 
 ```
 
@@ -288,4 +350,10 @@ kable(t3)
 
 ```{r,echo=FALSE, comment=""}
 kable(t4)
+```
+
+# Patients screened and eligible and received flu vaccine while in hospital
+
+```{r,echo=FALSE, comment=""}
+kable(t5)
 ```
