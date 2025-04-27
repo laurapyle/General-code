@@ -22,52 +22,6 @@ knitr::opts_chunk$set(echo = FALSE,warning = FALSE, message = FALSE)
 ```
 
 ```{r,echo=FALSE, include=F}
-check_vaccination_dates <- function(data) {
-  # Create a new column for the result, default to 0
-  data$vaccine_this_season <- 0
-  
-  # Get column names for vaccination dates
-  vaxx_cols <- paste0("fluvaxxdate_", 1:29)
-  
-  # Loop through each row in the dataset
-  for (i in 1:nrow(data)) {
-    # Get the screening date range for this person
-    first_screen <- data$first_screen[i]
-    last_screen <- data$last_screen[i]
-    adm_date <- data$adm_date[i]
-    dish_date <- data$dish_date[i]
-    
-    # Skip if screening dates are missing
-    if (is.na(first_screen) || is.na(last_screen)) {
-      next
-    }
-    
-    # Check each vaccination date column
-    for (col in vaxx_cols) {
-      # Skip if this vaccination date is missing
-      if (is.na(data[[col]][i])) {
-        next
-      }
-      
-      # Check if the vaccination date falls within the screening period
-      vaxx_date <- data[[col]][i]
-      data$vaccine_this_season[i] <- ifelse(vaxx_date >= first_screen & vaxx_date <= last_screen & vaxx_date < adm_date, 1, 0)
-      data$vaccine_during_hosp[i] <- ifelse(vaxx_date >= first_screen & vaxx_date <= last_screen & vaxx_date >= adm_date 
-          && vaxx_date <= dish_date, 1, 0)
-      
-     # if (vaxx_date >= first_screen && vaxx_date <= last_screen && vaxx_date < adm_date) {
-    #    data$vaccine_this_season[i] <- 1 }
-    #  if (vaxx_date >= first_screen && vaxx_date <= last_screen && vaxx_date >= adm_date 
-    #      && vaxx_date <= dish_date) {
-    #    data$vaccine_during_hosp[i] <- 1 }
-    }
-  }
-  
-  return(data)
-}
-```
-
-```{r,echo=FALSE, include=F}
 check_vaccination_dates_new <- function(data) {
   # Create new columns for the results, default to 0
   data$vaccine_this_season <- 0
