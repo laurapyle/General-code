@@ -134,6 +134,8 @@ alldata <- alldata %>% mutate(
   contraindication_summary = pmax(alldata$contraindication, alldata$contraindication2, na.rm = T)
 )
 # combine previous vaccination columns
+alldata$screen_priorvacc1 <- ifelse(alldata$screen_priorvacc1 == 98, NA, alldata$screen_priorvacc1)
+alldata$screen_priorvacc2 <- ifelse(alldata$screen_priorvacc2 == 98, NA, alldata$screen_priorvacc2)
 alldata <- alldata %>% mutate(
   priorvacc_summary = pmax(alldata$screen_priorvacc1, alldata$screen_priorvacc2, na.rm = T)
 )
@@ -198,6 +200,9 @@ alldata$in_window <- ifelse(as.Date(alldata$adm_date)>=alldata$first_screen &
 x <- alldata[is.na(alldata$in_window) | alldata$in_window == "N",]
 num_excluded <- nrow(x)
 
+# add month of year admitted
+alldata$month_adm <- month(alldata$adm_date)
+
 ######################
 # INCLUSION CRITERIA #
 ######################
@@ -211,6 +216,9 @@ alldata$los <- as.numeric(alldata$dish_date - alldata$adm_date)
 alldata$age_discharge_days <- alldata$age_admission + alldata$los
 alldata$age_discharge_yrs <- (alldata$age_admission + alldata$los)/365.25
 alldata$age_discharge_mo <- (alldata$age_admission + alldata$los)/30.437
+# age at admission
+alldata$age_admission_yrs <- alldata$age_admission/365.25
+alldata$age_admission_mo <- alldata$age_admission/30.437
 
 ######################
 # EXCLUSION CRITERIA #
@@ -218,14 +226,14 @@ alldata$age_discharge_mo <- (alldata$age_admission + alldata$los)/30.437
 
 # apply eligibility criteria
 data <- alldata
-data$eligible_age <- as.factor(ifelse(data$age_discharge_mo >= 6 & data$age_discharge_yrs <= 18, 1, 0))
+data$eligible_age <- as.factor(ifelse(data$age_admission_mo >= 6 & data$age_admission_yrs <= 18, 1, 0))
 # Patient hospitalized on a medical, surgical, rehabilitation, or psychiatry/behavioral medicine unit during the influenza vaccination season at your institution
 data$eligible_season <- as.factor(ifelse(!is.na(alldata$in_window) & alldata$in_window == "Y", 1, 0))
 data$eligible_unit <- as.factor(ifelse(data$unit == 99, 0, 1))
 # Admitted to hematology/oncology service or unit
 data$eligible_service <- as.factor(ifelse(is.na(data$service) | data$service == 32, 0, 1))
 # Discharged from ICU setting
-data$eligible_icu <- as.factor(ifelse(data$icu == 1, 0, 1))
+#data$eligible_icu <- as.factor(ifelse(data$icu == 1, 0, 1))
 # Ward of state or foster child
 # NO CORRESPONDING VARIABLE
 # Death on record
@@ -233,12 +241,16 @@ data$eligible_icu <- as.factor(ifelse(data$icu == 1, 0, 1))
 # Flagged as “Does not wish to participate in research” 
 # NO CORRESPONDING VARIABLE
 
+# print those ineligible due to unit and service
+write.csv(data[data$eligible_unit == 0,], '/Users/pylell/Library/CloudStorage/OneDrive-SharedLibraries-UW/Rao/PHM abstract/ineligible_unit.csv')
+write.csv(data[data$eligible_service == 0,], '/Users/pylell/Library/CloudStorage/OneDrive-SharedLibraries-UW/Rao/PHM abstract/inelgible_service.csv')
+
 # remove ineligible patients
 eligible <- data %>% filter(eligible_age == 1)
 eligible <- eligible %>% filter(eligible_season == 1)
 eligible <- eligible %>% filter(eligible_unit == 1)
 eligible <- eligible %>% filter(eligible_service == 1)
-eligible <- eligible %>% filter(eligible_icu == 1)
+#eligible <- eligible %>% filter(eligible_icu == 1)
 
 # count of unique eligible patients by site and season
 eligible_unique <- eligible %>% select(site_long, season, sid) %>% unique()
@@ -267,8 +279,9 @@ colnames(cs) <- c("site_long", "season", "# w/ contraindications")
 t3 <- as.data.frame(table(eligible_hosp_unique$site_long, eligible_hosp_unique$season))
 colnames(t3) <- c("site_long", "season", "hospitalizations")
 t3 <- left_join(t3, cs, by = c("site_long", "season"))
+t3 <- left_join(t3, es, by = c("site_long", "season"))
 t3$`# w/ contraindications` <- ifelse(is.na(t3$`# w/ contraindications`), 0, t3$`# w/ contraindications`)
-t3$percent_contraindication <- round((t3$`# w/ contraindications` / t3$hospitalizations) * 100,2)
+t3$percent_contraindication <- round((t3$`# w/ contraindications` / t3$`# Screenings`) * 100,2)
 
 # Find hospitalizations without contraindications and no vaccination this season (i.e., eligible for vaccine)
 eligible_screened_no_contra <- eligible_screened %>% 
@@ -280,11 +293,13 @@ eligible_screened_no_contra <- eligible_screened %>%
 #                            ifelse(screen_dates$site_long == "Lurie", "M3", "M1"))
 #eligible_screened_no_contra <- full_join(eligible_screened_no_contra, screen_dates, by = c("site", "season"))
 eligible_screened_no_contra <- check_vaccination_dates_new(eligible_screened_no_contra)
+eligible_screened_no_contra$vaccine_this_season <- ifelse(eligible_screened_no_contra$priorvacc_summary == 1, 1, 
+                                                          eligible_screened_no_contra$vaccine_this_season)
 eligible_screened_no_contra_no_vacc <- eligible_screened_no_contra %>% filter(vaccine_this_season == 0)
 t4 <- as.data.frame(table(eligible_screened_no_contra_no_vacc$site_long, eligible_screened_no_contra_no_vacc$season))
 colnames(t4) <- c("site_long", "season", "Eligible for vaccination")
 
-# patients who received vaccination
+# patients who received vaccination in the hospital
 eligible_screened_no_contra_no_vacc_inhospvacc <- eligible_screened_no_contra_no_vacc %>% filter(vaccine_during_hosp == 1)
 t5 <- as.data.frame(table(eligible_screened_no_contra_no_vacc_inhospvacc$site_long, eligible_screened_no_contra_no_vacc_inhospvacc$season))
 colnames(t5) <- c("site_long", "season", "Received vaccination in hospital")
@@ -313,12 +328,25 @@ t5 <- t5 %>% arrange(site_long, season)
 
 ```{r,echo=FALSE}
 # Create descriptive table using alldata of eligibility criteria
-t1 <- tableby(site ~ eligible_age + eligible_season + eligible_unit + eligible_service + eligible_icu, 
+t1 <- tableby(site ~ eligible_age + eligible_season + eligible_unit + eligible_service, 
               data = data, control = list(digits = 2))
 ```
 
 ```{r, results = "asis"}
 summary(t1)
+```
+
+## Descriptive statistics after ineligible participants removed
+
+```{r,echo=FALSE}
+# Create descriptive table using alldata of eligibility criteria
+t_desc <- tableby(site ~ age_discharge_mo + age_discharge_yrs + season +
+                    as.factor(unit) + as.factor(race) + as.factor(ethnicity) + as.factor(sex) + as.factor(language) + as.factor(insurance) + as.factor(pmca) + as.factor(month_adm), 
+              data = eligible, control = list(digits = 2))
+```
+
+```{r, results = "asis"}
+summary(t_desc)
 ```
 
 ## Screening dates by site and season
