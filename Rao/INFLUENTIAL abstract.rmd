@@ -12,12 +12,14 @@ output:
 ---
 
 ```{r libraries,echo=FALSE, include=F}
+library(segmented)
 library(knitr)
 library(tidyverse)
 library(ggplot2)
 library(dplyr)
 library(arsenal)
 library(stringr)
+
 knitr::opts_chunk$set(echo = FALSE,warning = FALSE, message = FALSE)
 ```
 
@@ -103,9 +105,9 @@ alldata <- alldata %>% mutate(
 alldata$screen_date1 <- ifelse(alldata$screen_date1 %in% c("", " "), NA, alldata$screen_date1)
 alldata$screen_date2 <- ifelse(alldata$screen_date2 %in% c("", " "), NA, alldata$screen_date2)
 # find first and last screen date by site
-s1 <- alldata %>% select(site, screen_date1)
+s1 <- alldata %>% dplyr::select(site, screen_date1)
 colnames(s1) <- c("site", "Screen Date")
-s2 <- alldata %>% select(site, screen_date2)
+s2 <- alldata %>% dplyr::select(site, screen_date2)
 colnames(s2) <- c("site", "Screen Date")
 s <- rbind(s1, s2)
 s$`Screen Date` <- as.Date(s$`Screen Date`, format = "%Y-%m-%d")
@@ -155,12 +157,22 @@ alldata <- alldata %>%
 alldata <- left_join(alldata, screen_dates, by = c("site_long", "season"))
 alldata$in_window <- ifelse(as.Date(alldata$adm_date)>=alldata$first_screen &
                                    as.Date(alldata$dish_date)<=alldata$last_screen, "Y", "N")
+alldata$season_num <- ifelse(alldata$season == "2018-2019", 1, 
+                             ifelse(alldata$season == "2019-2020", 2,
+                                    ifelse(alldata$season == "2020-2021", 3, 
+                                    ifelse(alldata$season == "2021-2022", 4, 
+                                           ifelse(alldata$season == "2022-2023", 5, 
+                                                  ifelse(alldata$season == "2023-2024", 6, NA))))))
 # no screening data for Lurie in 2018-2019, so will exclude all admissions there for the season
 x <- alldata[is.na(alldata$in_window) | alldata$in_window == "N",]
 num_excluded <- nrow(x)
 
 # add month of year admitted
 alldata$month_adm <- month(alldata$adm_date)
+
+# create new variable for English/Spanish/Other
+alldata$eng_span_other <- ifelse(alldata$language == 17, "English",
+                                 ifelse(alldata$language == 43, "Spanish", "Other"))
 
 ######################
 # INCLUSION CRITERIA #
@@ -188,9 +200,12 @@ data <- alldata
 data$eligible_age <- as.factor(ifelse(data$age_admission_mo >= 6 & data$age_admission_yrs <= 18, 1, 0))
 # Patient hospitalized on a medical, surgical, rehabilitation, or psychiatry/behavioral medicine unit during the influenza vaccination season at your institution
 data$eligible_season <- as.factor(ifelse(!is.na(alldata$in_window) & alldata$in_window == "Y", 1, 0))
-data$eligible_unit <- as.factor(ifelse(data$unit == 99, 0, 1))
+data$eligible_unit <- as.factor(ifelse(data$unit %in% c(32,99), 0, 1))
 # Admitted to hematology/oncology service or unit
 data$eligible_service <- as.factor(ifelse(is.na(data$service) | data$service == 32, 0, 1))
+data_all <- data
+data_all$eligible <- ifelse(data_all$eligible_age == 1 & data_all$eligible_season ==1 &
+                              data_all$eligible_service == 1 & data_all$eligible_unit ==1, 1, 0)
 # Discharged from ICU setting
 #data$eligible_icu <- as.factor(ifelse(data$icu == 1, 0, 1))
 # Ward of state or foster child
@@ -211,16 +226,24 @@ eligible <- eligible %>% filter(eligible_unit == 1)
 eligible <- eligible %>% filter(eligible_service == 1)
 #eligible <- eligible %>% filter(eligible_icu == 1)
 
+# figure out how many eligible patients 
+eligible_ptct <- eligible
+eligible_ptct$pid <- substr(eligible_ptct$hid, 1, 8)
+#length(unique(eligible_ptct$pid))
+
 # count of unique eligible patients by site and season
-eligible_unique <- eligible %>% select(site_long, season, sid) %>% unique()
+eligible_unique <- eligible %>% dplyr::select(site_long, season, sid) %>% unique()
 #eligible_summary <- eligible %>% group_by(site_long, season) %>% summarise(patient_count = tally())
 
 # count of unique hospitalizations for eligible patients by site and season
-eligible_hosp_unique <- eligible %>% select(site_long, season, hid) 
+eligible_hosp_unique <- eligible %>% dplyr::select(site_long, season, hid) 
 #eligible_hosp_summary <- eligible_hosp_unique %>% group_by(site_long, season) %>% summarise(hospitalization_count = tally())
 
 # find hospitalizations who were screened
 eligible_screened <- eligible 
+eligible_screened_save <- eligible_screened
+eligible_screened_save$contraindication_summary_bin <- ifelse(is.na(eligible_screened_save$contraindication_summary) |
+                                                                eligible_screened_save$contraindication_summary == 0, 0, 1)
 eligible_screened <- eligible_screened %>% filter(screening == 1)
 es <- as.data.frame(table(eligible_screened$site_long, eligible_screened$season))
 colnames(es) <- c("site_long", "season", "# Screenings")
@@ -271,15 +294,8 @@ t5 <- t5 %>% arrange(site_long, season)
 # Methods
 
 - For purposes of finding the first and last date of screening by site and season, the range of possible screening dates was set as August 1 - June 1
-- `r num_excluded` hospitalizations with admission date before the first date of screening for the season or with discharge dates after the last date of screening for the season were excluded from analysis
-- 11,472 of 78,832 patients had more than one hospitalization. The unit of analysis was hospitalization.
 
 # Questions
-
-1) Since we don't have DOB, it is OK to estimate whether patients are at least 6 months of age using age of 6 * 30 = 180 days?
-2) The exclusion criterion states that patients must not be discharged from the ICU. Is it possible someone could be in the ICU at the start of the admission but not discharged from there? If we exclude all records with ICU = 1, ~19k hospitalizations will be excluded
-3) Just to confirm: no corresponding variable to check ward of state, foster child, death on record, or flagged as does not wish to participate in research
-4) There are a lot of missing values for contraindication. If these were left blank, I assumed there was no contraindication.
 
 # Results
 
@@ -297,10 +313,13 @@ summary(t1)
 
 ## Descriptive statistics after ineligible participants removed
 
+There were `r length(unique(eligible_ptct$pid))` unique eligible patients.
+
 ```{r,echo=FALSE}
 # Create descriptive table using alldata of eligibility criteria
-t_desc <- tableby(site ~ age_discharge_mo + age_discharge_yrs + season +
-                    as.factor(unit) + as.factor(race) + as.factor(ethnicity) + as.factor(sex) + as.factor(language) + as.factor(insurance) + as.factor(pmca) + as.factor(month_adm), 
+t_desc <- tableby(site ~ kwt(age_discharge_mo, 'median', 'q1q3') + kwt(age_discharge_yrs, 'median', 'q1q3') + season +
+                    as.factor(unit) + as.factor(race) + as.factor(ethnicity) + as.factor(sex) + as.factor(language) + as.factor(eng_span_other) + 
+                    as.factor(insurance) + as.factor(pmca) + as.factor(month_adm), 
               data = eligible, control = list(digits = 2))
 ```
 
@@ -343,4 +362,326 @@ kable(t4)
 
 ```{r,echo=FALSE, comment=""}
 kable(t5)
+```
+
+
+# Breakpoint model for proportion with contraindications
+
+## All sites combined
+
+```{r,echo=FALSE, comment=""}
+l <- glm(data = eligible_screened_save, as.factor(contraindication_summary_bin) ~ season_num, family = "binomial")
+my.seg <- segmented(l, seg.Z = ~ season_num, psi = list(season_num = c(3)))
+summary(my.seg)
+slope(my.seg)
+
+# get the fitted data
+my.fitted <- fitted(my.seg)
+my.model <- data.frame(Season = eligible_screened_save[!is.na(eligible_screened_save$season_num),]$season_num, Contraindications = my.fitted)
+
+# plot the fitted model
+ggplot(my.model, aes(x = Season, y = Contraindications)) + geom_line() +
+  scale_x_continuous(breaks = 1:6, 
+                    labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
+
+```
+
+## SCH
+
+```{r,echo=FALSE, comment=""}
+sch <- eligible_screened_save %>% dplyr::filter(site == "M1")
+l <- glm(data = sch, as.factor(contraindication_summary_bin) ~ season_num, family = "binomial")
+my.seg <- segmented(l, seg.Z = ~ season_num, psi = list(season_num = c(3)))
+summary(my.seg)
+slope(my.seg)
+
+# get the fitted data
+my.fitted <- fitted(my.seg)
+my.model <- data.frame(Season = sch[!is.na(sch$season_num),]$season_num, Contraindications = my.fitted)
+
+# plot the fitted model
+ggplot(my.model, aes(x = Season, y = Contraindications)) + geom_line() +
+  scale_x_continuous(breaks = 1:6, 
+                    labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
+
+```
+
+## CHCO
+
+Model did not converge.
+
+```{r,echo=FALSE, comment=""}
+#chco <- eligible_screened_save %>% dplyr::filter(site == "M2")
+#l <- glm(data = chco, as.factor(contraindication_summary_bin) ~ season_num, family = "binomial")
+#my.seg <- segmented(l, seg.Z = ~ season_num, psi = list(season_num = c(3)))
+#summary(my.seg)
+#slope(my.seg)
+
+# get the fitted data
+#my.fitted <- fitted(my.seg)
+#my.model <- data.frame(Season = chco[!is.na(sch$season_num),]$season_num, Contraindications = my.fitted)
+
+# plot the fitted model
+#ggplot(my.model, aes(x = Season, y = Contraindications)) + geom_line() +
+#  scale_x_continuous(breaks = 1:6, 
+#                    labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
+```
+
+## Lurie
+
+```{r,echo=FALSE, comment=""}
+lurie <- eligible_screened_save %>% dplyr::filter(site == "M3")
+l <- glm(data = lurie, as.factor(contraindication_summary_bin) ~ season_num, family = "binomial")
+my.seg <- segmented(l, seg.Z = ~ season_num, psi = list(season_num = c(3)))
+summary(my.seg)
+slope(my.seg)
+
+# get the fitted data
+my.fitted <- fitted(my.seg)
+my.model <- data.frame(Season = lurie[!is.na(lurie$season_num),]$season_num, Contraindications = my.fitted)
+
+# plot the fitted model
+ggplot(my.model, aes(x = Season, y = Contraindications)) + geom_line() +
+  scale_x_continuous(breaks = 1:6, 
+                    labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
+```
+
+
+
+# Breakpoint model for proportion screened
+
+## All sites combined
+
+```{r,echo=FALSE, comment=""}
+l <- glm(data = eligible_screened_save, as.factor(screening) ~ season_num, family = "binomial")
+my.seg <- segmented(l, seg.Z = ~ season_num, psi = list(season_num = c(3)))
+summary(my.seg)
+slope(my.seg)
+
+# get the fitted data
+my.fitted <- fitted(my.seg)
+my.model <- data.frame(Season = eligible_screened_save[!is.na(eligible_screened_save$season_num),]$season_num, Screened = my.fitted)
+
+# plot the fitted model
+ggplot(my.model, aes(x = Season, y = Screened)) + geom_line() +
+  scale_x_continuous(breaks = 1:6, 
+                    labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
+
+```
+
+## SCH
+
+```{r,echo=FALSE, comment=""}
+sch <- eligible_screened_save %>% dplyr::filter(site == "M1")
+l <- glm(data = sch, as.factor(screening) ~ season_num, family = "binomial")
+my.seg <- segmented(l, seg.Z = ~ season_num, psi = list(season_num = c(3)))
+summary(my.seg)
+slope(my.seg)
+
+# get the fitted data
+my.fitted <- fitted(my.seg)
+my.model <- data.frame(Season = sch[!is.na(sch$season_num),]$season_num, Screened = my.fitted)
+
+# plot the fitted model
+ggplot(my.model, aes(x = Season, y = Screened)) + geom_line() +
+  scale_x_continuous(breaks = 1:6, 
+                    labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
+
+```
+
+## CHCO
+
+```{r,echo=FALSE, comment=""}
+chco <- eligible_screened_save %>% dplyr::filter(site == "M2")
+l <- glm(data = chco, as.factor(screening) ~ season_num, family = "binomial")
+my.seg <- segmented(l, seg.Z = ~ season_num, psi = list(season_num = c(3)))
+summary(my.seg)
+slope(my.seg)
+
+# get the fitted data
+my.fitted <- fitted(my.seg)
+my.model <- data.frame(Season = chco[!is.na(sch$season_num),]$season_num, Screened = my.fitted)
+
+# plot the fitted model
+ggplot(my.model, aes(x = Season, y = Screened)) + geom_line() +
+  scale_x_continuous(breaks = 1:6, 
+                    labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
+```
+
+## Lurie
+
+```{r,echo=FALSE, comment=""}
+lurie <- eligible_screened_save %>% dplyr::filter(site == "M3")
+l <- glm(data = lurie, as.factor(screening) ~ season_num, family = "binomial")
+my.seg <- segmented(l, seg.Z = ~ season_num, psi = list(season_num = c(3)))
+summary(my.seg)
+slope(my.seg)
+
+# get the fitted data
+my.fitted <- fitted(my.seg)
+my.model <- data.frame(Season = lurie[!is.na(lurie$season_num),]$season_num, Screened = my.fitted)
+
+# plot the fitted model
+ggplot(my.model, aes(x = Season, y = Screened)) + geom_line() +
+  scale_x_continuous(breaks = 1:6, 
+                    labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
+```
+
+
+# Breakpoint model for proportion eligible
+
+## All sites combined
+
+```{r,echo=FALSE, comment=""}
+l <- glm(data = data_all, as.factor(eligible) ~ season_num, family = "binomial")
+my.seg <- segmented(l, seg.Z = ~ season_num, psi = list(season_num = c(3)))
+summary(my.seg)
+slope(my.seg)
+
+# get the fitted data
+my.fitted <- fitted(my.seg)
+my.model <- data.frame(Season = data_all[!is.na(data_all$season_num),]$season_num, Eligible = my.fitted)
+
+# plot the fitted model
+ggplot(my.model, aes(x = Season, y = Eligible)) + geom_line() +
+  scale_x_continuous(breaks = 1:6, 
+                    labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
+
+```
+
+## SCH
+
+```{r,echo=FALSE, comment=""}
+sch <- data_all %>% dplyr::filter(site == "M1")
+l <- glm(data = sch, as.factor(eligible) ~ season_num, family = "binomial")
+my.seg <- segmented(l, seg.Z = ~ season_num, psi = list(season_num = c(3)))
+summary(my.seg)
+slope(my.seg)
+
+# get the fitted data
+my.fitted <- fitted(my.seg)
+my.model <- data.frame(Season = sch[!is.na(sch$season_num),]$season_num, Eligible = my.fitted)
+
+# plot the fitted model
+ggplot(my.model, aes(x = Season, y = Eligible)) + geom_line() +
+  scale_x_continuous(breaks = 1:6, 
+                    labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
+
+```
+
+## CHCO
+
+```{r,echo=FALSE, comment=""}
+chco <- data_all %>% dplyr::filter(site == "M2")
+l <- glm(data = chco, as.factor(eligible) ~ season_num, family = "binomial")
+my.seg <- segmented(l, seg.Z = ~ season_num, psi = list(season_num = c(3)))
+summary(my.seg)
+slope(my.seg)
+
+# get the fitted data
+my.fitted <- fitted(my.seg)
+my.model <- data.frame(Season = chco[!is.na(sch$season_num),]$season_num, Eligible = my.fitted)
+
+# plot the fitted model
+ggplot(my.model, aes(x = Season, y = Eligible)) + geom_line() +
+  scale_x_continuous(breaks = 1:6, 
+                    labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
+```
+
+## Lurie
+
+```{r,echo=FALSE, comment=""}
+lurie <- data_all %>% dplyr::filter(site == "M3")
+l <- glm(data = lurie, as.factor(eligible) ~ season_num, family = "binomial")
+my.seg <- segmented(l, seg.Z = ~ season_num, psi = list(season_num = c(3)))
+summary(my.seg)
+slope(my.seg)
+
+# get the fitted data
+my.fitted <- fitted(my.seg)
+my.model <- data.frame(Season = lurie[!is.na(lurie$season_num),]$season_num, Eligible = my.fitted)
+
+# plot the fitted model
+ggplot(my.model, aes(x = Season, y = Eligible)) + geom_line() +
+  scale_x_continuous(breaks = 1:6, 
+                    labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
+```
+
+## Breakpoint model for proportion receiving vaccination in hospital
+
+## All sites combined
+
+```{r,echo=FALSE, comment=""}
+l <- glm(data = eligible_screened_no_contra, as.factor(vaccine_during_hosp) ~ season_num, family = "binomial")
+my.seg <- segmented(l, seg.Z = ~ season_num, psi = list(season_num = c(3)))
+summary(my.seg)
+slope(my.seg)
+
+# get the fitted data
+my.fitted <- fitted(my.seg)
+my.model <- data.frame(Season = eligible_screened_no_contra[!is.na(eligible_screened_no_contra$season_num),]$season_num, Vaccinated = my.fitted)
+
+# plot the fitted model
+ggplot(my.model, aes(x = Season, y = Vaccinated)) + geom_line() +
+  scale_x_continuous(breaks = 1:6, 
+                    labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
+
+```
+
+## SCH
+
+```{r,echo=FALSE, comment=""}
+sch <- eligible_screened_no_contra %>% dplyr::filter(site == "M1")
+l <- glm(data = sch, as.factor(vaccine_during_hosp) ~ season_num, family = "binomial")
+my.seg <- segmented(l, seg.Z = ~ season_num, psi = list(season_num = c(3)))
+summary(my.seg)
+slope(my.seg)
+
+# get the fitted data
+my.fitted <- fitted(my.seg)
+my.model <- data.frame(Season = sch[!is.na(sch$season_num),]$season_num, Vaccinated = my.fitted)
+
+# plot the fitted model
+ggplot(my.model, aes(x = Season, y = Vaccinated)) + geom_line() +
+  scale_x_continuous(breaks = 1:6, 
+                    labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
+
+```
+
+## CHCO
+
+```{r,echo=FALSE, comment=""}
+chco <- eligible_screened_no_contra %>% dplyr::filter(site == "M2")
+l <- glm(data = chco, as.factor(vaccine_during_hosp) ~ season_num, family = "binomial")
+my.seg <- segmented(l, seg.Z = ~ season_num, psi = list(season_num = c(3)))
+summary(my.seg)
+slope(my.seg)
+
+# get the fitted data
+my.fitted <- fitted(my.seg)
+my.model <- data.frame(Season = chco[!is.na(sch$season_num),]$season_num, Vaccinated = my.fitted)
+
+# plot the fitted model
+ggplot(my.model, aes(x = Season, y = Vaccinated)) + geom_line() +
+  scale_x_continuous(breaks = 1:6, 
+                    labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
+```
+
+## Lurie
+
+```{r,echo=FALSE, comment=""}
+lurie <- eligible_screened_no_contra %>% dplyr::filter(site == "M3")
+l <- glm(data = lurie, as.factor(vaccine_during_hosp) ~ season_num, family = "binomial")
+my.seg <- segmented(l, seg.Z = ~ season_num, psi = list(season_num = c(3)))
+summary(my.seg)
+slope(my.seg)
+
+# get the fitted data
+my.fitted <- fitted(my.seg)
+my.model <- data.frame(Season = lurie[!is.na(lurie$season_num),]$season_num, Vaccinated = my.fitted)
+
+# plot the fitted model
+ggplot(my.model, aes(x = Season, y = Vaccinated)) + geom_line() +
+  scale_x_continuous(breaks = 1:6, 
+                    labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
 ```
