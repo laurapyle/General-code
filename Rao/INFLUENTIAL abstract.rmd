@@ -317,7 +317,8 @@ There were `r length(unique(eligible_ptct$pid))` unique eligible patients.
 
 ```{r,echo=FALSE}
 # Create descriptive table using alldata of eligibility criteria
-t_desc <- tableby(site ~ kwt(age_discharge_mo, 'median', 'q1q3') + kwt(age_discharge_yrs, 'median', 'q1q3') + season +
+t_desc <- tableby(site ~ kwt(age_discharge_mo, 'median', 'q1q3') + kwt(age_discharge_yrs, 'median', 'q1q3') +
+                  kwt(age_admission_mo, 'median', 'q1q3') + kwt(age_admission_yrs, 'median', 'q1q3') + season +
                     as.factor(unit) + as.factor(race) + as.factor(ethnicity) + as.factor(sex) + as.factor(language) + as.factor(eng_span_other) + 
                     as.factor(insurance) + as.factor(pmca) + as.factor(month_adm), 
               data = eligible, control = list(digits = 2))
@@ -367,7 +368,9 @@ kable(t5)
 
 # Breakpoint model for proportion with contraindications
 
-## All sites combined
+## Unadjusted
+
+### All sites combined
 
 ```{r,echo=FALSE, comment=""}
 l <- glm(data = eligible_screened_save, as.factor(contraindication_summary_bin) ~ season_num, family = "binomial")
@@ -386,7 +389,7 @@ ggplot(my.model, aes(x = Season, y = Contraindications)) + geom_line() +
 
 ```
 
-## SCH
+### SCH
 
 ```{r,echo=FALSE, comment=""}
 sch <- eligible_screened_save %>% dplyr::filter(site == "M1")
@@ -406,7 +409,7 @@ ggplot(my.model, aes(x = Season, y = Contraindications)) + geom_line() +
 
 ```
 
-## CHCO
+### CHCO
 
 Model did not converge.
 
@@ -427,7 +430,7 @@ Model did not converge.
 #                    labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
 ```
 
-## Lurie
+### Lurie
 
 ```{r,echo=FALSE, comment=""}
 lurie <- eligible_screened_save %>% dplyr::filter(site == "M3")
@@ -447,6 +450,91 @@ ggplot(my.model, aes(x = Season, y = Contraindications)) + geom_line() +
 ```
 
 
+## Adjusted for age, site, season, unit, month of year, LOS, race/ethnicity, language and insurance class
+
+### All sites combined
+
+```{r,echo=FALSE, comment=""}
+# temp <- eligible_screened_save %>% dplyr::filter(!is.na(season_num) & !is.na(age_discharge_yrs) & !is.na(site) & !is.na(unit) & !is.na(month_adm) &
+#                                                    !is.na(los) & !is.na(race) & !is.na(ethnicity) & !is.na(eng_span_other) & !is.na(insurance))
+# l <- glm(data = temp, as.factor(contraindication_summary_bin) ~ season_num + age_discharge_yrs + site + unit +
+#            + month_adm + los + race + ethnicity + eng_span_other + insurance, family = "binomial")
+# my.seg <- segmented(l, seg.Z = ~ season_num, psi = list(season_num = c(3)))
+# summary(my.seg)
+# slope(my.seg)
+# 
+# # get the fitted data
+# my.fitted <- fitted(my.seg)
+# my.model <- data.frame(Season = temp$season_num, Contraindications = my.fitted)
+# 
+# # plot the fitted model
+# ggplot(my.model, aes(x = Season, y = Contraindications)) + geom_line() +
+#   scale_x_continuous(breaks = 1:6, 
+#                     labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
+
+```
+
+### SCH
+
+```{r,echo=FALSE, comment=""}
+# sch <- eligible_screened_save %>% dplyr::filter(site == "M1")
+# l <- glm(data = sch, as.factor(contraindication_summary_bin) ~ season_num + age_discharge_yrs + site + unit +
+#            + month_adm + los + race + ethnicity + eng_span_other + insurance, family = "binomial")
+# my.seg <- segmented(l, seg.Z = ~ season_num, psi = list(season_num = c(3)))
+# summary(my.seg)
+# slope(my.seg)
+# 
+# # get the fitted data
+# my.fitted <- fitted(my.seg)
+# my.model <- data.frame(Season = sch[!is.na(sch$season_num),]$season_num, Contraindications = my.fitted)
+# 
+# # plot the fitted model
+# ggplot(my.model, aes(x = Season, y = Contraindications)) + geom_line() +
+#   scale_x_continuous(breaks = 1:6, 
+#                     labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
+
+```
+
+### CHCO
+
+Model did not converge.
+
+```{r,echo=FALSE, comment=""}
+#chco <- eligible_screened_save %>% dplyr::filter(site == "M2")
+#l <- glm(data = chco, as.factor(contraindication_summary_bin) ~ season_num, family = "binomial")
+#my.seg <- segmented(l, seg.Z = ~ season_num, psi = list(season_num = c(3)))
+#summary(my.seg)
+#slope(my.seg)
+
+# get the fitted data
+#my.fitted <- fitted(my.seg)
+#my.model <- data.frame(Season = chco[!is.na(sch$season_num),]$season_num, Contraindications = my.fitted)
+
+# plot the fitted model
+#ggplot(my.model, aes(x = Season, y = Contraindications)) + geom_line() +
+#  scale_x_continuous(breaks = 1:6, 
+#                    labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
+```
+
+### Lurie
+
+```{r,echo=FALSE, comment=""}
+# lurie <- eligible_screened_save %>% dplyr::filter(site == "M3")
+# l <- glm(data = lurie, as.factor(contraindication_summary_bin) ~ season_num + age_discharge_yrs + site + unit +
+#            + month_adm + los + race + ethnicity + eng_span_other + insurance, family = "binomial")
+# my.seg <- segmented(l, seg.Z = ~ season_num, psi = list(season_num = c(3)))
+# summary(my.seg)
+# slope(my.seg)
+# 
+# # get the fitted data
+# my.fitted <- fitted(my.seg)
+# my.model <- data.frame(Season = lurie[!is.na(lurie$season_num),]$season_num, Contraindications = my.fitted)
+# 
+# # plot the fitted model
+# ggplot(my.model, aes(x = Season, y = Contraindications)) + geom_line() +
+#   scale_x_continuous(breaks = 1:6, 
+#                     labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
+```
 
 # Breakpoint model for proportion screened
 
@@ -607,7 +695,7 @@ ggplot(my.model, aes(x = Season, y = Eligible)) + geom_line() +
                     labels = c("2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024"))
 ```
 
-## Breakpoint model for proportion receiving vaccination in hospital
+# Breakpoint model for proportion receiving vaccination in hospital
 
 ## All sites combined
 
