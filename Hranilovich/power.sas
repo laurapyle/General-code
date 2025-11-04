@@ -38,3 +38,15 @@ proc power;
 		power = 0.8
 		ntotal = .;
 run;
+
+
+/* two sample t-test */
+
+proc power;
+	twosamplemeans test=diff
+	groupmeans = 1.7 | 3.3
+	stddev = 1.3
+	npergroup = . 
+	power = 0.8
+	alpha = 0.05;
+run;
