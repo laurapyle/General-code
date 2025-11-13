@@ -4,7 +4,7 @@
 /* First, calculate p2 from OR and p1 */
 data _null_;
    p1 = 0.292;  /* baseline prevalence */
-   or = 1.2;    /* odds ratio to detect */
+   or = 0.81;    /* odds ratio to detect */
    
    /* Calculate p2 from OR formula: OR = [p2/(1-p2)] / [p1/(1-p1)] */
    odds1 = p1 / (1 - p1);
@@ -33,7 +33,7 @@ proc power;
 		vardist("Menarche") = normal(0,1)
 		testpredictor = "Menarche"
 		responseprob = 0.292
-		testoddsratio = 1.2
+		testoddsratio = 0.81
 		alpha = 0.05
 		power = 0.8
 		ntotal = .;
