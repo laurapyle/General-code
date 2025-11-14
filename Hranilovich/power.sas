@@ -1,7 +1,8 @@
 /* Sample size calculation for logistic regression */
-/* Detecting OR = 1.2 with outcome prevalence = 29.2% */
+/* Detecting OR = 0.81 with outcome prevalence = 29.2% */
 
-/* First, calculate p2 from OR and p1 */
+/* First approach is based on chi-square test */
+/* calculate p2 from OR and p1 */
 data _null_;
    p1 = 0.292;  /* baseline prevalence */
    or = 0.81;    /* odds ratio to detect */
@@ -17,7 +18,6 @@ data _null_;
    put "Baseline proportion (p1): " p1;
    put "Expected proportion (p2): " p2;
 run;
-
 /* Now use PROC POWER with the two proportions */
 proc power;
    twosamplefreq test=pchi
@@ -27,6 +27,7 @@ proc power;
       ntotal = .;
 run;
 
+/* Second approach is based on logistic regression */
 /* this is closer - assumes covariate is N(0,1) */
 proc power;
 	logistic
@@ -41,12 +42,21 @@ run;
 
 
 /* two sample t-test */
-
+/* calculate needed sample size */
 proc power;
 	twosamplemeans test=diff
-	groupmeans = 1.7 | 3.3
-	stddev = 1.3
+	groupmeans = 0.03 | 3.3
+	stddev = 0.7
 	npergroup = . 
+	power = 0.8
+	alpha = 0.05;
+run;
+/* calculate detectable effect with N=25 per group */
+proc power;
+	twosamplemeans test=diff
+	groupmeans = 0.03 | .
+	stddev = 0.7
+	npergroup = 25 
 	power = 0.8
 	alpha = 0.05;
 run;
