@@ -23,13 +23,13 @@ library(tidyr)
 # specify user for paths
 user <- Sys.info()[["user"]]
 if (user == "laurapyle") {
-  data_path <- "/Users/laurapyle/Library/CloudStorage/OneDrive-UW/Bjornstad/Biostatistics Core Shared Drive/T1-DISCO/Data raw"
+  data_path <- "/Users/laurapyle/Library/Application Support/Mountain Duck/Volumes.noindex/Kopah S3.localized/core.data/clinical/t1disco"
   rand_path <- "/Users/laurapyle/Library/CloudStorage/OneDrive-UW/T1-DISCO randomization"
 } else if (user == "lpyle") {
-  data_path <- "/Users/lpyle/Library/CloudStorage/OneDrive-UW/Bjornstad/Biostatistics Core Shared Drive/T1-DISCO/Data raw"
+  data_path <- '/Users/lpyle/Library/Application Support/Mountain Duck/Volumes.noindex/Kopah S3.localized/core.data/clinical/t1disco'
   rand_path <- "/Users/lpyle/Library/CloudStorage/OneDrive-UW/T1-DISCO randomization"
 } else if (user == "pylell") {
-  data_path <- "/Users/pylell/Library/CloudStorage/OneDrive-UW/Bjornstad/Biostatistics Core Shared Drive/T1-DISCO/Data raw"
+  data_path <- '/Users/pylell/Library/Application Support/Mountain Duck/Volumes.noindex/Kopah S3.localized/core.data/clinical/t1disco'
   rand_path <- "/Users/pylell/Library/CloudStorage/OneDrive-UW/T1-DISCO randomization"
 } else {
   stop("Unknown user: please specify root path for this user.")
@@ -57,9 +57,10 @@ rand == rand_check
 rand$`Record ID` <- extract_numeric_id(rand$ID)
 
 # read in lab data
-filename <- "T1DISCO-SafetyLabs_DATA_LABELS_2025-10-02_1804.xlsx"
+filename <- "T1DISCO-SafetyLabs_DATA_LABELS_2026-07-07_1714.xlsx"
 full_path <- file.path(data_path, filename)
 labs <- read_xlsx(full_path, na = c("-", "", " ", "-9999", "-1"))
+#labs <- read.csv(full_path, na = c("-", "", " ", "-9999", "-1"))
 labs$`Visit Type` <- factor(labs$`Visit Type`, levels = c("Screen", "Baseline", "Month 1", "Month 2", "Month 4", "Month 6", "Post-Tx", "Month 9"))
 # fix IDs
 labs$`Record ID` <- extract_numeric_id(labs$`Record ID`)
