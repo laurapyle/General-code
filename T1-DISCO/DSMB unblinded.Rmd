@@ -47,7 +47,7 @@ extract_numeric_id <- function(ids) {
 }
 
 # read in randomizations
-filename <- "T1DISCO randomization.xlsx"
+filename <- "T1DISCO randomization for DSMB.xlsx"
 full_path <- file.path(rand_path, filename)
 rand <- read_xlsx(full_path, sheet = "Sheet1")
 rand_check <- read_xlsx(full_path, sheet = "Sheet2")
