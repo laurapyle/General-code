@@ -83,7 +83,8 @@ labs <- labs %>% filter(!is.na(labs$`Visit Type`))
 labs$`Visit Type` <- droplevels(labs$`Visit Type`)
 
 # recode group consistently
-labs$Group <- str_
+labs$Group <- str_to_upper(labs$Group)
+labs$Group <- ifelse(labs$Group == "ACTIVE", "SEMAGLUTIDE", labs$Group)
 
 # read in CGM data
 filename <- "T1DISCO-CGM_DATA_LABELS_2025-10-02_1809.xlsx"
