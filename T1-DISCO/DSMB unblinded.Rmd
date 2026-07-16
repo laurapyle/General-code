@@ -19,6 +19,7 @@ library(dplyr)
 library(readxl)
 library(ggplot2)
 library(tidyr)
+library(stringr)
 
 # specify user for paths
 user <- Sys.info()[["user"]]
@@ -55,6 +56,7 @@ rand_check <- read_xlsx(full_path, sheet = "Sheet2") %>% arrange(ID)
 rand == rand_check
 # fix IDs
 rand$`Record ID` <- extract_numeric_id(rand$ID)
+rand$inrand <- 1
 
 # read in lab data
 filename <- "T1DISCO-SafetyLabs_DATA_LABELS_2026-07-07_1714.xlsx"
@@ -75,9 +77,13 @@ labs$`Record ID` <- as.numeric(labs$`Record ID`)
 labs <- labs %>% filter(!`Visit Type` == "Screen")
 # fix a bmi value
 labs$BMI <- ifelse(labs$`Record ID` == 23 & labs$`Visit Type` == "Month 1", 34.3, labs$BMI)
+labs$inlabs <- 1
 labs <- full_join(labs, rand, by = "Record ID")
 labs <- labs %>% filter(!is.na(labs$`Visit Type`))
 labs$`Visit Type` <- droplevels(labs$`Visit Type`)
+
+# recode group consistently
+labs$Group <- str_
 
 # read in CGM data
 filename <- "T1DISCO-CGM_DATA_LABELS_2025-10-02_1809.xlsx"
