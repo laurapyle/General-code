@@ -19,15 +19,43 @@ library(dplyr)
 library(readxl)
 library(ggplot2)
 library(tidyr)
+library(stringr)
+
+# specify user for paths
+user <- Sys.info()[["user"]]
+if (user == "laurapyle") {
+  data_path <- "/Users/laurapyle/Library/Application Support/Mountain Duck/Volumes.noindex/Kopah S3.localized/core.data/clinical/t1disco"
+  rand_path <- "/Users/laurapyle/Library/CloudStorage/OneDrive-UW/T1-DISCO randomization"
+} else if (user == "lpyle") {
+  data_path <- '/Users/lpyle/Library/Application Support/Mountain Duck/Volumes.noindex/Kopah S3.localized/core.data/clinical/t1disco'
+  rand_path <- "/Users/lpyle/Library/CloudStorage/OneDrive-UW/T1-DISCO randomization"
+} else if (user == "pylell") {
+  data_path <- '/Users/pylell/Library/Application Support/Mountain Duck/Volumes.noindex/Kopah S3.localized/core.data/clinical/t1disco'
+  rand_path <- "/Users/pylell/Library/CloudStorage/OneDrive-UW/T1-DISCO randomization"
+} else {
+  stop("Unknown user: please specify root path for this user.")
+}
 ```
 
 The plots below are spaghetti plots or profile plots of raw data. Black triangles represent the mean at each time point.
 
 ```{r echo=FALSE, warning= FALSE, comment=""}
+# Vectorized function for multiple IDs
+extract_numeric_id <- function(ids) {
+  # Use sapply to apply to each element
+  sapply(strsplit(ids, "-"), function(x) as.numeric(x[length(x)]))
+}
+
 # read in lab data
-labs <- read_xlsx("/Users/pylell/Library/CloudStorage/OneDrive-UW/Bjornstad/Biostatistics Core Shared Drive/T1-DISCO/Data raw/T1DISCO-SafetyLabs_DATA_LABELS_2025-10-02_1804.xlsx", 
-                  na = c("-", "", " ", "-9999", "-1"))
+filename <- "T1DISCO-SafetyLabs_DATA_LABELS_2026-07-07_1714.xlsx"
+full_path <- file.path(data_path, filename)
+labs <- read_xlsx(full_path, na = c("-", "", " ", "-9999", "-1"))
+#labs <- read.csv(full_path, na = c("-", "", " ", "-9999", "-1"))
+# fix a visit type
+labs$`Visit Type` <- ifelse(labs$`Record ID` == "DSCO-118" & labs$`Event Name` == "Visit 4 - 2 month", "Month 2", labs$`Visit Type`)
 labs$`Visit Type` <- factor(labs$`Visit Type`, levels = c("Screen", "Baseline", "Month 1", "Month 2", "Month 4", "Month 6", "Post-Tx", "Month 9"))
+# fix IDs
+labs$`Record ID` <- extract_numeric_id(labs$`Record ID`)
 # need to collapse Screening and Baseline - either take average, or fill down and just show baseline?
 sb <- labs %>% filter(`Visit Type` %in% c("Screen", "Baseline"))
 labs <- labs %>% filter(!`Visit Type` %in% c("Screen", "Baseline"))
@@ -35,15 +63,28 @@ sb <- sb %>% group_by(`Record ID`) %>% fill(c(`A1c (%)`,`Sodium (mmol/L)`,`Potas
                                              `Serum creatinine (mg/dl)`, `Calcium (mg/dl)`,`Total Bilirubin (mg/dl)`,`Alk Phos (U/L)`,`ALT (U/L)`,`AST (U/L)`,
                                              `Total Protein, S (g/dl)`,`Albumin (g/dl)`,`eGFR`,`BMI`), .direction = "down") 
 labs <- rbind(labs, sb)
+labs$`Record ID` <- as.numeric(labs$`Record ID`)
 labs <- labs %>% filter(!`Visit Type` == "Screen")
 # fix a bmi value
 labs$BMI <- ifelse(labs$`Record ID` == 23 & labs$`Visit Type` == "Month 1", 34.3, labs$BMI)
+labs$inlabs <- 1
+labs <- labs %>% filter(!is.na(labs$`Visit Type`))
+labs$`Visit Type` <- droplevels(labs$`Visit Type`)
+# fix a bicarb value
+labs$`Bicarb (mmol/L)` <- ifelse(labs$`Bicarb (mmol/L)` == 252, 25, labs$`Bicarb (mmol/L)`)
+# convert biliribun and fix one value
+labs$`Total Bilirubin (mg/dl)` <- ifelse(labs$`Total Bilirubin (mg/dl)` == "05", "0.5", labs$`Total Bilirubin (mg/dl)`)
+labs$`Total Bilirubin (mg/dl)` <- as.numeric(labs$`Total Bilirubin (mg/dl)`)
 
 
 # read in CGM data
-cgm <- read_xlsx('/Users/pylell/Library/CloudStorage/OneDrive-UW/Bjornstad/Biostatistics Core Shared Drive/T1-DISCO/Data raw/T1DISCO-CGM_DATA_LABELS_2025-10-02_1809.xlsx', 
-                  na = c("-", "", " ", "-9999"))
+filename <- "T1DISCO-CGM_DATA_LABELS_2026-07-07_1652.xlsx"
+full_path <- file.path(data_path, filename)
+cgm <- read_xlsx(full_path, na = c("-", "", " ", "-9999"))
 cgm <- cgm %>% filter(!is.na(Week))
+# fix IDs
+cgm$`Record ID` <- extract_numeric_id(cgm$`Record ID`)
+cgm$`Record ID` <- as.numeric(cgm$`Record ID`)
 # create new variable combining week and dose
 cgm <- cgm %>% mutate(
   week_dose = case_when(
