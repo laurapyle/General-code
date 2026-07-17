@@ -63,6 +63,8 @@ filename <- "T1DISCO-SafetyLabs_DATA_LABELS_2026-07-07_1714.xlsx"
 full_path <- file.path(data_path, filename)
 labs <- read_xlsx(full_path, na = c("-", "", " ", "-9999", "-1"))
 #labs <- read.csv(full_path, na = c("-", "", " ", "-9999", "-1"))
+# fix a visit type
+labs$`Visit Type` <- ifelse(labs$`Record ID` == "DSCO-118" & labs$`Event Name` == "Visit 4 - 2 month", "Month 2", labs$`Visit Type`)
 labs$`Visit Type` <- factor(labs$`Visit Type`, levels = c("Screen", "Baseline", "Month 1", "Month 2", "Month 4", "Month 6", "Post-Tx", "Month 9"))
 # fix IDs
 labs$`Record ID` <- extract_numeric_id(labs$`Record ID`)
@@ -86,8 +88,15 @@ labs$`Visit Type` <- droplevels(labs$`Visit Type`)
 labs$Group <- str_to_upper(labs$Group)
 labs$Group <- ifelse(labs$Group == "ACTIVE", "SEMAGLUTIDE", labs$Group)
 
+# fix a bicarb value
+labs$`Bicarb (mmol/L)` <- ifelse(labs$`Bicarb (mmol/L)` == 252, 25, labs$`Bicarb (mmol/L)`)
+# convert biliribun and fix one value
+labs$`Total Bilirubin (mg/dl)` <- ifelse(labs$`Total Bilirubin (mg/dl)` == "05", "0.5", labs$`Total Bilirubin (mg/dl)`)
+labs$`Total Bilirubin (mg/dl)` <- as.numeric(labs$`Total Bilirubin (mg/dl)`)
+
+
 # read in CGM data
-filename <- "T1DISCO-CGM_DATA_LABELS_2025-10-02_1809.xlsx"
+filename <- "T1DISCO-CGM_DATA_LABELS_2026-07-07_1652.xlsx"
 full_path <- file.path(data_path, filename)
 cgm <- read_xlsx(full_path, na = c("-", "", " ", "-9999"))
 cgm <- cgm %>% filter(!is.na(Week))
@@ -115,6 +124,9 @@ cgm_summary <- full_join(cgm_summary, rand, by = "Record ID")
 # delete run-in visits from people who weren't randomized
 cgm_summary <- cgm_summary %>% filter(!is.na(Group))
 cgm_summary <- cgm_summary %>% filter(!is.na(week_dose))
+# recode group consistently
+cgm_summary$Group <- str_to_upper(cgm_summary$Group)
+cgm_summary$Group <- ifelse(cgm_summary$Group == "ACTIVE", "SEMAGLUTIDE", cgm_summary$Group)
 
 # plots of labs
 p_a1c <- ggplot(data = labs, aes(x = `Visit Type`, y = `A1c (%)`, group = `Record ID`, color = as.factor(`Record ID`))) + 
